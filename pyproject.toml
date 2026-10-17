@@ -20,10 +20,10 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/OWNER/REPO"
-Repository = "https://github.com/OWNER/REPO"
-Issues = "https://github.com/OWNER/REPO/issues"
-Changelog = "https://github.com/OWNER/REPO/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/ace-coderr/shieldlint"
+Repository = "https://github.com/ace-coderr/shieldlint"
+Issues = "https://github.com/ace-coderr/shieldlint/issues"
+Changelog = "https://github.com/ace-coderr/shieldlint/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]

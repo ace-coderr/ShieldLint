@@ -1,6 +1,6 @@
 # ShieldLint
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/shieldlint.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/shieldlint.yml)
+[![CI](https://github.com/ace-coderr/shieldlint/actions/workflows/shieldlint.yml/badge.svg)](https://github.com/ace-coderr/shieldlint/actions/workflows/shieldlint.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
