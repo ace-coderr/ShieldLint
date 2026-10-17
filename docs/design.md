@@ -87,9 +87,9 @@ test.
 * **Sprout** addresses, for completeness and deprecation warnings.
 
 Test vectors are vendored under `tests/vectors/` and exercised by
-`tests/test_vectors.py`: 120 Unified Addresses are decoded **and re-encoded to
-the exact same string**, 80 viewing-key strings are decoded, and the long-input
-F4Jumble vectors (3.2 MB and 4 MB) are checked by hash.
+`tests/test_vectors.py`: 124 Unified Addresses are decoded **and re-encoded to
+the exact same string**, 66 viewing-key strings are decoded, and the long-input
+F4Jumble vectors (including a 4 MB input) are checked by hash.
 
 `uri.py` implements ZIP 321 as a strict validator: the ABNF productions
 (`paramindex`, `qchar`, base64url without padding), then the cross-parameter
@@ -229,7 +229,7 @@ token will be disabled by users and protect nobody.
 ## Testing
 
 ```bash
-python -m unittest discover -s tests -t .      # 70 tests
+python -m unittest discover -s tests -t .      # 72 tests
 python -m shieldlint check shieldlint            # the tool lints itself
 ```
 

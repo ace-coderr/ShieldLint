@@ -74,13 +74,36 @@ shieldlint address zu1…        # decode any address / viewing key, explain rec
 shieldlint uri 'zcash:…'       # validate a payment request against ZIP 321
 ```
 
+## Live demo (no install)
+
+**https://shieldlint.vercel.app** runs the same Python engine behind a
+serverless endpoint — the CLI is the product, the site is a convenience layer
+over it.
+
+* **`/scan`** — paste a file or load the bundled leaky/fixed checkout, press
+  scan, and read findings that name the rule, the line, the mechanism and the
+  fix. Nothing is written server-side.
+* **`/address`** — decode any transparent, Sapling or Unified address or
+  viewing key: receivers, typecodes, revision, expiry metadata, and whether the
+  address can be downgraded to a transparent payment.
+* **`/uri`** — validate a ZIP 321 request against the full grammar: parameter
+  indexes, base64url memos, the 512-byte limit, `req-` parameters, and
+  memo-on-transparent rejection.
+* **`/rules`** — all 14 rules with severity, rationale and remediation;
+  filterable and searchable.
+
+The site is eight pages, fully static except the three API calls, and makes
+**zero third-party requests** — no fonts, no analytics, no CDNs. That is the
+same discipline as the scanner: the tool that argues against metadata leakage
+should not leak yours.
+
 ## Why it is credible
 
-* **Conformance, not vibes.** 70 tests including the official
-  `zcash/zcash-test-vectors`: 120 Unified Addresses decoded **and re-encoded to
-  the identical string**, 60 viewing keys decoded, 8 F4Jumble vectors in both
-  directions plus the 3.2 MB and 4 MB hashed vectors, and every valid/invalid
-  ZIP 321 example from the ZIP.
+* **Conformance, not vibes.** 72 tests including the official
+  `zcash/zcash-test-vectors`: **124 Unified Addresses** decoded **and re-encoded
+  to the identical string**, **66 viewing keys** decoded, **14 F4Jumble
+  vectors** in both directions (including the 4 MB hashed vector), and every
+  valid/invalid ZIP 321 example from the ZIP.
 * **It runs on itself.** `shieldlint check shieldlint` is clean, and it is part
   of CI.
 * **It catches what the demo plants.** `examples/vulnerable-checkout`
@@ -133,7 +156,7 @@ Full transcript: `docs/demo.txt`.
 ```
 shieldlint/        address.py · f4jumble.py · bech32.py · base58.py · uri.py
                    source.py (lexer) · rules.py · engine.py · output.py · cli.py
-tests/             70 tests + vendored official Zcash vectors
+tests/             72 tests + vendored official Zcash vectors
 examples/          leaky checkout, fixed checkout, Rust payout fixture, config
 docs/              rules.md · design.md · ci.md · demo.txt
 action.yml, .github/workflows/shieldlint.yml
@@ -172,11 +195,22 @@ public specifications: [ZIP 316](https://zips.z.cash/zip-0316),
 The GitHub URLs in `pyproject.toml`, `output.py` and the workflows are
 placeholders for the public repository; update them before publishing.
 
-## Before you submit
+## Submission checklist
 
-- [ ] Push this directory to a public repository (MIT `LICENSE` included).
-- [ ] Update the placeholder GitHub URLs: `pyproject.toml`, `shieldlint/output.py`
-      (`informationUri`), `docs/` if you add a badge.
-- [ ] Record a 2–3 minute demo: `shieldlint check examples/vulnerable-checkout`
-      → show a finding, fix it, re-run → clean.
-- [ ] Submit before **Oct 28, 2026 23:59 UTC** (one submission, Core & Tooling).
+Done:
+
+- [x] Public repository, MIT `LICENSE`, no placeholder URLs left.
+- [x] Live demo deployed (Vercel, serverless Python).
+- [x] 72 tests green on Python 3.11 / 3.12 / 3.13; `shieldlint check shieldlint`
+      clean; the action runs on this repository's own PRs.
+- [x] Everything written inside the ZECATHON build window; third-party material
+      is limited to the MIT-licensed `zcash/zcash-test-vectors` JSON files.
+
+Remaining:
+
+- [ ] Record the 2–3 minute demo: `shieldlint check examples/vulnerable-checkout`
+      → show a finding → fix it → re-run clean; then the same scan in the
+      browser.
+- [ ] Final read-through of this file for claims that drifted.
+- [ ] Submit on the ZECATHON portal before **Oct 28, 2026 23:59 UTC**
+      (one submission, Core & Tooling).

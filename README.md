@@ -135,11 +135,11 @@ Architecture, threat model and limitations: **[docs/design.md](docs/design.md)**
 
 ## Conformance
 
-The decoder is not a best-effort regex. The test-suite (70 tests) includes the
+The decoder is not a best-effort regex. The test-suite (72 tests) includes the
 official [Zcash test vectors](https://github.com/zcash/zcash-test-vectors):
 
-* 8 F4Jumble vectors, forward and inverse, plus the 3.2 MB and 4 MB hashed vectors;
-* 120 Unified Address vectors (revision 0 and revision 2) decoded **and**
+* 14 F4Jumble vectors, forward and inverse, including the 4 MB hashed vector;
+* 124 Unified Address vectors (revision 0 and revision 2) decoded **and**
   re-encoded byte-for-byte, including expiry metadata and unknown typecodes;
 * 80 Unified Viewing Key strings (UFVK/UIVK, revision 0 and 2);
 * every valid and invalid ZIP 321 example from the ZIP itself.
