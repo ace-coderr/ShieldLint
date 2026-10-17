@@ -14,6 +14,32 @@ design optimises for three things:
 3. **Zero friction.** One Python package, no runtime dependencies, no network,
    no wallet, no keys. Drop it in CI in one line.
 
+## Web UI
+
+The site is a first-class surface, not documentation decoration: a reviewer who
+has never touched Zcash should be able to answer "what does this catch, and what
+does the output mean" without leaving it.
+
+- **Pages** — home, scanner, address decoder, ZIP 321 validator, rule index,
+  docs, install. Every route carries the same nav island, footer and type scale.
+- **Nav** — a floating capsule that shrinks on scroll, hides on scroll-down and
+  returns on scroll-up; on mobile it becomes a full-height drawer over a scrim.
+- **Hero** — a bespoke SVG "engine": an orbiting sentinel shield that sweeps a
+  scan beam over the Zcash encodings it understands. It is inline SVG, ~4 KB,
+  animates with CSS only and freezes under `prefers-reduced-motion`.
+- **Motion** — one reveal per section block, counters on the evidence stats,
+  staggered findings, scroll-spy in the docs. Nothing moves on its own outside
+  the hero, and every animation degrades to a static layout.
+- **Type + colour** — ink `#07090d`, paper, one signal blue `#2a5bff`; a serif
+  italic is reserved for the hero's last line. Section rules and label chains are
+  14 px, never full-width dividers.
+- **Mobile** — single column at 760 px, 20 px gutters, tables and code scroll in
+  their own containers, docs get a sticky horizontal table of contents.
+
+Build path: `scripts/build_site.py` inlines `web/site/*` and `web/static/*` into
+`web/pages.py` and `web/assets.py`. No CDN, no external font, no runtime fetch —
+the same bundle serves the Arena preview, `uvicorn` and Vercel.
+
 ## Pipeline
 
 ```

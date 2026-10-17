@@ -64,10 +64,12 @@ def main() -> None:
     layout = (SITE / "_layout.html").read_text(encoding="utf-8")
     css = (ROOT / "web" / "static" / "app.css").read_text(encoding="utf-8")
     js = (ROOT / "web" / "static" / "app.js").read_text(encoding="utf-8")
+    hero_art = (SITE / "_hero.svg").read_text(encoding="utf-8")
 
     pages: dict[str, tuple[str, str, str]] = {}
     for path, name, title, description in ROUTES:
         body = (SITE / f"{name}.html").read_text(encoding="utf-8")
+        body = body.replace("{{hero_art}}", hero_art)
         nav_key = "nav_" + (name if name not in ("index", "404") else "home")
         html = (
             layout.replace("{{title}}", title)

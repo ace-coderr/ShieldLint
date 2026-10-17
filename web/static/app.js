@@ -1,4 +1,4 @@
-/* ShieldLint UI — nav, copy buttons, scanner, decoder, URI validator, rules. */
+/* ShieldLint UI — motion, nav island, scanner, decoder, URI validator, rules. */
 // shieldlint: disable-file -- sample addresses and invalid URIs are demo fixtures
 
 (function () {
@@ -10,19 +10,172 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   };
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------------------------------------------------------------- nav */
+  /* ------------------------------------------------------- nav island */
+  var nav = $("site-nav");
   var toggle = $("nav-toggle");
   var links = $("nav-links");
+  var lastY = window.scrollY || 0;
+  var navHidden = false;
+
+  var scrim = $("nav-scrim");
+
+  function setScrim(on) {
+    if (!scrim) return;
+    scrim.hidden = !on;
+  }
+
+  function closeDrawer() {
+    if (!links || !links.classList.contains("open")) return;
+    links.classList.remove("open");
+    setScrim(false);
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open menu");
+    }
+    document.body.classList.remove("nav-open");
+  }
+
   if (toggle && links) {
     toggle.addEventListener("click", function () {
       var open = links.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      document.body.classList.toggle("nav-open", open);
+      setScrim(open);
+      if (open && nav) { nav.classList.remove("is-hidden"); navHidden = false; }
     });
     links.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") { links.classList.remove("open"); }
+      if (e.target.closest("a")) closeDrawer();
     });
+    document.addEventListener("click", function (e) {
+      if (!links.classList.contains("open")) return;
+      if (links.contains(e.target) || toggle.contains(e.target)) return;
+      closeDrawer();
+    });
+    if (scrim) scrim.addEventListener("click", closeDrawer);
   }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeDrawer();
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 900) { closeDrawer(); setScrim(false); }
+  });
+
+  var progress = $("scroll-progress");
+  var ticking = false;
+
+  function onScroll() {
+    var y = window.scrollY || document.documentElement.scrollTop || 0;
+    if (nav) {
+      nav.classList.toggle("is-scrolled", y > 8);
+      var down = y > lastY + 6;
+      var up = y < lastY - 6;
+      if (y < 120 || (links && links.classList.contains("open"))) {
+        if (navHidden) { nav.classList.remove("is-hidden"); navHidden = false; }
+      } else if (down && !navHidden) {
+        nav.classList.add("is-hidden"); navHidden = true;
+      } else if (up && navHidden) {
+        nav.classList.remove("is-hidden"); navHidden = false;
+      }
+      document.documentElement.classList.toggle("nav-hidden", navHidden);
+    }
+    if (progress) {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+      progress.style.transform = "scaleX(" + pct.toFixed(4) + ")";
+    }
+    lastY = y;
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", function () {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(onScroll);
+  }, { passive: true });
+  onScroll();
+
+  /* --------------------------------------------------------- reveals */
+  var revealNodes = [];
+  (function setupReveals() {
+    var selectors = [
+      ".section-head > div",
+      ".card",
+      ".step",
+      ".rule-card",
+      ".cta-panel",
+      ".split > div",
+      ".stat-grid > .stat-card"
+    ];
+    selectors.forEach(function (sel) {
+      Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
+        if (el.classList.contains("reveal")) return;
+        el.classList.add("reveal");
+        var parent = el.parentElement;
+        if (parent) {
+          var i = Array.prototype.indexOf.call(parent.children, el);
+          el.style.setProperty("--d", Math.min(i, 4) * 65 + "ms");
+        }
+        revealNodes.push(el);
+      });
+    });
+
+    var showAll = function () {
+      revealNodes.forEach(function (el) { el.classList.add("in"); });
+    };
+    if (reduced || !("IntersectionObserver" in window)) { showAll(); return; }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+
+    revealNodes.forEach(function (el) { io.observe(el); });
+    window.setTimeout(showAll, 2600);
+  })();
+
+  /* --------------------------------------------------------- counters */
+  (function counters() {
+    var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-count]"));
+    if (!nodes.length) return;
+    var run = function (el) {
+      var target = parseInt(el.getAttribute("data-count"), 10);
+      if (isNaN(target)) return;
+      if (reduced) { el.textContent = String(target); return; }
+      var start = performance.now();
+      var dur = 1100;
+      var step = function (now) {
+        var t = Math.min(1, (now - start) / dur);
+        var eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = String(Math.round(target * eased));
+        if (t < 1) window.requestAnimationFrame(step);
+      };
+      el.textContent = "0";
+      window.requestAnimationFrame(step);
+    };
+    if (!("IntersectionObserver" in window)) { nodes.forEach(run); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { run(entry.target); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.4 });
+    nodes.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* --------------------------------------------------- card spotlight */
+  Array.prototype.forEach.call(document.querySelectorAll(".card.hover"), function (card) {
+    card.addEventListener("pointermove", function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
 
   /* ------------------------------------------------------- copy buttons */
   document.addEventListener("click", function (e) {
@@ -77,6 +230,14 @@
   function error(el, message) {
     el.innerHTML = '<div class="banner" style="border-color:#f6d7d3;background:var(--red-wash);color:var(--red)">' +
       '<svg aria-hidden="true"><use href="#i-alert"/></svg><div>' + esc(message) + "</div></div>";
+  }
+
+  function scrollToOnMobile(el) {
+    if (window.innerWidth > 980 || !el) return;
+    window.setTimeout(function () {
+      var top = el.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top: top, behavior: reduced ? "auto" : "smooth" });
+    }, 60);
   }
 
   var RULE_INFO = null;
@@ -142,12 +303,12 @@
           var time = $("scan-time");
           if (time) { time.hidden = false; time.textContent = ms + " ms"; }
           out.innerHTML = renderScan(data);
+          scrollToOnMobile($("results-card"));
         })
         .catch(function (err) { error(out, err.message); });
     };
     scanBtn.addEventListener("click", runScan);
 
-    /* keyboard shortcut: cmd/ctrl + enter */
     var codeBox = $("code");
     if (codeBox) {
       codeBox.addEventListener("keydown", function (e) {
@@ -203,15 +364,23 @@
   /* ------------------------------------------------------------ address */
   var addrBtn = $("do-addr");
   if (addrBtn) {
-    addrBtn.addEventListener("click", function () {
+    var runAddress = function () {
       var value = ($("addr").value || "").trim();
       var out = $("addr-out");
       if (!value) { out.innerHTML = '<div class="empty">Paste an address first.</div>'; return; }
       loading(out, "decoding…");
       post("/api/address", { value: value }).then(function (d) {
         out.innerHTML = renderAddress(d);
+        scrollToOnMobile(document.querySelector(".tool .result-card"));
       }).catch(function (err) { error(out, err.message); });
-    });
+    };
+    addrBtn.addEventListener("click", runAddress);
+    var addrInput = $("addr");
+    if (addrInput) {
+      addrInput.addEventListener("keydown", function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); runAddress(); }
+      });
+    }
   }
 
   function renderAddress(d) {
@@ -237,7 +406,7 @@
         return esc(m.kind) + " = " + esc(m.value);
       }).join("<br>"));
     }
-    var html = "<dl class=\"kv\">" + rows + "</dl>";
+    var html = '<dl class="kv">' + rows + "</dl>";
     if (d.has_transparent_receiver) {
       html += '<div class="banner mt20" style="border-color:#f3e3c2;background:var(--amber-wash);color:var(--amber)">' +
         '<svg aria-hidden="true"><use href="#i-alert"/></svg><div><strong>Downgrade risk.</strong> ' +
@@ -262,15 +431,23 @@
   /* ---------------------------------------------------------------- uri */
   var uriBtn = $("do-uri");
   if (uriBtn) {
-    uriBtn.addEventListener("click", function () {
+    var runUri = function () {
       var value = ($("uri").value || "").trim();
       var out = $("uri-out");
       if (!value) { out.innerHTML = '<div class="empty">Paste a <code>zcash:</code> URI first.</div>'; return; }
       loading(out, "validating…");
       post("/api/uri", { value: value }).then(function (d) {
         out.innerHTML = renderUri(d);
+        scrollToOnMobile(document.querySelector(".tool .result-card"));
       }).catch(function (err) { error(out, err.message); });
-    });
+    };
+    uriBtn.addEventListener("click", runUri);
+    var uriInput = $("uri");
+    if (uriInput) {
+      uriInput.addEventListener("keydown", function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); runUri(); }
+      });
+    }
   }
 
   function renderUri(d) {
@@ -281,7 +458,7 @@
       " payment" + (d.payments.length === 1 ? "" : "s") + "</span></div>";
 
     if (d.payments.length) {
-      html += '<table class="t"><thead><tr><th>#</th><th>Recipient</th><th>Amount</th><th>Memo</th><th>Exposure</th></tr></thead><tbody>';
+      html += '<div class="tw"><table class="t"><thead><tr><th>#</th><th>Recipient</th><th>Amount</th><th>Memo</th><th>Exposure</th></tr></thead><tbody>';
       html += d.payments.map(function (p) {
         return "<tr>" +
           "<td class='mono'>" + esc(p.index || "—") + "</td>" +
@@ -291,7 +468,7 @@
           "<td>" + (p.transparent ? "<span class='sev error'>public</span>" : "<span class='sev note'>shielded</span>") + "</td>" +
         "</tr>";
       }).join("");
-      html += "</tbody></table>";
+      html += "</tbody></table></div>";
     }
 
     if (d.errors && d.errors.length) {
@@ -332,8 +509,8 @@
         rulesOut.innerHTML = '<div class="empty">No rule matches “' + esc(state.query) + "”.</div>";
         return;
       }
-      rulesOut.innerHTML = list.map(function (r) {
-        return '<details class="rule">' +
+      rulesOut.innerHTML = list.map(function (r, i) {
+        return '<details class="rule" style="animation:findingIn .35s var(--ease) both;animation-delay:' + Math.min(i, 8) * 30 + 'ms">' +
           "<summary>" +
             '<span class="rid">' + esc(r.id) + "</span>" +
             '<span class="sev ' + esc(r.severity) + '">' + esc(r.severity) + "</span>" +
@@ -381,5 +558,30 @@
         renderRules();
       });
     }
+  }
+
+  /* -------------------------------------------------------- docs scrollspy */
+  var docSections = document.querySelectorAll(".docs-body .doc-sec");
+  if (docSections.length && "IntersectionObserver" in window) {
+    var tocLinks = Array.prototype.slice.call(document.querySelectorAll("[data-toc]"));
+    var byId = {};
+    tocLinks.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        tocLinks.forEach(function (a) { a.classList.remove("active"); });
+        var link = byId[entry.target.id];
+        if (link) {
+          link.classList.add("active");
+          if (link.closest(".docs-toc-mobile")) {
+            var box = link.closest(".docs-toc-mobile");
+            box.scrollTo({ left: link.offsetLeft - 16, behavior: reduced ? "auto" : "smooth" });
+          }
+        }
+      });
+    }, { rootMargin: "-18% 0px -70% 0px", threshold: 0 });
+
+    Array.prototype.forEach.call(docSections, function (sec) { spy.observe(sec); });
   }
 })();
