@@ -36,6 +36,28 @@ First public release, built for ZECATHON 2026 (Core & Tooling).
 - **CI:** composite `action.yml`, GitHub Actions workflow with SARIF upload, and
   recipes for GitLab CI, pre-commit and Docker.
 
+### Web UI — fourth pass: the sentinel returns (2026-10-17)
+
+The flat editor panel is gone. The hero is a robot again — drawn as an
+engineered artefact rather than a character.
+
+- **New hero figure.** A faceted graphite helmet with a glass sensor slit,
+  angular cheek vents and a chest instrument, inside a rotating dial with tick
+  marks. CSS animates a scan band inside the visor, a travelling sheen, a
+  blinking crown light and a breathing chest lens; `prefers-reduced-motion`
+  leaves it still. Generated as vector geometry by `scripts/make_sentinel.py`
+  (15 KB inline, no raster asset).
+- **Interior pages get a spine.** Every sub-page hero is now ink, with a blue
+  wash, a masked construction grid and a hairline underline. A `page-facts`
+  strip under each title states the concrete numbers (rules, specs, deps).
+- **The nav island is readable everywhere.** It was 68 % ink, which turned
+  mid-grey over the light interior pages; it is now 90 % ink and 96 % when
+  scrolled.
+- **Social card follows the hero.** `scripts/render_sentinel.py` rasterises the
+  same SVG to a transparent PNG and `make_og.py` composites it, so the card can
+  never drift from the homepage again.
+- Removed the dead editor-panel CSS and its generated hero bitmap path.
+
 ### Web UI — third pass: the hero is the tool (2026-10-17)
 
 The homepage hero no longer illustrates the product — it shows it working.
