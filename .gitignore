@@ -17,3 +17,8 @@ shieldlint.json
 node_modules/
 __pycache__/
 .venv/
+
+# demo recording artefacts (regenerate with demo/build_stages.py + demo/record.py)
+demo/out/
+demo/video/
+*.webm

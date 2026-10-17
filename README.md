@@ -17,7 +17,7 @@ address, validate a payment request. Same engine, no install.
 
 ```
 $ shieldlint check examples/vulnerable-checkout
-shieldlint 0.1.0  ·  2 files scanned  ·  8 errors, 9 warnings
+shieldlint 0.1.0  ·  2 files scanned  ·  8 errors, 10 warnings
 
 examples/vulnerable-checkout/checkout.py
   19:19     warning SL002  transparent address literal (transparent-p2pkh, mainnet)
@@ -34,7 +34,7 @@ examples/vulnerable-checkout/checkout.py
                       The payment will be public: amount, sender and recipient are all
                       visible on-chain. Use a shielded Unified Address instead.
   ...
-8 errors, 9 warnings, 0 notes across 2 files   (fail-on=error)
+8 errors, 10 warnings, 0 notes across 2 files   (fail-on=error)
 ✖ findings at or above the failure threshold
 ```
 

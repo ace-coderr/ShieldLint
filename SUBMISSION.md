@@ -107,7 +107,7 @@ should not leak yours.
 * **It runs on itself.** `shieldlint check shieldlint` is clean, and it is part
   of CI.
 * **It catches what the demo plants.** `examples/vulnerable-checkout`
-  (a realistic merchant flow) yields 8 errors and 9 warnings; its fixed twin
+  (a realistic merchant flow) yields 8 errors and 10 warnings; its fixed twin
   `examples/clean-checkout` yields none.
 * **Deterministic and offline.** No network, no execution of target code, no
   key derivation. Same tree → same output.
@@ -143,7 +143,7 @@ transparent receiver" possible at all.
 
 ```bash
 python -m pip install -e .
-shieldlint check examples/vulnerable-checkout     # 8 errors, 9 warnings, exit 1
+shieldlint check examples/vulnerable-checkout     # 8 errors, 10 warnings, exit 1
 shieldlint check examples/clean-checkout          # no findings, exit 0
 shieldlint address zu175e9thzutjjcqe9u3ca0n98msd…  # decodes receivers offline
 shieldlint uri 'zcash:t1cN2…?amount=1&memo=b3JkZXI6MQ'   # INVALID: memo on a t-address
@@ -208,9 +208,9 @@ Done:
 
 Remaining:
 
-- [ ] Record the 2–3 minute demo: `shieldlint check examples/vulnerable-checkout`
-      → show a finding → fix it → re-run clean; then the same scan in the
-      browser.
+- [x] 2-minute demo recorded (`demo/`, reproducible): real CLI run on the leaky
+      checkout, the browser scanner, the address decoder, a ZIP 321 request
+      accepted and then rejected, and the rule index.
 - [ ] Final read-through of this file for claims that drifted.
 - [ ] Submit on the ZECATHON portal before **Oct 28, 2026 23:59 UTC**
       (one submission, Core & Tooling).
