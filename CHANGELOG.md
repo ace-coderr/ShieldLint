@@ -36,6 +36,26 @@ First public release, built for ZECATHON 2026 (Core & Tooling).
 - **CI:** composite `action.yml`, GitHub Actions workflow with SARIF upload, and
   recipes for GitLab CI, pre-commit and Docker.
 
+### Web UI — third pass: the hero is the tool (2026-10-17)
+
+The homepage hero no longer illustrates the product — it shows it working.
+
+- **New hero artefact.** The right column is now a dark editor caught mid-scan:
+  `apps/pay/checkout.py` with a transparent-recipient line (`SL001`) and a
+  viewing-key line (`SL006`) flagged in place, a scan beam travelling the file,
+  a light orbiting the panel border, and the findings report sliding out
+  underneath it (`exit 1`). All of it is HTML/CSS — crisp at any density.
+- **Illustration removed.** The generated hero render, its `/hero.webp` route and
+  its base64 bundle are gone; page weight drops and nothing is fetched for the
+  hero. The robot sentinel and its animation rules are deleted.
+- **Chips repositioned** so they read as annotations floating beside the panel
+  (`zu1… shielded only`, `t1… flagged`, `offline · 0 network calls`) instead of
+  covering the code.
+- **Social card redrawn** in the same language: the OG image is now the scan
+  panel plus its report, not the old robot.
+- **Cleanup:** removed the superseded `scripts/embed_web.py` and the stale
+  `web/static/index.html` build it consumed.
+
 ### Web UI — second pass (2026-10-17)
 
 A full visual rebuild of the eight-page site, deployed to Vercel with the CLI.

@@ -96,58 +96,108 @@ def main() -> None:
     for gy in range(0, H, 72):
         d.line([(0, gy), (W, gy)], fill=(11, 14, 20))
 
-    # ---- orbit motif, right ----------------------------------------------
-    cx, cy = 950, 330
-    for r, col, seg in ((196, (30, 39, 54), None), (150, (36, 62, 128), (40, 26)), (104, (26, 33, 45), None)):
-        if seg:
-            start = 0
-            while start < 360:
-                d.arc([cx - r, cy - r, cx + r, cy + r], start, start + seg[0], fill=col, width=2)
-                start += seg[0] + seg[1]
-        else:
-            d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=col)
+    # ---- the scan panel, right -------------------------------------------
+    # Same artefact as the hero: an editor mid-scan, with a findings card
+    # dropping out of it. Draw order: halo, panel, code, badge, card.
+    px0, py0, pw, ph = 700, 88, 424, 344
+    px1, py1 = px0 + pw, py0 + ph
 
-    # orbit node
-    d.ellipse([cx - 5, cy - 196 - 5, cx + 5, cy - 196 + 5], fill=BLUE_SOFT)
-    d.ellipse([cx + 138, cy - 58, cx + 150, cy - 46], fill=(240, 189, 106))
-    d.ellipse([cx - 150, cy + 42, cx - 140, cy + 52], fill=(255, 139, 128))
+    halo = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(halo).rounded_rectangle([px0 - 40, py0 - 30, px1 + 60, py1 + 70],
+                                           radius=48, fill=(30, 66, 190, 120))
+    img = Image.alpha_composite(img.convert("RGBA"),
+                                halo.filter(ImageFilter.GaussianBlur(60))).convert("RGB")
+    d = ImageDraw.Draw(img)
 
-    # robot silhouette: shield body + visor + eyes
-    bw, bh = 176, 196
-    bx, by = cx - bw / 2, cy - bh / 2 - 6
-    body = [
-        (bx + bw * 0.5, by),
-        (bx + bw, by + bh * 0.145),
-        (bx + bw, by + bh * 0.45),
-        (bx + bw * 0.5, by + bh),
-        (bx, by + bh * 0.45),
-        (bx, by + bh * 0.145),
+    PANEL = (10, 14, 22)
+    d.rounded_rectangle([px0, py0, px1, py1], radius=22, fill=PANEL, outline=(44, 52, 68), width=1)
+
+    # title bar
+    for i, c in enumerate(((58, 30, 28), (58, 46, 26), (26, 52, 40))):
+        d.ellipse([px0 + 18 + i * 15, py0 + 19, px0 + 25 + i * 15, py0 + 26], fill=c)
+    d.text((px0 + 66, py0 + 13), "apps/pay/checkout.py", font=font(MONO, 12), fill=(150, 160, 178))
+    d.ellipse([px1 - 106, py0 + 20, px1 - 100, py0 + 26], fill=(53, 192, 138))
+    d.text((px1 - 92, py0 + 13), "SCANNING", font=font(MONO, 10), fill=(120, 132, 150))
+    d.line([(px0, py0 + 38), (px1, py0 + 38)], fill=(32, 39, 52), width=1)
+
+    KW = (143, 166, 255)
+    STR = (151, 232, 193)
+    TXT = (225, 231, 242)
+    COM = (108, 118, 136)
+    NUM = (88, 96, 112)
+    RED = (255, 178, 167)
+
+    lines = [
+        (11, [("import ", KW), ("logging", TXT)], False, None),
+        (12, [("from ", KW), ("wallet ", TXT), ("import ", KW), ("send", TXT)], False, None),
+        (13, [], False, None),
+        (14, [("# checkout -> payout path", COM)], False, None),
+        (15, [("def ", KW), ("payout", TXT), ("(order, vk):", TXT)], False, None),
+        (16, [("    dest = ", TXT), ('"t1Yq6vF7NNbRk…u9f4"', STR)], True, "SL001"),
+        (17, [('    memo = f"order {order.id}"', TXT)], False, None),
+        (18, [("    key = ", TXT), ('"uview1…q4mw"', STR)], True, "SL006"),
     ]
-    d.polygon(body, fill=(10, 14, 21), outline=(120, 148, 220))
-    # visor
-    d.rounded_rectangle([bx + 34, by + 82, bx + bw - 34, by + 134], radius=26,
-                        fill=(6, 12, 24), outline=(58, 82, 132), width=2)
-    for ex in (bx + 58, bx + bw - 90):
-        halo = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        hd = ImageDraw.Draw(halo)
-        hd.rounded_rectangle([ex - 10, by + 86, ex + 42, by + 130], radius=16,
-                             fill=(42, 91, 255, 150))
-        img = Image.alpha_composite(img.convert("RGBA"),
-                                    halo.filter(ImageFilter.GaussianBlur(14))).convert("RGB")
-        d = ImageDraw.Draw(img)
-        d.rounded_rectangle([ex, by + 100, ex + 32, by + 116], radius=8, fill=(214, 228, 255))
-        d.rounded_rectangle([ex + 8, by + 103, ex + 24, by + 113], radius=5, fill=(255, 255, 255))
-    # smile + lights
-    d.arc([bx + 72, by + 134, bx + bw - 72, by + 158], 20, 160, fill=(90, 116, 170), width=3)
-    for i, c in enumerate(((53, 192, 138), (127, 157, 255), (70, 80, 96))):
-        d.ellipse([bx + 64 + i * 22, by + 160, bx + 71 + i * 22, by + 167], fill=c)
 
-    # scan badge on the illustration
-    d.rounded_rectangle([cx + 30, cy + 128, cx + 232, cy + 168], radius=20,
-                        fill=(12, 17, 25), outline=(40, 50, 68))
-    d.ellipse([cx + 48, cy + 143, cx + 55, cy + 150], fill=(53, 192, 138))
-    d.text((cx + 64, cy + 140), "checkout.py", font=font(MONO_B, 15), fill=(210, 220, 236))
-    d.text((cx + 168, cy + 141), "38 ms", font=font(MONO, 13), fill=(130, 142, 160))
+    fcode = font(MONO, 13)
+    fnum = font(MONO, 11)
+    y = py0 + 56
+    for num, tokens, flagged, rid in lines:
+        row_top = y - 7
+        if flagged:
+            d.rectangle([px0 + 1, row_top, px1 - 1, row_top + 30], fill=(30, 16, 19))
+            d.rectangle([px0 + 1, row_top, px0 + 3, row_top + 30], fill=(214, 78, 68))
+        label = str(num)
+        d.text((px0 + 22, y), label, font=fnum, fill=NUM)
+        x = px0 + 56
+        for text, colour in tokens:
+            d.text((x, y), text, font=fcode, fill=colour)
+            x += d.textlength(text, font=fcode)
+        if rid:
+            bw = int(d.textlength(rid, font=fnum)) + 16
+            d.rounded_rectangle([px1 - 20 - bw, y - 4, px1 - 20, y + 18], radius=5,
+                                fill=(38, 18, 21), outline=(96, 46, 46), width=1)
+            d.text((px1 - 12 - bw, y), rid, font=fnum, fill=RED)
+        y += 31
+
+    # ---- findings card ----------------------------------------------------
+    cx0, cy0, cw, ch = 748, 392, 384, 150
+    cx1, cy1 = cx0 + cw, cy0 + ch
+    shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).rounded_rectangle([cx0 + 6, cy0 + 14, cx1 - 4, cy1 + 12],
+                                             radius=18, fill=(0, 0, 0, 150))
+    img = Image.alpha_composite(img.convert("RGBA"),
+                                shadow.filter(ImageFilter.GaussianBlur(18))).convert("RGB")
+    d = ImageDraw.Draw(img)
+
+    d.rounded_rectangle([cx0, cy0, cx1, cy1], radius=16, fill=(11, 15, 23),
+                        outline=(46, 55, 72), width=1)
+    d.ellipse([cx0 + 18, cy0 + 15, cx0 + 24, cy0 + 21], fill=(53, 192, 138))
+    d.text((cx0 + 32, cy0 + 9), "checkout.py", font=font(MONO, 11), fill=(160, 170, 188))
+    ms = "38 ms"
+    d.text((cx1 - 18 - d.textlength(ms, font=font(MONO, 11)), cy0 + 9), ms,
+           font=font(MONO, 11), fill=(112, 124, 142))
+    d.line([(cx0, cy0 + 32), (cx1, cy0 + 32)], fill=(34, 42, 56), width=1)
+    d.line([(cx0, cy1 - 34), (cx1, cy1 - 34)], fill=(34, 42, 56), width=1)
+
+    rows = [
+        ("SL006", "viewing key in source", "ERROR", (255, 139, 128)),
+        ("SL001", "payment to t1… address", "ERROR", (255, 139, 128)),
+        ("SL003", "UA carries a t-receiver", "WARNING", (240, 189, 106)),
+    ]
+    frow = font(MONO, 11)
+    ry = cy0 + 42
+    for rid, text, sev, sevcol in rows:
+        d.text((cx0 + 18, ry), rid, font=font(MONO_B, 11), fill=(127, 157, 255))
+        d.text((cx0 + 74, ry), text, font=frow, fill=(196, 206, 222))
+        d.text((cx1 - 18 - d.textlength(sev, font=frow), ry), sev, font=frow, fill=sevcol)
+        ry += 27
+
+    d.text((cx0 + 18, cy1 - 27), "1 error blocked", font=font(MONO_B, 11), fill=(240, 244, 250))
+    d.text((cx0 + 18 + d.textlength("1 error blocked", font=font(MONO_B, 11)) + 8, cy1 - 27),
+           "· 2 warnings", font=frow, fill=(140, 150, 168))
+    d.rounded_rectangle([cx1 - 56, cy1 - 30, cx1 - 18, cy1 - 12], radius=5,
+                        fill=(34, 17, 20), outline=(96, 46, 46), width=1)
+    d.text((cx1 - 48, cy1 - 27), "exit 1", font=font(MONO, 10), fill=(255, 139, 128))
 
     # ---- left column ------------------------------------------------------
     x0 = 72

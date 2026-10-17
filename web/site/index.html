@@ -29,12 +29,40 @@
 
       <div class="hero-visual" id="hero-visual">
         <div class="hv-stage">
-          {{hero_art}}
+          <span class="hv-halo" aria-hidden="true"></span>
+
+          <div class="hv-rig">
+            <div class="hv-code">
+              <div class="hv-bar">
+                <span class="hv-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="hv-file">apps/pay/checkout.py</span>
+                <span class="hv-state"><i></i>scanning</span>
+              </div>
+
+              <div class="hv-body" aria-hidden="true">
+                <div class="cl"><span class="n">11</span><span class="c"><span class="kw">import</span> logging</span></div>
+                <div class="cl"><span class="n">12</span><span class="c"><span class="kw">from</span> wallet <span class="kw">import</span> send</span></div>
+                <div class="cl"><span class="n">13</span><span class="c"></span></div>
+                <div class="cl"><span class="n">14</span><span class="c"><span class="cm"># checkout → payout path</span></span></div>
+                <div class="cl"><span class="n">15</span><span class="c"><span class="kw">def</span> <span class="fn">payout</span>(order, vk):</span></div>
+                <div class="cl hit hit-a"><span class="n">16</span><span class="c">    dest = <span class="str">"t1Yq6vF7NNbRk…u9f4"</span></span><span class="rule">SL001</span></div>
+                <div class="cl"><span class="n">17</span><span class="c">    memo = <span class="str">f"order {order.id}"</span></span></div>
+                <div class="cl"><span class="n">18</span><span class="c">    log.info(<span class="str">"pay %s"</span>, dest)</span></div>
+                <div class="cl hit hit-b"><span class="n">19</span><span class="c">    key = <span class="str">"uview1…q4mw"</span></span><span class="rule">SL006</span></div>
+                <div class="cl"><span class="n">20</span><span class="c">    <span class="kw">return</span> <span class="fn">send</span>(dest, order.amount)</span></div>
+                <div class="cl"><span class="n">21</span><span class="c"><span class="fn">payout</span>(cart, env[<span class="str">"VK"</span>])</span><i class="hv-caret"></i></div>
+              </div>
+
+              <span class="hv-beam" aria-hidden="true"></span>
+            </div>
+          </div>
+
           <span class="hv-chip hv-chip-a"><b>zu1…</b> shielded only</span>
           <span class="hv-chip hv-chip-b"><b>t1…</b> flagged</span>
+          <span class="hv-chip hv-chip-c"><span class="live"></span> offline · 0 network calls</span>
         </div>
-        <span class="hv-pill"><span class="live"></span> offline · 0 network calls</span>
-        <div class="hv-scan" aria-hidden="true">
+
+        <div class="hv-scan">
           <div class="hv-scan-head"><span class="dot"></span> checkout.py <span class="ms">38 ms</span></div>
           <div class="hv-rows">
             <div class="hv-row"><span class="hv-id">SL006</span> viewing key in source <span class="hv-err">error</span></div>
