@@ -1,5 +1,9 @@
 # ShieldLint
 
+[![CI](https://github.com/OWNER/REPO/actions/workflows/shieldlint.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/shieldlint.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 **Offline privacy linting for Zcash software.** Point it at a repository; it
 reads every address, viewing key and `zcash:` payment request it can find and
 tells you where the integration leaks money-flow metadata — before the code

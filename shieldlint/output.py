@@ -160,7 +160,7 @@ def render_sarif(report: Report) -> str:
                     "driver": {
                         "name": "ShieldLint",
                         "version": __version__,
-                        "informationUri": "https://github.com/zksnarks_/shieldlint",
+                        "informationUri": "https://github.com/OWNER/REPO",
                         "rules": rules,
                     }
                 },
