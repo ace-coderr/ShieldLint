@@ -101,7 +101,7 @@ def og_image() -> Response:
     )
 
 
-@app.get("/robots.txt", response_class=Response)
+@app.get("/robots.txt")
 def robots() -> Response:
     return Response("User-agent: *\nAllow: /\n", media_type="text/plain")
 
