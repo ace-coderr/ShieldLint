@@ -36,6 +36,30 @@ First public release, built for ZECATHON 2026 (Core & Tooling).
 - **CI:** composite `action.yml`, GitHub Actions workflow with SARIF upload, and
   recipes for GitLab CI, pre-commit and Docker.
 
+### Web UI — second pass (2026-10-17)
+
+A full visual rebuild of the eight-page site, deployed to Vercel with the CLI.
+
+- **Floating nav island** that dims, blurs and hides on scroll-down, returns on
+  scroll-up, and carries a 2 px scroll-progress hairline.
+- **New hero**: a bespoke inline-SVG sentinel-shield "engine" — orbiting dashed
+  rings, blinking visor, a sweeping scan beam, caught-signal markers and a live
+  findings card — replacing the static terminal screenshot. CSS-only animation,
+  disabled under `prefers-reduced-motion`.
+- **Motion system**: staggered section reveals, animated stat counters, cached
+  scroll-spy in the docs, and a card spotlight — all with a no-JS/no-observer
+  fallback that leaves content visible.
+- **Layout discipline**: section label rules reduced from 34 px to 14 px, a
+  unified 76 px padding rhythm, bento rule grid, "three surfaces" section and a
+  giant wordmark footer.
+- **Mobile**: single-column at 760 px, 20 px gutters, drawer nav over a scrim with
+  body-scroll lock, scrollable tables and code, sticky chip TOC in the docs, and
+  zero horizontal overflow at 360/390/768/1024 px.
+- **Docs rebuild**: grouped sidebar with scroll-spy, a Zcash concepts primer, a
+  "reading a report" guide, Docker and pre-commit sections and next-page cards.
+- **Social card** regenerated in the ink/blue identity with the same robot.
+
+
 ### Verified
 
 - 70 tests, including the official `zcash/zcash-test-vectors`: 120 Unified
