@@ -418,6 +418,19 @@ h3.sub { font-size: clamp(19px, 2vw, 25px); letter-spacing: -.025em; }
 @keyframes sentSpin { to { transform: rotate(360deg); } }
 @keyframes sentSpinB { to { transform: rotate(-360deg); } }
 
+.sent-eye-l { animation: sentBlink 6.4s steps(1, end) infinite; transform-origin: 286px 264px; }
+.sent-eye-r { animation: sentBlink 6.4s steps(1, end) infinite; transform-origin: 354px 264px; }
+@keyframes sentBlink {
+  0%, 92% { transform: scaleY(1); }
+  93.5%, 96% { transform: scaleY(.12); }
+  97.5%, 100% { transform: scaleY(1); }
+}
+.sent-crest { animation: sentCrest 4.4s ease-in-out infinite; }
+@keyframes sentCrest { 50% { opacity: .68; } }
+.sent-lights circle { animation: sentLights 5.6s steps(1, end) infinite; }
+.sent-lights circle:nth-child(2) { animation-delay: 1.4s; }
+.sent-lights circle:nth-child(3) { animation-delay: 2.8s; }
+@keyframes sentLights { 0%, 60% { opacity: .9; } 61%, 100% { opacity: .28; } }
 .sent-scanline { animation: sentScan 5.2s cubic-bezier(.45, 0, .3, 1) infinite; }
 @keyframes sentScan {
   0%, 8% { transform: translateY(0); opacity: 0; }
@@ -449,7 +462,7 @@ h3.sub { font-size: clamp(19px, 2vw, 25px); letter-spacing: -.025em; }
 }
 
 .hv-scan {
-  position: relative; width: 84%; margin: -56px 0 0 auto;
+  position: relative; width: 84%; margin: -76px 0 0 auto;
   border-radius: 16px; overflow: hidden;
   background: rgba(9, 12, 18, .93);
   border: 1px solid rgba(255, 255, 255, .11);

@@ -3,12 +3,13 @@
 
     python scripts/make_sentinel.py
 
-Drawn as vector geometry: a faceted graphite helmet, a slim sensor slit behind
-glass, angular vent stacks, an instrument dial and one blue rim light. Motion
-lives in CSS (the `.sent-*` block in app.css) so the markup stays declarative.
+The figure is a designed object, not a silhouette: a light ceramic shell with
+visible panel seams and bolts, a glossy visor carrying two lit eyes, audio pods,
+a beacon, a collar ring and a chest crest in the brand blue. Light shell against
+the ink hero is what makes it legible and friendly at a glance.
 
-Writes `web/site/_sentinel.svg` and replaces whatever sits between the
-`sentinel:start` / `sentinel:end` markers in `web/site/index.html`.
+Motion is CSS (`.sent-*` in app.css). Writes `web/site/_sentinel.svg` and
+replaces the content between the sentinel markers in `web/site/index.html`.
 """
 
 from __future__ import annotations
@@ -21,16 +22,8 @@ INDEX = ROOT / "web" / "site" / "index.html"
 
 BLUE = "#2a5bff"
 BLUE_SOFT = "#7f9dff"
-EDGE = "rgba(255,255,255,.14)"
-
-# faceted helmet, clockwise from the crown
-HEAD = (
-    "M320 86 L394 104 L444 156 L462 246 L458 330 L424 394 "
-    "L372 428 L320 436 L268 428 L216 394 L182 330 L178 246 "
-    "L196 156 L246 104 Z"
-)
-VISOR = ("M236 232 L404 232 L420 250 L420 292 L404 310 "
-         "L236 310 L220 292 L220 250 Z")
+AMBER = "#f0bd6a"
+TEAL = "#35c08a"
 
 
 def dial(cx: float, cy: float, r: float) -> str:
@@ -38,176 +31,255 @@ def dial(cx: float, cy: float, r: float) -> str:
     for deg in range(0, 360, 5):
         a = math.radians(deg - 90)
         major = deg % 45 == 0
-        inner = r - (20 if major else 9)
+        inner = r - (18 if major else 8)
         x1, y1 = cx + math.cos(a) * inner, cy + math.sin(a) * inner
         x2, y2 = cx + math.cos(a) * r, cy + math.sin(a) * r
-        op = ".34" if major else ".14"
+        op = ".40" if major else ".16"
         w = "1.6" if major else "1"
-        out.append(
-            f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" '
-            f'stroke="rgba(220,232,255,{op})" stroke-width="{w}" stroke-linecap="round"/>'
-        )
+        out.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" '
+                   f'stroke="rgba(214,228,255,{op})" stroke-width="{w}" stroke-linecap="round"/>')
     return "\n      ".join(out)
+
+
+HEAD = (
+    "M320 122 C368 122 402 134 416 160 L432 224 L434 268 C436 306 430 340 414 362 "
+    "L386 390 C368 402 346 408 320 408 C294 408 272 402 254 390 "
+    "L226 362 C210 340 204 306 206 268 L208 224 L224 160 C238 134 272 122 320 122 Z"
+)
+VISOR = (
+    "M250 226 C250 210 262 202 278 202 L362 202 C378 202 390 210 390 226 "
+    "L390 288 C390 306 378 314 362 314 L278 314 C262 314 250 306 250 288 Z"
+)
+TORSO = "M246 414 L394 414 L486 700 L154 700 Z"
 
 
 def svg() -> str:
     cx, cy = 320.0, 340.0
-    return f'''<svg class="sent" viewBox="18 18 604 650" role="img"
-     aria-label="ShieldLint sentinel: a graphite helmet with a glass sensor slit, inside an instrument dial">
+    return f'''<svg class="sent" viewBox="24 24 592 660" role="img"
+     aria-label="ShieldLint sentinel: a white ceramic robot with a blue visor, standing inside an instrument dial">
   <defs>
-    <linearGradient id="s-plate" x1="0.1" y1="0" x2="0.85" y2="1">
-      <stop offset="0" stop-color="#232b37"/>
-      <stop offset=".30" stop-color="#161d27"/>
-      <stop offset=".68" stop-color="#101620"/>
-      <stop offset="1" stop-color="#080b11"/>
+    <!-- shell materials -->
+    <linearGradient id="s-shell" x1="0.12" y1="0" x2="0.86" y2="1">
+      <stop offset="0" stop-color="#eef3fa"/>
+      <stop offset=".30" stop-color="#dae2ee"/>
+      <stop offset=".70" stop-color="#b9c5d6"/>
+      <stop offset="1" stop-color="#939fb2"/>
     </linearGradient>
-    <linearGradient id="s-plate-lit" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0" stop-color="#0c1119"/>
-      <stop offset=".55" stop-color="#1a222e"/>
-      <stop offset="1" stop-color="#2b3543"/>
+    <linearGradient id="s-shell-side" x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0" stop-color="#95a2b6"/>
+      <stop offset=".55" stop-color="#c6d0de"/>
+      <stop offset="1" stop-color="#e8edf5"/>
     </linearGradient>
-    <linearGradient id="s-visor" x1="0" y1="0" x2="0.25" y2="1">
-      <stop offset="0" stop-color="#0e1a2b"/>
-      <stop offset=".5" stop-color="#060b13"/>
+    <linearGradient id="s-armor" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#39445a"/>
+      <stop offset=".55" stop-color="#232c3c"/>
+      <stop offset="1" stop-color="#131a26"/>
+    </linearGradient>
+    <linearGradient id="s-shell-dark" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#8e9cb0"/>
+      <stop offset="1" stop-color="#5d6a7e"/>
+    </linearGradient>
+    <linearGradient id="s-visor" x1="0.1" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#16233a"/>
+      <stop offset=".45" stop-color="#070c15"/>
       <stop offset="1" stop-color="#02050a"/>
     </linearGradient>
-    <linearGradient id="s-rim" x1="0" y1="0.2" x2="1" y2="0.9">
-      <stop offset="0" stop-color="rgba(127,157,255,0)"/>
-      <stop offset=".55" stop-color="rgba(127,157,255,.18)"/>
-      <stop offset="1" stop-color="rgba(190,212,255,.85)"/>
+    <linearGradient id="s-collar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d4b60"/>
+      <stop offset="1" stop-color="#141b26"/>
     </linearGradient>
-    <linearGradient id="s-top" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="rgba(255,255,255,.20)"/>
-      <stop offset="1" stop-color="rgba(255,255,255,0)"/>
-    </linearGradient>
-    <radialGradient id="s-glow" cx="0.55" cy="0.28" r="0.7">
-      <stop offset="0" stop-color="{BLUE}" stop-opacity=".38"/>
-      <stop offset=".5" stop-color="{BLUE}" stop-opacity=".10"/>
-      <stop offset="1" stop-color="{BLUE}" stop-opacity="0"/>
+    <radialGradient id="s-eye" cx="0.5" cy="0.45" r="0.62">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".42" stop-color="#bcd2ff"/>
+      <stop offset="1" stop-color="{BLUE}" stop-opacity=".85"/>
     </radialGradient>
-    <radialGradient id="s-lens" cx="0.42" cy="0.36" r="0.62">
-      <stop offset="0" stop-color="#f2f7ff"/>
-      <stop offset=".22" stop-color="#9dbcff"/>
-      <stop offset=".62" stop-color="{BLUE}" stop-opacity=".55"/>
+    <radialGradient id="s-glow" cx="0.5" cy="0.3" r="0.68">
+      <stop offset="0" stop-color="{BLUE}" stop-opacity=".34"/>
+      <stop offset=".55" stop-color="{BLUE}" stop-opacity=".09"/>
       <stop offset="1" stop-color="{BLUE}" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="s-fade" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fff"/>
-      <stop offset=".70" stop-color="#fff"/>
+      <stop offset=".74" stop-color="#fff"/>
       <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <linearGradient id="s-crest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5b86ff"/>
+      <stop offset="1" stop-color="{BLUE}"/>
     </linearGradient>
     <mask id="s-mask"><rect x="0" y="0" width="640" height="720" fill="url(#s-fade)"/></mask>
     <clipPath id="s-visor-clip"><path d="{VISOR}"/></clipPath>
-    <clipPath id="s-head-clip"><path d="{HEAD}"/></clipPath>
-    <filter id="s-b10" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="10"/>
+    <filter id="s-b12" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12"/>
     </filter>
-    <filter id="s-b4" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="4"/>
+    <filter id="s-b5" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="s-drop" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#04070c" flood-opacity=".55"/>
     </filter>
   </defs>
 
-  <!-- ambient wash -->
-  <ellipse cx="352" cy="252" rx="268" ry="256" fill="url(#s-glow)"/>
+  <!-- scene -->
+  <ellipse cx="372" cy="216" rx="300" ry="262" fill="url(#s-glow)" opacity=".78"/>
 
-  <!-- instrument dial -->
   <g class="sent-dial">
-    <circle cx="{cx}" cy="{cy}" r="276" fill="none" stroke="rgba(255,255,255,.07)"/>
-    <circle cx="{cx}" cy="{cy}" r="250" fill="none" stroke="rgba(255,255,255,.05)"/>
-    <g>{dial(cx, cy, 276)}</g>
+    <circle cx="{cx}" cy="{cy}" r="272" fill="none" stroke="rgba(255,255,255,.09)"/>
+    <circle cx="{cx}" cy="{cy}" r="238" fill="none" stroke="rgba(255,255,255,.06)"/>
+    <g>{dial(cx, cy, 272)}</g>
   </g>
   <g class="sent-dial-b">
-    <path d="M{cx} {cy - 216} A 216 216 0 0 1 {cx + 216} {cy}" fill="none"
-          stroke="rgba(127,157,255,.55)" stroke-width="2" stroke-linecap="round"/>
-    <path d="M{cx} {cy + 216} A 216 216 0 0 1 {cx - 216} {cy}" fill="none"
-          stroke="rgba(127,157,255,.16)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M{cx} {cy - 205} A 205 205 0 0 1 {cx + 205} {cy}" fill="none"
+          stroke="rgba(127,157,255,.55)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M{cx} {cy + 205} A 205 205 0 0 1 {cx - 205} {cy}" fill="none"
+          stroke="rgba(127,157,255,.18)" stroke-width="2.2" stroke-linecap="round"/>
   </g>
 
-  <g mask="url(#s-mask)">
-    <!-- shoulders -->
-    <path d="M148 486 L214 462 L262 452 L272 512 L214 556 L150 540 Z"
-          fill="url(#s-plate-lit)" stroke="{EDGE}"/>
-    <path d="M492 486 L426 462 L378 452 L368 512 L426 556 L490 540 Z"
-          fill="url(#s-plate)" stroke="{EDGE}"/>
-    <path d="M212 500 L258 470" stroke="rgba(190,212,255,.55)" stroke-width="1.6"/>
-    <path d="M428 500 L382 470" stroke="rgba(127,157,255,.22)" stroke-width="1.6"/>
+  <g mask="url(#s-mask)" filter="url(#s-drop)">
+    <!-- ============================================ shoulders + arms -->
+    <path d="M232 424 C186 428 160 456 152 512 L146 588 L206 600 L246 470 Z"
+          fill="url(#s-armor)" stroke="rgba(255,255,255,.09)" stroke-width="1.6"/>
+    <path d="M408 424 C454 428 480 456 488 512 L494 588 L434 600 L394 470 Z"
+          fill="url(#s-armor)" stroke="rgba(255,255,255,.07)" stroke-width="1.6"/>
+    <path d="M158 468 C176 448 204 440 230 442" fill="none" stroke="rgba(127,157,255,.55)"
+          stroke-width="1.8"/>
+    <path d="M482 468 C464 448 436 440 410 442" fill="none" stroke="rgba(127,157,255,.22)"
+          stroke-width="1.8"/>
+    <path d="M166 470 C186 462 208 464 220 476" fill="none"
+          stroke="rgba(255,255,255,.75)" stroke-width="2"/>
+    <path d="M474 470 C454 462 432 464 420 476" fill="none"
+          stroke="rgba(255,255,255,.22)" stroke-width="2"/>
 
-    <!-- torso -->
-    <path d="M262 452 L378 452 L436 700 L204 700 Z" fill="url(#s-plate)" stroke="{EDGE}"/>
-    <path d="M286 466 L354 466 L392 672 L248 672 Z" fill="none" stroke="rgba(255,255,255,.055)"/>
-    <path d="M262 452 L378 452" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
-
-    <!-- chest instrument -->
-    <g class="sent-core">
-      <circle cx="320" cy="566" r="54" fill="#06090f" stroke="rgba(255,255,255,.12)"/>
-      <circle cx="320" cy="566" r="44" fill="none" stroke="rgba(42,91,255,.40)" stroke-dasharray="2 8"/>
-      <circle cx="320" cy="566" r="30" fill="#04070c" stroke="rgba(255,255,255,.08)"/>
-      <circle cx="320" cy="566" r="20" fill="url(#s-lens)" opacity=".95"/>
-      <circle cx="320" cy="566" r="5" fill="#eef4ff"/>
+    <!-- ================================================== torso -->
+    <path d="{TORSO}" fill="url(#s-shell)" stroke="rgba(23,32,48,.30)" stroke-width="1.8"/>
+    <!-- chest inset -->
+    <path d="M268 440 L372 440 L398 566 L242 566 Z" fill="#e7edf6"
+          stroke="rgba(23,32,48,.22)" stroke-width="1.6"/>
+    <path d="M268 440 L372 440" stroke="rgba(255,255,255,.9)" stroke-width="1.6"/>
+    <!-- side seams -->
+    <path d="M262 452 L238 610" stroke="rgba(23,32,48,.18)" stroke-width="1.4"/>
+    <path d="M378 452 L402 610" stroke="rgba(23,32,48,.24)" stroke-width="1.4"/>
+    <!-- crest plate -->
+    <circle cx="320" cy="496" r="40" fill="#0a1018" stroke="rgba(23,32,48,.5)" stroke-width="2"/>
+    <circle cx="320" cy="496" r="31" fill="url(#s-crest)" opacity=".16"/>
+    <g class="sent-crest">
+      <path d="M320 470 L342 478 L342 496 C342 512 332 522 320 528 C308 522 298 512 298 496 L298 478 Z"
+            fill="none" stroke="{BLUE_SOFT}" stroke-width="2.4"/>
+      <path d="M310 486 h20 l-20 20 h20" fill="none" stroke="#eaf1ff" stroke-width="2.6"
+            stroke-linecap="round" stroke-linejoin="round"/>
     </g>
-    <g stroke="rgba(255,255,255,.08)">
-      <line x1="256" y1="494" x2="384" y2="494"/>
-      <line x1="250" y1="640" x2="390" y2="640"/>
+    <!-- status lights -->
+    <g class="sent-lights">
+      <circle cx="270" cy="516" r="4" fill="{TEAL}"/>
+      <circle cx="270" cy="532" r="4" fill="{AMBER}" opacity=".85"/>
+      <circle cx="270" cy="548" r="4" fill="rgba(23,32,48,.25)"/>
+    </g>
+    <text x="300" y="648" font-family="ui-monospace, Menlo, monospace" font-size="9"
+          letter-spacing="2.4" fill="rgba(23,32,48,.38)">SL-01</text>
+    <text x="358" y="648" font-family="ui-monospace, Menlo, monospace" font-size="9"
+          letter-spacing="2.4" fill="rgba(23,32,48,.22)">SENTINEL</text>
+
+    <!-- =================================================== neck -->
+    <path d="M292 392 L348 392 L352 424 L288 424 Z" fill="url(#s-collar)"/>
+    <path d="M292 400 L348 400 M290 410 L350 410" stroke="rgba(255,255,255,.16)"/>
+    <ellipse cx="320" cy="424" rx="76" ry="15" fill="url(#s-collar)"/>
+    <ellipse cx="320" cy="424" rx="76" ry="15" fill="none" stroke="{BLUE_SOFT}" stroke-opacity=".55"/>
+
+    <!-- =================================================== head -->
+    <path d="{HEAD}" fill="url(#s-shell)" stroke="rgba(23,32,48,.34)" stroke-width="1.8"/>
+    <!-- crown seam + bolts -->
+    <path d="M320 132 L320 202" stroke="rgba(23,32,48,.16)" stroke-width="1.4"/>
+    <path d="M270 150 C292 140 348 140 370 150" fill="none" stroke="rgba(255,255,255,.9)"
+          stroke-width="2"/>
+    <g fill="rgba(23,32,48,.22)">
+      <circle cx="238" cy="196" r="3"/><circle cx="402" cy="196" r="3"/>
+      <circle cx="222" cy="330" r="3"/><circle cx="418" cy="330" r="3"/>
     </g>
 
-    <!-- neck -->
-    <path d="M292 416 L348 416 L356 462 L284 462 Z" fill="#070a10" stroke="{EDGE}"/>
-    <path d="M288 434 L352 434 M286 448 L354 448" stroke="rgba(255,255,255,.07)"/>
+    <!-- brow plate -->
+    <path d="M236 190 C276 176 364 176 404 190 L404 206 C364 194 276 194 236 206 Z"
+          fill="#f7faff" stroke="rgba(23,32,48,.18)" stroke-width="1.2"/>
 
-    <!-- helmet -->
-    <path d="{HEAD}" fill="url(#s-plate)" stroke="rgba(255,255,255,.16)"/>
-    <path d="{HEAD}" fill="none" stroke="url(#s-rim)" stroke-width="2"/>
-    <!-- crown facet -->
-    <path d="M246 104 L320 86 L394 104 L360 132 L280 132 Z" fill="rgba(255,255,255,.045)"/>
-    <path d="M280 132 L360 132" stroke="rgba(255,255,255,.14)"/>
-    <path d="M246 104 L280 132 M394 104 L360 132" stroke="rgba(255,255,255,.10)"/>
-    <!-- side facets -->
-    <path d="M196 156 L246 104 L280 132 L236 232 L220 250 L178 246 Z"
-          fill="rgba(255,255,255,.018)"/>
-    <path d="M444 156 L394 104 L360 132 L404 232 L420 250 L462 246 Z"
-          fill="rgba(0,0,0,.25)"/>
-    <path d="M182 330 L220 292 L220 250 L178 246 Z" fill="rgba(0,0,0,.30)"/>
-    <path d="M458 330 L420 292 L420 250 L462 246 Z" fill="rgba(0,0,0,.34)"/>
+    <!-- side pods, flush with the shell -->
+    <g>
+      <rect x="196" y="238" width="22" height="74" rx="11" fill="url(#s-shell-side)"
+            stroke="rgba(23,32,48,.34)" stroke-width="1.4"/>
+      <rect x="200" y="250" width="6" height="50" rx="3" fill="#5f6d82" opacity=".55"/>
+      <rect x="422" y="238" width="22" height="74" rx="11" fill="url(#s-shell-dark)"
+            stroke="rgba(23,32,48,.42)" stroke-width="1.4"/>
+      <rect x="430" y="250" width="6" height="50" rx="3" fill="#8fa3bf" opacity=".35"/>
+    </g>
 
-    <!-- brow -->
-    <path d="M232 206 L408 206 L418 226 L222 226 Z" fill="rgba(255,255,255,.06)"
-          stroke="rgba(255,255,255,.10)"/>
+    <!-- crown plate in graphite -->
+    <path d="M320 122 C368 122 402 134 416 160 L424 194 C398 180 350 172 320 172
+             C290 172 242 180 216 194 L224 160 C238 134 272 122 320 122 Z"
+          fill="url(#s-armor)" stroke="rgba(255,255,255,.10)" stroke-width="1.2"/>
+    <path d="M216 194 C242 180 290 172 320 172 C350 172 398 180 424 194"
+          fill="none" stroke="rgba(127,157,255,.45)" stroke-width="1.6"/>
 
     <!-- visor -->
-    <path d="{VISOR}" fill="url(#s-visor)" stroke="rgba(255,255,255,.16)"/>
+    <path d="{VISOR}" fill="url(#s-visor)" stroke="rgba(23,32,48,.55)" stroke-width="2"/>
     <g clip-path="url(#s-visor-clip)">
-      <ellipse cx="268" cy="240" rx="128" ry="46" fill="{BLUE}" opacity=".20" filter="url(#s-b10)"/>
-      <rect class="sent-scanline" x="214" y="236" width="212" height="20" fill="{BLUE_SOFT}"
-            opacity=".14" filter="url(#s-b4)"/>
-      <path class="sent-slit" d="M254 270 h132" stroke="#dbe7ff" stroke-width="2.6"
-            stroke-linecap="round"/>
-      <path class="sent-sensor" d="M398 270 h8" stroke="{BLUE_SOFT}" stroke-width="2.6"
-            stroke-linecap="round"/>
-      <path d="M224 300 h192" stroke="rgba(255,255,255,.06)"/>
+      <ellipse cx="300" cy="238" rx="96" ry="34" fill="{BLUE}" opacity=".26" filter="url(#s-b12)"/>
+      <path d="M258 246 C286 232 354 232 382 246" fill="none" stroke="rgba(255,255,255,.18)"
+            stroke-width="1.6"/>
+      <rect class="sent-scanline" x="244" y="252" width="152" height="16" fill="#bcd2ff"
+            opacity=".16" filter="url(#s-b5)"/>
+
+      <!-- instrument eyes: two lit bars, not pupils -->
+      <g class="sent-eye-l">
+        <rect x="266" y="258" width="40" height="14" rx="7" fill="url(#s-eye)"
+              filter="url(#s-b5)" opacity=".85"/>
+        <rect x="268" y="260" width="30" height="10" rx="5" fill="#dce8ff"/>
+        <rect x="270" y="262" width="11" height="6" rx="3" fill="#ffffff"/>
+        <rect x="302" y="263" width="3" height="4" rx="1.5" fill="#dce8ff" opacity=".5"/>
+      </g>
+      <g class="sent-eye-r">
+        <rect x="334" y="258" width="40" height="14" rx="7" fill="url(#s-eye)"
+              filter="url(#s-b5)" opacity=".85"/>
+        <rect x="336" y="260" width="30" height="10" rx="5" fill="#dce8ff"/>
+        <rect x="338" y="262" width="11" height="6" rx="3" fill="#ffffff"/>
+        <rect x="370" y="263" width="3" height="4" rx="1.5" fill="#dce8ff" opacity=".5"/>
+      </g>
+      <path d="M262 296 h116" stroke="rgba(255,255,255,.10)" stroke-width="1"/>
+    </g>
+    <!-- visor highlight -->
+    <path d="M258 216 C286 206 354 206 382 216" fill="none" stroke="rgba(255,255,255,.34)"
+          stroke-width="1.6" clip-path="url(#s-visor-clip)"/>
+
+    <!-- cheeks -->
+    <path d="M222 322 L258 322 L252 352 L226 346 Z" fill="#eef3fa"
+          stroke="rgba(23,32,48,.20)" stroke-width="1.2"/>
+    <path d="M418 322 L382 322 L388 352 L414 346 Z" fill="#c3cddc"
+          stroke="rgba(23,32,48,.24)" stroke-width="1.2"/>
+
+    <!-- chin + vents -->
+    <path d="M270 336 L370 336 L356 392 L284 392 Z" fill="url(#s-armor)"
+          stroke="rgba(255,255,255,.10)" stroke-width="1.4"/>
+    <path d="M270 336 L370 336" stroke="rgba(127,157,255,.35)" stroke-width="1.4"/>
+    <g stroke="rgba(214,228,255,.42)" stroke-width="2" stroke-linecap="round">
+      <path d="M302 354 h36"/><path d="M306 366 h28"/>
     </g>
 
-    <!-- cheek vents -->
-    <g stroke="rgba(255,255,255,.13)" stroke-width="2.4" stroke-linecap="round">
-      <path d="M198 262 h26 M198 280 h26 M198 298 h26"/>
-      <path d="M416 262 h26 M416 280 h26 M416 298 h26"/>
-    </g>
-
-    <!-- chin stack -->
-    <path d="M284 356 L356 356 L346 408 L294 408 Z" fill="#070a10" stroke="{EDGE}"/>
-    <g stroke="rgba(255,255,255,.16)" stroke-width="2" stroke-linecap="round">
-      <path d="M296 372 h48"/><path d="M298 384 h44"/><path d="M302 396 h36"/>
-    </g>
-
-    <!-- crown light -->
-    <path d="M404 104 l16 -22" stroke="rgba(255,255,255,.20)" stroke-width="2.6"
+    <!-- beacon -->
+    <path d="M398 148 L424 112" stroke="rgba(23,32,48,.35)" stroke-width="4"
           stroke-linecap="round"/>
-    <circle class="sent-pip" cx="422" cy="79" r="4" fill="{BLUE_SOFT}"/>
+    <path d="M398 148 L424 112" stroke="rgba(255,255,255,.75)" stroke-width="1.6"
+          stroke-linecap="round"/>
+    <g class="sent-pip">
+      <circle cx="428" cy="106" r="10" fill="{AMBER}" opacity=".28" filter="url(#s-b5)"/>
+      <circle cx="428" cy="106" r="5" fill="{AMBER}"/>
+      <circle cx="426.5" cy="104.5" r="1.8" fill="#fff8ea"/>
+    </g>
 
-    <rect class="sent-sheen" x="-160" y="0" width="140" height="720" fill="#cfe0ff"
-          opacity=".045" transform="skewX(-14)" clip-path="url(#s-head-clip)"/>
+    <!-- rim light down the left edge -->
+    <path d="M214 182 C226 144 264 128 320 128" fill="none" stroke="rgba(255,255,255,.95)"
+          stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M204 240 C200 276 202 312 212 342" fill="none" stroke="rgba(127,157,255,.55)"
+          stroke-width="2" stroke-linecap="round"/>
   </g>
 
-  <ellipse cx="320" cy="664" rx="196" ry="26" fill="{BLUE}" opacity=".09" filter="url(#s-b10)"/>
+  <ellipse cx="320" cy="642" rx="188" ry="22" fill="{BLUE}" opacity=".12" filter="url(#s-b12)"/>
 </svg>'''
 
 
@@ -222,7 +294,7 @@ def main() -> None:
     a = doc.index(start_tag) + len(start_tag)
     b = doc.index(end_tag)
     INDEX.write_text(doc[:a] + "\n" + markup + "\n          " + doc[b:], encoding="utf-8")
-    print(f"sentinel v2: {len(markup):,} bytes inline")
+    print(f"sentinel v3: {len(markup):,} bytes inline")
 
 
 if __name__ == "__main__":

@@ -36,6 +36,27 @@ First public release, built for ZECATHON 2026 (Core & Tooling).
 - **CI:** composite `action.yml`, GitHub Actions workflow with SARIF upload, and
   recipes for GitLab CI, pre-commit and Docker.
 
+### Web UI — fifth pass: the sentinel, designed (2026-10-17)
+
+Feedback on the fourth pass was blunt and correct: the figure read as an
+unfinished silhouette — "no designs, no colour, not even recognizable".
+It is now a designed object.
+
+- **Light ceramic shell** (white → cool grey gradient) against the ink hero, so
+  the figure is legible at a glance and no longer reads as a mask.
+- **Real face:** two lit instrument eyes that blink together, a gloss-black
+  visor, graphite crown plate and jaw, cheek panels, vent stack, side pods,
+  collar ring.
+- **Colour identity:** brand-blue crest with the ShieldLint Z, a tri-colour
+  status column (green / amber / dim), an amber beacon on a stalk, blue rim
+  lights on the arms and shoulder arcs.
+- **Material detail:** panel seams, bolts, a bright edge highlight, a soft
+  contact shadow, and a longer torso so the findings card lands on the chest
+  rather than cutting the figure at the waist.
+- **Scene:** the flat blue disc is gone; the bloom is off-centre and softer, and
+  the dial, arcs and the existing motion carry the depth.
+- Social card re-rendered from the same SVG.
+
 ### Web UI — fourth pass: the sentinel returns (2026-10-17)
 
 The flat editor panel is gone. The hero is a robot again — drawn as an

@@ -1,228 +1,297 @@
-<svg class="sent" viewBox="18 18 604 650" role="img"
-     aria-label="ShieldLint sentinel: a graphite helmet with a glass sensor slit, inside an instrument dial">
+<svg class="sent" viewBox="24 24 592 660" role="img"
+     aria-label="ShieldLint sentinel: a white ceramic robot with a blue visor, standing inside an instrument dial">
   <defs>
-    <linearGradient id="s-plate" x1="0.1" y1="0" x2="0.85" y2="1">
-      <stop offset="0" stop-color="#232b37"/>
-      <stop offset=".30" stop-color="#161d27"/>
-      <stop offset=".68" stop-color="#101620"/>
-      <stop offset="1" stop-color="#080b11"/>
+    <!-- shell materials -->
+    <linearGradient id="s-shell" x1="0.12" y1="0" x2="0.86" y2="1">
+      <stop offset="0" stop-color="#eef3fa"/>
+      <stop offset=".30" stop-color="#dae2ee"/>
+      <stop offset=".70" stop-color="#b9c5d6"/>
+      <stop offset="1" stop-color="#939fb2"/>
     </linearGradient>
-    <linearGradient id="s-plate-lit" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0" stop-color="#0c1119"/>
-      <stop offset=".55" stop-color="#1a222e"/>
-      <stop offset="1" stop-color="#2b3543"/>
+    <linearGradient id="s-shell-side" x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0" stop-color="#95a2b6"/>
+      <stop offset=".55" stop-color="#c6d0de"/>
+      <stop offset="1" stop-color="#e8edf5"/>
     </linearGradient>
-    <linearGradient id="s-visor" x1="0" y1="0" x2="0.25" y2="1">
-      <stop offset="0" stop-color="#0e1a2b"/>
-      <stop offset=".5" stop-color="#060b13"/>
+    <linearGradient id="s-armor" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#39445a"/>
+      <stop offset=".55" stop-color="#232c3c"/>
+      <stop offset="1" stop-color="#131a26"/>
+    </linearGradient>
+    <linearGradient id="s-shell-dark" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#8e9cb0"/>
+      <stop offset="1" stop-color="#5d6a7e"/>
+    </linearGradient>
+    <linearGradient id="s-visor" x1="0.1" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#16233a"/>
+      <stop offset=".45" stop-color="#070c15"/>
       <stop offset="1" stop-color="#02050a"/>
     </linearGradient>
-    <linearGradient id="s-rim" x1="0" y1="0.2" x2="1" y2="0.9">
-      <stop offset="0" stop-color="rgba(127,157,255,0)"/>
-      <stop offset=".55" stop-color="rgba(127,157,255,.18)"/>
-      <stop offset="1" stop-color="rgba(190,212,255,.85)"/>
+    <linearGradient id="s-collar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d4b60"/>
+      <stop offset="1" stop-color="#141b26"/>
     </linearGradient>
-    <linearGradient id="s-top" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="rgba(255,255,255,.20)"/>
-      <stop offset="1" stop-color="rgba(255,255,255,0)"/>
-    </linearGradient>
-    <radialGradient id="s-glow" cx="0.55" cy="0.28" r="0.7">
-      <stop offset="0" stop-color="#2a5bff" stop-opacity=".38"/>
-      <stop offset=".5" stop-color="#2a5bff" stop-opacity=".10"/>
-      <stop offset="1" stop-color="#2a5bff" stop-opacity="0"/>
+    <radialGradient id="s-eye" cx="0.5" cy="0.45" r="0.62">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".42" stop-color="#bcd2ff"/>
+      <stop offset="1" stop-color="#2a5bff" stop-opacity=".85"/>
     </radialGradient>
-    <radialGradient id="s-lens" cx="0.42" cy="0.36" r="0.62">
-      <stop offset="0" stop-color="#f2f7ff"/>
-      <stop offset=".22" stop-color="#9dbcff"/>
-      <stop offset=".62" stop-color="#2a5bff" stop-opacity=".55"/>
+    <radialGradient id="s-glow" cx="0.5" cy="0.3" r="0.68">
+      <stop offset="0" stop-color="#2a5bff" stop-opacity=".34"/>
+      <stop offset=".55" stop-color="#2a5bff" stop-opacity=".09"/>
       <stop offset="1" stop-color="#2a5bff" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="s-fade" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fff"/>
-      <stop offset=".70" stop-color="#fff"/>
+      <stop offset=".74" stop-color="#fff"/>
       <stop offset="1" stop-color="#000"/>
     </linearGradient>
+    <linearGradient id="s-crest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5b86ff"/>
+      <stop offset="1" stop-color="#2a5bff"/>
+    </linearGradient>
     <mask id="s-mask"><rect x="0" y="0" width="640" height="720" fill="url(#s-fade)"/></mask>
-    <clipPath id="s-visor-clip"><path d="M236 232 L404 232 L420 250 L420 292 L404 310 L236 310 L220 292 L220 250 Z"/></clipPath>
-    <clipPath id="s-head-clip"><path d="M320 86 L394 104 L444 156 L462 246 L458 330 L424 394 L372 428 L320 436 L268 428 L216 394 L182 330 L178 246 L196 156 L246 104 Z"/></clipPath>
-    <filter id="s-b10" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="10"/>
+    <clipPath id="s-visor-clip"><path d="M250 226 C250 210 262 202 278 202 L362 202 C378 202 390 210 390 226 L390 288 C390 306 378 314 362 314 L278 314 C262 314 250 306 250 288 Z"/></clipPath>
+    <filter id="s-b12" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12"/>
     </filter>
-    <filter id="s-b4" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="4"/>
+    <filter id="s-b5" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="s-drop" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#04070c" flood-opacity=".55"/>
     </filter>
   </defs>
 
-  <!-- ambient wash -->
-  <ellipse cx="352" cy="252" rx="268" ry="256" fill="url(#s-glow)"/>
+  <!-- scene -->
+  <ellipse cx="372" cy="216" rx="300" ry="262" fill="url(#s-glow)" opacity=".78"/>
 
-  <!-- instrument dial -->
   <g class="sent-dial">
-    <circle cx="320.0" cy="340.0" r="276" fill="none" stroke="rgba(255,255,255,.07)"/>
-    <circle cx="320.0" cy="340.0" r="250" fill="none" stroke="rgba(255,255,255,.05)"/>
-    <g><line x1="320.0" y1="84.0" x2="320.0" y2="64.0" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="343.3" y1="74.0" x2="344.1" y2="65.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="366.4" y1="77.1" x2="367.9" y2="68.2" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="389.1" y1="82.1" x2="391.4" y2="73.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="411.3" y1="89.1" x2="414.4" y2="80.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="432.8" y1="98.0" x2="436.6" y2="89.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="453.5" y1="108.8" x2="458.0" y2="101.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="473.1" y1="121.3" x2="478.3" y2="113.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="491.6" y1="135.5" x2="497.4" y2="128.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="501.0" y1="159.0" x2="515.2" y2="144.8" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="524.5" y1="168.4" x2="531.4" y2="162.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="538.7" y1="186.9" x2="546.1" y2="181.7" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="551.2" y1="206.5" x2="559.0" y2="202.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="562.0" y1="227.2" x2="570.1" y2="223.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="570.9" y1="248.7" x2="579.4" y2="245.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="577.9" y1="270.9" x2="586.6" y2="268.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="582.9" y1="293.6" x2="591.8" y2="292.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="586.0" y1="316.7" x2="594.9" y2="315.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="576.0" y1="340.0" x2="596.0" y2="340.0" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="586.0" y1="363.3" x2="594.9" y2="364.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="582.9" y1="386.4" x2="591.8" y2="387.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="577.9" y1="409.1" x2="586.6" y2="411.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="570.9" y1="431.3" x2="579.4" y2="434.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="562.0" y1="452.8" x2="570.1" y2="456.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="551.2" y1="473.5" x2="559.0" y2="478.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="538.7" y1="493.1" x2="546.1" y2="498.3" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="524.5" y1="511.6" x2="531.4" y2="517.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="501.0" y1="521.0" x2="515.2" y2="535.2" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="491.6" y1="544.5" x2="497.4" y2="551.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="473.1" y1="558.7" x2="478.3" y2="566.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="453.5" y1="571.2" x2="458.0" y2="579.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="432.8" y1="582.0" x2="436.6" y2="590.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="411.3" y1="590.9" x2="414.4" y2="599.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="389.1" y1="597.9" x2="391.4" y2="606.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="366.4" y1="602.9" x2="367.9" y2="611.8" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="343.3" y1="606.0" x2="344.1" y2="614.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="320.0" y1="596.0" x2="320.0" y2="616.0" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="296.7" y1="606.0" x2="295.9" y2="614.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="273.6" y1="602.9" x2="272.1" y2="611.8" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="250.9" y1="597.9" x2="248.6" y2="606.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="228.7" y1="590.9" x2="225.6" y2="599.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="207.2" y1="582.0" x2="203.4" y2="590.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="186.5" y1="571.2" x2="182.0" y2="579.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="166.9" y1="558.7" x2="161.7" y2="566.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="148.4" y1="544.5" x2="142.6" y2="551.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="139.0" y1="521.0" x2="124.8" y2="535.2" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="115.5" y1="511.6" x2="108.6" y2="517.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="101.3" y1="493.1" x2="93.9" y2="498.3" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="88.8" y1="473.5" x2="81.0" y2="478.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="78.0" y1="452.8" x2="69.9" y2="456.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="69.1" y1="431.3" x2="60.6" y2="434.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="62.1" y1="409.1" x2="53.4" y2="411.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="57.1" y1="386.4" x2="48.2" y2="387.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="54.0" y1="363.3" x2="45.1" y2="364.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="64.0" y1="340.0" x2="44.0" y2="340.0" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="54.0" y1="316.7" x2="45.1" y2="315.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="57.1" y1="293.6" x2="48.2" y2="292.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="62.1" y1="270.9" x2="53.4" y2="268.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="69.1" y1="248.7" x2="60.6" y2="245.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="78.0" y1="227.2" x2="69.9" y2="223.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="88.8" y1="206.5" x2="81.0" y2="202.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="101.3" y1="186.9" x2="93.9" y2="181.7" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="115.5" y1="168.4" x2="108.6" y2="162.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="139.0" y1="159.0" x2="124.8" y2="144.8" stroke="rgba(220,232,255,.34)" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="148.4" y1="135.5" x2="142.6" y2="128.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="166.9" y1="121.3" x2="161.7" y2="113.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="186.5" y1="108.8" x2="182.0" y2="101.0" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="207.2" y1="98.0" x2="203.4" y2="89.9" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="228.7" y1="89.1" x2="225.6" y2="80.6" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="250.9" y1="82.1" x2="248.6" y2="73.4" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="273.6" y1="77.1" x2="272.1" y2="68.2" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/>
-      <line x1="296.7" y1="74.0" x2="295.9" y2="65.1" stroke="rgba(220,232,255,.14)" stroke-width="1" stroke-linecap="round"/></g>
+    <circle cx="320.0" cy="340.0" r="272" fill="none" stroke="rgba(255,255,255,.09)"/>
+    <circle cx="320.0" cy="340.0" r="238" fill="none" stroke="rgba(255,255,255,.06)"/>
+    <g><line x1="320.0" y1="86.0" x2="320.0" y2="68.0" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="343.0" y1="77.0" x2="343.7" y2="69.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="365.8" y1="80.0" x2="367.2" y2="72.1" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="388.3" y1="85.0" x2="390.4" y2="77.3" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="410.3" y1="91.9" x2="413.0" y2="84.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="431.6" y1="100.7" x2="435.0" y2="93.5" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="452.0" y1="111.4" x2="456.0" y2="104.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="471.4" y1="123.7" x2="476.0" y2="117.2" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="489.7" y1="137.8" x2="494.8" y2="131.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="499.6" y1="160.4" x2="512.3" y2="147.7" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="522.2" y1="170.3" x2="528.4" y2="165.2" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="536.3" y1="188.6" x2="542.8" y2="184.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="548.6" y1="208.0" x2="555.6" y2="204.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="559.3" y1="228.4" x2="566.5" y2="225.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="568.1" y1="249.7" x2="575.6" y2="247.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="575.0" y1="271.7" x2="582.7" y2="269.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="580.0" y1="294.2" x2="587.9" y2="292.8" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="583.0" y1="317.0" x2="591.0" y2="316.3" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="574.0" y1="340.0" x2="592.0" y2="340.0" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="583.0" y1="363.0" x2="591.0" y2="363.7" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="580.0" y1="385.8" x2="587.9" y2="387.2" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="575.0" y1="408.3" x2="582.7" y2="410.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="568.1" y1="430.3" x2="575.6" y2="433.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="559.3" y1="451.6" x2="566.5" y2="455.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="548.6" y1="472.0" x2="555.6" y2="476.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="536.3" y1="491.4" x2="542.8" y2="496.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="522.2" y1="509.7" x2="528.4" y2="514.8" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="499.6" y1="519.6" x2="512.3" y2="532.3" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="489.7" y1="542.2" x2="494.8" y2="548.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="471.4" y1="556.3" x2="476.0" y2="562.8" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="452.0" y1="568.6" x2="456.0" y2="575.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="431.6" y1="579.3" x2="435.0" y2="586.5" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="410.3" y1="588.1" x2="413.0" y2="595.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="388.3" y1="595.0" x2="390.4" y2="602.7" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="365.8" y1="600.0" x2="367.2" y2="607.9" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="343.0" y1="603.0" x2="343.7" y2="611.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="320.0" y1="594.0" x2="320.0" y2="612.0" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="297.0" y1="603.0" x2="296.3" y2="611.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="274.2" y1="600.0" x2="272.8" y2="607.9" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="251.7" y1="595.0" x2="249.6" y2="602.7" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="229.7" y1="588.1" x2="227.0" y2="595.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="208.4" y1="579.3" x2="205.0" y2="586.5" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="188.0" y1="568.6" x2="184.0" y2="575.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="168.6" y1="556.3" x2="164.0" y2="562.8" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="150.3" y1="542.2" x2="145.2" y2="548.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="140.4" y1="519.6" x2="127.7" y2="532.3" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="117.8" y1="509.7" x2="111.6" y2="514.8" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="103.7" y1="491.4" x2="97.2" y2="496.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="91.4" y1="472.0" x2="84.4" y2="476.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="80.7" y1="451.6" x2="73.5" y2="455.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="71.9" y1="430.3" x2="64.4" y2="433.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="65.0" y1="408.3" x2="57.3" y2="410.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="60.0" y1="385.8" x2="52.1" y2="387.2" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="57.0" y1="363.0" x2="49.0" y2="363.7" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="66.0" y1="340.0" x2="48.0" y2="340.0" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="57.0" y1="317.0" x2="49.0" y2="316.3" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="60.0" y1="294.2" x2="52.1" y2="292.8" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="65.0" y1="271.7" x2="57.3" y2="269.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="71.9" y1="249.7" x2="64.4" y2="247.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="80.7" y1="228.4" x2="73.5" y2="225.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="91.4" y1="208.0" x2="84.4" y2="204.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="103.7" y1="188.6" x2="97.2" y2="184.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="117.8" y1="170.3" x2="111.6" y2="165.2" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="140.4" y1="160.4" x2="127.7" y2="147.7" stroke="rgba(214,228,255,.40)" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="150.3" y1="137.8" x2="145.2" y2="131.6" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="168.6" y1="123.7" x2="164.0" y2="117.2" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="188.0" y1="111.4" x2="184.0" y2="104.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="208.4" y1="100.7" x2="205.0" y2="93.5" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="229.7" y1="91.9" x2="227.0" y2="84.4" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="251.7" y1="85.0" x2="249.6" y2="77.3" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="274.2" y1="80.0" x2="272.8" y2="72.1" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/>
+      <line x1="297.0" y1="77.0" x2="296.3" y2="69.0" stroke="rgba(214,228,255,.16)" stroke-width="1" stroke-linecap="round"/></g>
   </g>
   <g class="sent-dial-b">
-    <path d="M320.0 124.0 A 216 216 0 0 1 536.0 340.0" fill="none"
-          stroke="rgba(127,157,255,.55)" stroke-width="2" stroke-linecap="round"/>
-    <path d="M320.0 556.0 A 216 216 0 0 1 104.0 340.0" fill="none"
-          stroke="rgba(127,157,255,.16)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M320.0 135.0 A 205 205 0 0 1 525.0 340.0" fill="none"
+          stroke="rgba(127,157,255,.55)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M320.0 545.0 A 205 205 0 0 1 115.0 340.0" fill="none"
+          stroke="rgba(127,157,255,.18)" stroke-width="2.2" stroke-linecap="round"/>
   </g>
 
-  <g mask="url(#s-mask)">
-    <!-- shoulders -->
-    <path d="M148 486 L214 462 L262 452 L272 512 L214 556 L150 540 Z"
-          fill="url(#s-plate-lit)" stroke="rgba(255,255,255,.14)"/>
-    <path d="M492 486 L426 462 L378 452 L368 512 L426 556 L490 540 Z"
-          fill="url(#s-plate)" stroke="rgba(255,255,255,.14)"/>
-    <path d="M212 500 L258 470" stroke="rgba(190,212,255,.55)" stroke-width="1.6"/>
-    <path d="M428 500 L382 470" stroke="rgba(127,157,255,.22)" stroke-width="1.6"/>
+  <g mask="url(#s-mask)" filter="url(#s-drop)">
+    <!-- ============================================ shoulders + arms -->
+    <path d="M232 424 C186 428 160 456 152 512 L146 588 L206 600 L246 470 Z"
+          fill="url(#s-armor)" stroke="rgba(255,255,255,.09)" stroke-width="1.6"/>
+    <path d="M408 424 C454 428 480 456 488 512 L494 588 L434 600 L394 470 Z"
+          fill="url(#s-armor)" stroke="rgba(255,255,255,.07)" stroke-width="1.6"/>
+    <path d="M158 468 C176 448 204 440 230 442" fill="none" stroke="rgba(127,157,255,.55)"
+          stroke-width="1.8"/>
+    <path d="M482 468 C464 448 436 440 410 442" fill="none" stroke="rgba(127,157,255,.22)"
+          stroke-width="1.8"/>
+    <path d="M166 470 C186 462 208 464 220 476" fill="none"
+          stroke="rgba(255,255,255,.75)" stroke-width="2"/>
+    <path d="M474 470 C454 462 432 464 420 476" fill="none"
+          stroke="rgba(255,255,255,.22)" stroke-width="2"/>
 
-    <!-- torso -->
-    <path d="M262 452 L378 452 L436 700 L204 700 Z" fill="url(#s-plate)" stroke="rgba(255,255,255,.14)"/>
-    <path d="M286 466 L354 466 L392 672 L248 672 Z" fill="none" stroke="rgba(255,255,255,.055)"/>
-    <path d="M262 452 L378 452" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
-
-    <!-- chest instrument -->
-    <g class="sent-core">
-      <circle cx="320" cy="566" r="54" fill="#06090f" stroke="rgba(255,255,255,.12)"/>
-      <circle cx="320" cy="566" r="44" fill="none" stroke="rgba(42,91,255,.40)" stroke-dasharray="2 8"/>
-      <circle cx="320" cy="566" r="30" fill="#04070c" stroke="rgba(255,255,255,.08)"/>
-      <circle cx="320" cy="566" r="20" fill="url(#s-lens)" opacity=".95"/>
-      <circle cx="320" cy="566" r="5" fill="#eef4ff"/>
+    <!-- ================================================== torso -->
+    <path d="M246 414 L394 414 L486 700 L154 700 Z" fill="url(#s-shell)" stroke="rgba(23,32,48,.30)" stroke-width="1.8"/>
+    <!-- chest inset -->
+    <path d="M268 440 L372 440 L398 566 L242 566 Z" fill="#e7edf6"
+          stroke="rgba(23,32,48,.22)" stroke-width="1.6"/>
+    <path d="M268 440 L372 440" stroke="rgba(255,255,255,.9)" stroke-width="1.6"/>
+    <!-- side seams -->
+    <path d="M262 452 L238 610" stroke="rgba(23,32,48,.18)" stroke-width="1.4"/>
+    <path d="M378 452 L402 610" stroke="rgba(23,32,48,.24)" stroke-width="1.4"/>
+    <!-- crest plate -->
+    <circle cx="320" cy="496" r="40" fill="#0a1018" stroke="rgba(23,32,48,.5)" stroke-width="2"/>
+    <circle cx="320" cy="496" r="31" fill="url(#s-crest)" opacity=".16"/>
+    <g class="sent-crest">
+      <path d="M320 470 L342 478 L342 496 C342 512 332 522 320 528 C308 522 298 512 298 496 L298 478 Z"
+            fill="none" stroke="#7f9dff" stroke-width="2.4"/>
+      <path d="M310 486 h20 l-20 20 h20" fill="none" stroke="#eaf1ff" stroke-width="2.6"
+            stroke-linecap="round" stroke-linejoin="round"/>
     </g>
-    <g stroke="rgba(255,255,255,.08)">
-      <line x1="256" y1="494" x2="384" y2="494"/>
-      <line x1="250" y1="640" x2="390" y2="640"/>
+    <!-- status lights -->
+    <g class="sent-lights">
+      <circle cx="270" cy="516" r="4" fill="#35c08a"/>
+      <circle cx="270" cy="532" r="4" fill="#f0bd6a" opacity=".85"/>
+      <circle cx="270" cy="548" r="4" fill="rgba(23,32,48,.25)"/>
+    </g>
+    <text x="300" y="648" font-family="ui-monospace, Menlo, monospace" font-size="9"
+          letter-spacing="2.4" fill="rgba(23,32,48,.38)">SL-01</text>
+    <text x="358" y="648" font-family="ui-monospace, Menlo, monospace" font-size="9"
+          letter-spacing="2.4" fill="rgba(23,32,48,.22)">SENTINEL</text>
+
+    <!-- =================================================== neck -->
+    <path d="M292 392 L348 392 L352 424 L288 424 Z" fill="url(#s-collar)"/>
+    <path d="M292 400 L348 400 M290 410 L350 410" stroke="rgba(255,255,255,.16)"/>
+    <ellipse cx="320" cy="424" rx="76" ry="15" fill="url(#s-collar)"/>
+    <ellipse cx="320" cy="424" rx="76" ry="15" fill="none" stroke="#7f9dff" stroke-opacity=".55"/>
+
+    <!-- =================================================== head -->
+    <path d="M320 122 C368 122 402 134 416 160 L432 224 L434 268 C436 306 430 340 414 362 L386 390 C368 402 346 408 320 408 C294 408 272 402 254 390 L226 362 C210 340 204 306 206 268 L208 224 L224 160 C238 134 272 122 320 122 Z" fill="url(#s-shell)" stroke="rgba(23,32,48,.34)" stroke-width="1.8"/>
+    <!-- crown seam + bolts -->
+    <path d="M320 132 L320 202" stroke="rgba(23,32,48,.16)" stroke-width="1.4"/>
+    <path d="M270 150 C292 140 348 140 370 150" fill="none" stroke="rgba(255,255,255,.9)"
+          stroke-width="2"/>
+    <g fill="rgba(23,32,48,.22)">
+      <circle cx="238" cy="196" r="3"/><circle cx="402" cy="196" r="3"/>
+      <circle cx="222" cy="330" r="3"/><circle cx="418" cy="330" r="3"/>
     </g>
 
-    <!-- neck -->
-    <path d="M292 416 L348 416 L356 462 L284 462 Z" fill="#070a10" stroke="rgba(255,255,255,.14)"/>
-    <path d="M288 434 L352 434 M286 448 L354 448" stroke="rgba(255,255,255,.07)"/>
+    <!-- brow plate -->
+    <path d="M236 190 C276 176 364 176 404 190 L404 206 C364 194 276 194 236 206 Z"
+          fill="#f7faff" stroke="rgba(23,32,48,.18)" stroke-width="1.2"/>
 
-    <!-- helmet -->
-    <path d="M320 86 L394 104 L444 156 L462 246 L458 330 L424 394 L372 428 L320 436 L268 428 L216 394 L182 330 L178 246 L196 156 L246 104 Z" fill="url(#s-plate)" stroke="rgba(255,255,255,.16)"/>
-    <path d="M320 86 L394 104 L444 156 L462 246 L458 330 L424 394 L372 428 L320 436 L268 428 L216 394 L182 330 L178 246 L196 156 L246 104 Z" fill="none" stroke="url(#s-rim)" stroke-width="2"/>
-    <!-- crown facet -->
-    <path d="M246 104 L320 86 L394 104 L360 132 L280 132 Z" fill="rgba(255,255,255,.045)"/>
-    <path d="M280 132 L360 132" stroke="rgba(255,255,255,.14)"/>
-    <path d="M246 104 L280 132 M394 104 L360 132" stroke="rgba(255,255,255,.10)"/>
-    <!-- side facets -->
-    <path d="M196 156 L246 104 L280 132 L236 232 L220 250 L178 246 Z"
-          fill="rgba(255,255,255,.018)"/>
-    <path d="M444 156 L394 104 L360 132 L404 232 L420 250 L462 246 Z"
-          fill="rgba(0,0,0,.25)"/>
-    <path d="M182 330 L220 292 L220 250 L178 246 Z" fill="rgba(0,0,0,.30)"/>
-    <path d="M458 330 L420 292 L420 250 L462 246 Z" fill="rgba(0,0,0,.34)"/>
+    <!-- side pods, flush with the shell -->
+    <g>
+      <rect x="196" y="238" width="22" height="74" rx="11" fill="url(#s-shell-side)"
+            stroke="rgba(23,32,48,.34)" stroke-width="1.4"/>
+      <rect x="200" y="250" width="6" height="50" rx="3" fill="#5f6d82" opacity=".55"/>
+      <rect x="422" y="238" width="22" height="74" rx="11" fill="url(#s-shell-dark)"
+            stroke="rgba(23,32,48,.42)" stroke-width="1.4"/>
+      <rect x="430" y="250" width="6" height="50" rx="3" fill="#8fa3bf" opacity=".35"/>
+    </g>
 
-    <!-- brow -->
-    <path d="M232 206 L408 206 L418 226 L222 226 Z" fill="rgba(255,255,255,.06)"
-          stroke="rgba(255,255,255,.10)"/>
+    <!-- crown plate in graphite -->
+    <path d="M320 122 C368 122 402 134 416 160 L424 194 C398 180 350 172 320 172
+             C290 172 242 180 216 194 L224 160 C238 134 272 122 320 122 Z"
+          fill="url(#s-armor)" stroke="rgba(255,255,255,.10)" stroke-width="1.2"/>
+    <path d="M216 194 C242 180 290 172 320 172 C350 172 398 180 424 194"
+          fill="none" stroke="rgba(127,157,255,.45)" stroke-width="1.6"/>
 
     <!-- visor -->
-    <path d="M236 232 L404 232 L420 250 L420 292 L404 310 L236 310 L220 292 L220 250 Z" fill="url(#s-visor)" stroke="rgba(255,255,255,.16)"/>
+    <path d="M250 226 C250 210 262 202 278 202 L362 202 C378 202 390 210 390 226 L390 288 C390 306 378 314 362 314 L278 314 C262 314 250 306 250 288 Z" fill="url(#s-visor)" stroke="rgba(23,32,48,.55)" stroke-width="2"/>
     <g clip-path="url(#s-visor-clip)">
-      <ellipse cx="268" cy="240" rx="128" ry="46" fill="#2a5bff" opacity=".20" filter="url(#s-b10)"/>
-      <rect class="sent-scanline" x="214" y="236" width="212" height="20" fill="#7f9dff"
-            opacity=".14" filter="url(#s-b4)"/>
-      <path class="sent-slit" d="M254 270 h132" stroke="#dbe7ff" stroke-width="2.6"
-            stroke-linecap="round"/>
-      <path class="sent-sensor" d="M398 270 h8" stroke="#7f9dff" stroke-width="2.6"
-            stroke-linecap="round"/>
-      <path d="M224 300 h192" stroke="rgba(255,255,255,.06)"/>
+      <ellipse cx="300" cy="238" rx="96" ry="34" fill="#2a5bff" opacity=".26" filter="url(#s-b12)"/>
+      <path d="M258 246 C286 232 354 232 382 246" fill="none" stroke="rgba(255,255,255,.18)"
+            stroke-width="1.6"/>
+      <rect class="sent-scanline" x="244" y="252" width="152" height="16" fill="#bcd2ff"
+            opacity=".16" filter="url(#s-b5)"/>
+
+      <!-- instrument eyes: two lit bars, not pupils -->
+      <g class="sent-eye-l">
+        <rect x="266" y="258" width="40" height="14" rx="7" fill="url(#s-eye)"
+              filter="url(#s-b5)" opacity=".85"/>
+        <rect x="268" y="260" width="30" height="10" rx="5" fill="#dce8ff"/>
+        <rect x="270" y="262" width="11" height="6" rx="3" fill="#ffffff"/>
+        <rect x="302" y="263" width="3" height="4" rx="1.5" fill="#dce8ff" opacity=".5"/>
+      </g>
+      <g class="sent-eye-r">
+        <rect x="334" y="258" width="40" height="14" rx="7" fill="url(#s-eye)"
+              filter="url(#s-b5)" opacity=".85"/>
+        <rect x="336" y="260" width="30" height="10" rx="5" fill="#dce8ff"/>
+        <rect x="338" y="262" width="11" height="6" rx="3" fill="#ffffff"/>
+        <rect x="370" y="263" width="3" height="4" rx="1.5" fill="#dce8ff" opacity=".5"/>
+      </g>
+      <path d="M262 296 h116" stroke="rgba(255,255,255,.10)" stroke-width="1"/>
+    </g>
+    <!-- visor highlight -->
+    <path d="M258 216 C286 206 354 206 382 216" fill="none" stroke="rgba(255,255,255,.34)"
+          stroke-width="1.6" clip-path="url(#s-visor-clip)"/>
+
+    <!-- cheeks -->
+    <path d="M222 322 L258 322 L252 352 L226 346 Z" fill="#eef3fa"
+          stroke="rgba(23,32,48,.20)" stroke-width="1.2"/>
+    <path d="M418 322 L382 322 L388 352 L414 346 Z" fill="#c3cddc"
+          stroke="rgba(23,32,48,.24)" stroke-width="1.2"/>
+
+    <!-- chin + vents -->
+    <path d="M270 336 L370 336 L356 392 L284 392 Z" fill="url(#s-armor)"
+          stroke="rgba(255,255,255,.10)" stroke-width="1.4"/>
+    <path d="M270 336 L370 336" stroke="rgba(127,157,255,.35)" stroke-width="1.4"/>
+    <g stroke="rgba(214,228,255,.42)" stroke-width="2" stroke-linecap="round">
+      <path d="M302 354 h36"/><path d="M306 366 h28"/>
     </g>
 
-    <!-- cheek vents -->
-    <g stroke="rgba(255,255,255,.13)" stroke-width="2.4" stroke-linecap="round">
-      <path d="M198 262 h26 M198 280 h26 M198 298 h26"/>
-      <path d="M416 262 h26 M416 280 h26 M416 298 h26"/>
-    </g>
-
-    <!-- chin stack -->
-    <path d="M284 356 L356 356 L346 408 L294 408 Z" fill="#070a10" stroke="rgba(255,255,255,.14)"/>
-    <g stroke="rgba(255,255,255,.16)" stroke-width="2" stroke-linecap="round">
-      <path d="M296 372 h48"/><path d="M298 384 h44"/><path d="M302 396 h36"/>
-    </g>
-
-    <!-- crown light -->
-    <path d="M404 104 l16 -22" stroke="rgba(255,255,255,.20)" stroke-width="2.6"
+    <!-- beacon -->
+    <path d="M398 148 L424 112" stroke="rgba(23,32,48,.35)" stroke-width="4"
           stroke-linecap="round"/>
-    <circle class="sent-pip" cx="422" cy="79" r="4" fill="#7f9dff"/>
+    <path d="M398 148 L424 112" stroke="rgba(255,255,255,.75)" stroke-width="1.6"
+          stroke-linecap="round"/>
+    <g class="sent-pip">
+      <circle cx="428" cy="106" r="10" fill="#f0bd6a" opacity=".28" filter="url(#s-b5)"/>
+      <circle cx="428" cy="106" r="5" fill="#f0bd6a"/>
+      <circle cx="426.5" cy="104.5" r="1.8" fill="#fff8ea"/>
+    </g>
 
-    <rect class="sent-sheen" x="-160" y="0" width="140" height="720" fill="#cfe0ff"
-          opacity=".045" transform="skewX(-14)" clip-path="url(#s-head-clip)"/>
+    <!-- rim light down the left edge -->
+    <path d="M214 182 C226 144 264 128 320 128" fill="none" stroke="rgba(255,255,255,.95)"
+          stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M204 240 C200 276 202 312 212 342" fill="none" stroke="rgba(127,157,255,.55)"
+          stroke-width="2" stroke-linecap="round"/>
   </g>
 
-  <ellipse cx="320" cy="664" rx="196" ry="26" fill="#2a5bff" opacity=".09" filter="url(#s-b10)"/>
+  <ellipse cx="320" cy="642" rx="188" ry="22" fill="#2a5bff" opacity=".12" filter="url(#s-b12)"/>
 </svg>
