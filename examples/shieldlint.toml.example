@@ -1,0 +1,24 @@
+# Example configuration. Copy to the repository root as `shieldlint.toml`
+# (auto-discovered) or pass with `shieldlint check --config path/to/file.toml`.
+
+[shieldlint]
+# Lowest severity that fails the run: error | warning | note | never
+fail_on = "error"
+
+# Structural exclusions. Prefer inline `shieldlint: ignore[...]` for one-offs.
+exclude = [
+  "tests/fixtures/**",
+  "vendor/**",
+  "**/generated/**",
+  "*.min.js",
+]
+
+# Also scan Markdown / text files (off by default: docs often quote examples).
+include_docs = false
+
+# Rules switched off for this repository.
+disable = []
+
+# Re-grade individual rules without editing the source.
+[shieldlint.severity]
+SL008 = "note"   # transparent spend source: legitimate in this codebase

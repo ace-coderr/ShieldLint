@@ -1,0 +1,110 @@
+$ shieldlint check examples/vulnerable-checkout
+shieldlint 0.1.0  ·  2 files scanned  ·  8 errors, 9 warnings
+
+examples/vulnerable-checkout/checkout.py
+  19:19     warning SL002  transparent address literal (transparent-p2pkh, mainnet)
+                      every payment to a t-address is public on-chain. Prefer a shielded Unified
+                      Address (`zu1…`) or a Sapling address. If this literal is a refund/donation
+                      endpoint, keep it out of logs and client bundles.
+                      help: docs/rules.md#sl002-transparent-address-literal
+  24:6      warning SL003  Unified Address includes a transparent receiver
+                      receivers: transparent-p2pkh, sapling, orchard. A sender that cannot do
+                      shielded will pick the transparent receiver, making the payment public.
+                      Publish a shielded-only address (`zu1…` on ZIP 316 rev. 2) instead.
+                      help: docs/rules.md#sl003-ua-transparent-receiver
+  32:6      error   SL006  Unified viewing key literal in source
+                      a viewing key decrypts every incoming note (and memo) it covers. Load it from
+                      a secret store at runtime; never commit it.
+                      help: docs/rules.md#sl006-viewing-key-exposure
+  41:19     error   SL007  spending key material committed to source
+                      rotate this key immediately and purge it from git history; read secrets from a
+                      KMS or environment at runtime.
+                      help: docs/rules.md#sl007-spending-key-material
+  45:6      error   SL012  memo literal is 678 bytes (limit 512)
+                      memos are fixed 512-byte fields; longer text is truncated or rejected.
+                      Reference an off-chain record instead.
+                      help: docs/rules.md#sl012-memo-too-long
+  59:6      warning SL009  testnet address literal in source
+                      `utest1s0semzm63sl…` is a unified address on testnet. Gate test addresses
+                      behind a network check or move them to fixtures.
+                      help: docs/rules.md#sl009-testnet-address-in-source
+  65:16     error   SL011  invalid ZIP 321 payment request
+                      memo is attached to a transparent recipient; ZIP 321 says a memo requires a
+                      shielded (memo-capable) address
+                      help: docs/rules.md#sl011-invalid-payment-uri
+  68:15     error   SL010  payment request URI targets a transparent address
+                      recipient(s): t1cN2ZVWzWcVRrnfe…. Every wallet that honours this URI will
+                      produce a fully public payment. Rebuild the request around a shielded Unified
+                      Address.
+                      help: docs/rules.md#sl010-payment-uri-to-transparent
+  74:21     error   SL004  memo sent with transparent recipient `REFUND_ADDRESS`
+                      memos only exist inside shielded outputs; a memo paired with a t-address is
+                      dropped or leaks off-chain. Pay a shielded address with the memo, or keep the
+                      reference in your database.
+                      help: docs/rules.md#sl004-memo-to-transparent
+  80:19     error   SL001  payment to a transparent address via `REFUND_ADDRESS`
+                      `REFUND_ADDRESS` holds a transparent-p2pkh address (t1cN2ZVWzWcVRrnfe…). The
+                      payment will be public: amount, sender and recipient are all visible on-chain.
+                      Use a shielded Unified Address or Sapling address instead.
+                      help: docs/rules.md#sl001-transparent-recipient
+  85:1      warning SL005  memo value passed to a log/print call
+                      memos carry invoice ids and PII; log a salted hash or a random payment
+                      reference instead.
+                      help: docs/rules.md#sl005-memo-exposure
+  86:1      error   SL006  viewing key passed to a log/print call
+                      this prints viewing authority to wherever logs are shipped. Redact the key and
+                      log an identifier (account id) instead.
+                      help: docs/rules.md#sl006-viewing-key-exposure
+  91:13     warning SL013  Sprout address
+                      Sprout is deprecated and transfers into Sprout are restricted by ZIP 211.
+                      Migrate to Orchard, Sapling or a Unified Address.
+                      help: docs/rules.md#sl013-sprout-address
+
+examples/vulnerable-checkout/config.yaml
+  4:20      warning SL002  transparent address literal (transparent-p2pkh, mainnet)
+                      every payment to a t-address is public on-chain. Prefer a shielded Unified
+                      Address (`zu1…`) or a Sapling address. If this literal is a refund/donation
+                      endpoint, keep it out of logs and client bundles.
+                      help: docs/rules.md#sl002-transparent-address-literal
+  5:19      warning SL013  Sprout address
+                      Sprout is deprecated and transfers into Sprout are restricted by ZIP 211.
+                      Migrate to Orchard, Sapling or a Unified Address.
+                      help: docs/rules.md#sl013-sprout-address
+  6:20      warning SL009  testnet address literal in source
+                      `utest1s0semzm63sl…` is a unified address on testnet. Gate test addresses
+                      behind a network check or move them to fixtures.
+                      help: docs/rules.md#sl009-testnet-address-in-source
+  8:18      warning SL014  address fails validation (transparent)
+                      invalid Base58Check: checksum mismatch. A transaction to this string is
+                      unspendable; re-copy it from a wallet and validate at the boundary.
+                      help: docs/rules.md#sl014-malformed-address
+
+8 errors, 9 warnings, 0 notes across 2 files   (fail-on=error)
+✖ findings at or above the failure threshold
+
+$ shieldlint check examples/clean-checkout
+shieldlint 0.1.0  ·  1 file scanned
+✔ no findings
+
+$ shieldlint check examples | tail -3
+
+9 errors, 12 warnings, 0 notes across 3 files   (fail-on=error)
+✖ findings at or above the failure threshold
+
+$ shieldlint address zu175e9t…
+zu175e9thzutjjcqe9u3ca0n98msdagd8hp5vpl2zex065dzmmkf8pftgklq4upnrm5v3et4t89pffv…
+  kind       unified
+  network    mainnet
+  hrp        zu
+  revision   2
+  receivers  sapling (43 bytes), orchard (43 bytes)
+  shielded   yes
+
+
+$ shieldlint uri "zcash:t1cN2ZVWzWcVRrnfeQzmkpLhzQ4dYRv8yRY?amount=1&memo=b3JkZXI6MQ"
+zcash:t1cN2ZVWzWcVRrnfeQzmkpLhzQ4dYRv8yRY?amount=1&memo=b3JkZXI6MQ
+  status     INVALID
+  payments
+    [—] transparent-p2pkh  1 ZEC  memo 7 bytes
+  error      memo is attached to a transparent recipient; ZIP 321 says a memo requires a shielded (memo-capable) address
+

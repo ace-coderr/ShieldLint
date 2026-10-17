@@ -1,0 +1,36 @@
+name: "ShieldLint"
+description: "Offline Zcash privacy lint: transparent recipients, memo/key exposure, ZIP 316/321 validation."
+author: "ShieldLint contributors"
+branding:
+  icon: "shield"
+  color: "green"
+inputs:
+  paths:
+    description: "Files or directories to lint"
+    required: false
+    default: "."
+  fail-on:
+    description: "Lowest severity that fails the step: error | warning | note | never"
+    required: false
+    default: "error"
+  format:
+    description: "Output format: text | github | json | sarif"
+    required: false
+    default: "github"
+  args:
+    description: "Additional arguments passed to `shieldlint check`"
+    required: false
+    default: ""
+runs:
+  using: "composite"
+  steps:
+    - name: Install ShieldLint
+      shell: bash
+      run: python -m pip install --disable-pip-version-check --quiet "${{ github.action_path }}"
+    - name: Run ShieldLint
+      shell: bash
+      run: |
+        shieldlint check ${{ inputs.paths }} \
+          --format ${{ inputs.format }} \
+          --fail-on ${{ inputs.fail-on }} \
+          ${{ inputs.args }}

@@ -1,0 +1,8 @@
+# Merchant configuration used by the checkout service.
+merchant:
+  name: "Lekki Supply Co"
+  refund_address: "t1cN2ZVWzWcVRrnfeQzmkpLhzQ4dYRv8yRY"
+  legacy_sprout: "zc8E7R3StiJq1T1UaCdygazuEVBe9xddGdYBLMe8WNgnBTVRGiGwY9MEeVKqhWNtmbPmwi4S1uJtPobqCq4azuLJrKCFjcj"
+  testnet_faucet: "utest1s0semzm63sl8yj93kaasfedgah46y82yv0yn475vgjwy02qx934s522yl3zxu8hevvlszypejmd2ldmns7qyl5vn3x3pmv27psfyvl90"
+  # copied by hand, one character off
+  typo_address: "t1cN2ZVWzWcVRrnfeQzmkpLhzQ4dYRv8yRZ"
