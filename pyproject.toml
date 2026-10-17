@@ -20,7 +20,7 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Live Demo = "https://shieldlint.vercel.app"
+"Live Demo" = "https://shieldlint.vercel.app"
 Homepage = "https://github.com/ace-coderr/shieldlint"
 Repository = "https://github.com/ace-coderr/shieldlint"
 Issues = "https://github.com/ace-coderr/shieldlint/issues"
