@@ -36,6 +36,22 @@ First public release, built for ZECATHON 2026 (Core & Tooling).
 - **CI:** composite `action.yml`, GitHub Actions workflow with SARIF upload, and
   recipes for GitLab CI, pre-commit and Docker.
 
+### Web UI — sixth pass: sentinel, cold (2026-10-17)
+
+The friendly build was rejected in favour of something severe.
+
+- **Graphite, not ceramic.** Plates run #4b5768 → #141a24; the figure is held
+  together by a standing rim light on both edges of the helm and a specular
+  brow line rather than by brightness.
+- **Cut geometry.** The rounded head is replaced with a 12-sided faceted helm,
+  a tapered visor, angular pauldrons and bevel facets on every corner.
+- **No face.** The two lit eyes are gone; the visor carries a single narrow
+  sensor line, corner brackets and a slow scan pass. No beacon, no amber, no
+  status dots — blue only, and sparingly.
+- Chest crest is etched rather than glowing; indicator notches replace the
+  tri-colour column.
+- Social card re-rendered from the same SVG.
+
 ### Web UI — fifth pass: the sentinel, designed (2026-10-17)
 
 Feedback on the fourth pass was blunt and correct: the figure read as an

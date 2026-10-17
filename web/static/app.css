@@ -418,19 +418,8 @@ h3.sub { font-size: clamp(19px, 2vw, 25px); letter-spacing: -.025em; }
 @keyframes sentSpin { to { transform: rotate(360deg); } }
 @keyframes sentSpinB { to { transform: rotate(-360deg); } }
 
-.sent-eye-l { animation: sentBlink 6.4s steps(1, end) infinite; transform-origin: 286px 264px; }
-.sent-eye-r { animation: sentBlink 6.4s steps(1, end) infinite; transform-origin: 354px 264px; }
-@keyframes sentBlink {
-  0%, 92% { transform: scaleY(1); }
-  93.5%, 96% { transform: scaleY(.12); }
-  97.5%, 100% { transform: scaleY(1); }
-}
-.sent-crest { animation: sentCrest 4.4s ease-in-out infinite; }
-@keyframes sentCrest { 50% { opacity: .68; } }
-.sent-lights circle { animation: sentLights 5.6s steps(1, end) infinite; }
-.sent-lights circle:nth-child(2) { animation-delay: 1.4s; }
-.sent-lights circle:nth-child(3) { animation-delay: 2.8s; }
-@keyframes sentLights { 0%, 60% { opacity: .9; } 61%, 100% { opacity: .28; } }
+.sent-crest { animation: sentCrest 9s ease-in-out infinite; }
+@keyframes sentCrest { 50% { opacity: .78; } }
 .sent-scanline { animation: sentScan 5.2s cubic-bezier(.45, 0, .3, 1) infinite; }
 @keyframes sentScan {
   0%, 8% { transform: translateY(0); opacity: 0; }
@@ -438,20 +427,17 @@ h3.sub { font-size: clamp(19px, 2vw, 25px); letter-spacing: -.025em; }
   74% { opacity: .85; }
   88%, 100% { transform: translateY(96px); opacity: 0; }
 }
-.sent-sensor { animation: sentSensor 3.4s steps(1, end) infinite; }
-@keyframes sentSensor { 50%, 100% { opacity: .15; } }
-.sent-slit { animation: sentSlit 5.2s ease-in-out infinite; }
-@keyframes sentSlit {
-  0%, 100% { opacity: .92; }
-  50% { opacity: .58; }
+.sent-sensor { animation: sentSensor 6.8s ease-in-out infinite; }
+@keyframes sentSensor {
+  0%, 100% { opacity: .85; transform: translateX(0); }
+  46% { opacity: .55; transform: translateX(2px); }
+  62% { opacity: .95; transform: translateX(-1px); }
 }
 .sent-core { animation: sentCore 3.8s ease-in-out infinite; transform-origin: 320px 566px; }
 @keyframes sentCore {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: .84; transform: scale(.985); }
 }
-.sent-pip { animation: sentPip 2.6s steps(1, end) infinite; }
-@keyframes sentPip { 50%, 100% { opacity: .25; } }
 
 .sent-sheen { animation: sentSheen 8.5s cubic-bezier(.4, 0, .5, 1) infinite; }
 @keyframes sentSheen {
