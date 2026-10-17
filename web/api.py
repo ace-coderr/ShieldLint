@@ -34,6 +34,9 @@ from shieldlint.engine import Config, run  # noqa: E402
 from shieldlint.rules import RULES  # noqa: E402
 from shieldlint.uri import parse_payment_uri  # noqa: E402
 
+from web.examples_data import EXAMPLES  # noqa: E402
+from web.ui import INDEX_HTML  # noqa: E402
+
 MAX_SOURCE_BYTES = 200_000
 MAX_FILES = 20
 EXTENSIONS = {".py", ".js", ".ts", ".rs", ".go", ".java", ".kt", ".cs", ".c", ".cpp", ".rb", ".php", ".swift", ".yaml", ".yml", ".toml", ".json"}
@@ -82,10 +85,9 @@ class UriRequest(BaseModel):
 @app.get("/uri", response_class=HTMLResponse)
 @app.get("/rules", response_class=HTMLResponse)
 def index() -> HTMLResponse:
-    page = STATIC / "index.html"
-    if not page.is_file():  # pragma: no cover - deployment safety net
-        return HTMLResponse("<h1>ShieldLint</h1><p>UI asset missing.</p>", status_code=500)
-    return HTMLResponse(page.read_text(encoding="utf-8"))
+    # The page is embedded in `web/ui.py` so a serverless bundle can serve it
+    # without relying on runtime file access.
+    return HTMLResponse(INDEX_HTML)
 
 
 @app.get("/health")
@@ -214,13 +216,8 @@ def list_rules() -> dict[str, Any]:
 
 @app.get("/api/examples/{name}")
 def example(name: str) -> dict[str, str]:
-    """Serve the bundled demo files so the UI can preload them."""
-    mapping = {
-        "leaky": ROOT / "examples" / "vulnerable-checkout" / "checkout.py",
-        "fixed": ROOT / "examples" / "clean-checkout" / "checkout.py",
-        "rust": ROOT / "examples" / "rust-wallet" / "src" / "lib.rs",
-    }
-    path = mapping.get(name)
-    if path is None or not path.is_file():
+    """Serve the bundled demo sources so the UI can preload them."""
+    entry = EXAMPLES.get(name)
+    if entry is None:
         raise HTTPException(404, "unknown example")
-    return {"name": path.name, "language": path.suffix.lstrip("."), "content": path.read_text(encoding="utf-8")}
+    return dict(entry)

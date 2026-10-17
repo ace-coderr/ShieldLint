@@ -15,6 +15,15 @@ uvicorn web.api:app --reload --port 8000     # from the repository root
 # open http://localhost:8000
 ```
 
+The UI lives in `web/static/index.html`; the demo sources come from
+`examples/`. Both are embedded into Python modules (`web/ui.py`,
+`web/examples_data.py`) because a serverless bundle only ships what the code
+imports, not what it reads at runtime. After editing either source, regenerate:
+
+```bash
+python scripts/embed_web.py
+```
+
 ## Deploy to Vercel
 
 The repository root holds `vercel.json`, which builds `web/api.py` with the
@@ -27,8 +36,9 @@ vercel --prod       # from the repository root
 ```
 
 Or through the dashboard: **Add New → Project → Import `ace-coderr/ShieldLint`**,
-leave *Root Directory* as the repository root (the `vercel.json` handles the
-rest), and deploy. No environment variables are required.
+set **Application Preset** to **Other** (important — the FastAPI preset assumes
+`main.py`/`app.py` at the root), leave *Root Directory* at the repository root,
+and deploy. `vercel.json` does the rest; no environment variables are required.
 
 ## Endpoints
 
