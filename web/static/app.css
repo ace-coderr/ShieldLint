@@ -416,12 +416,12 @@ h3.sub { font-size: clamp(19px, 2vw, 25px); letter-spacing: -.025em; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 .marquee-group { display: flex; align-items: center; }
 .marquee-item {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 0 26px; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 0 18px; white-space: nowrap;
   font-family: var(--mono); font-size: 11px; font-weight: 600;
   letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2);
 }
-.marquee-item::after { content: "◆"; font-size: 6px; color: var(--line-strong); margin-left: 26px; }
+.marquee-item::after { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--line-strong); margin-left: 16px; flex: 0 0 auto; }
 .marquee-item svg { width: 14px; height: 14px; color: var(--blue); opacity: .7; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
@@ -1034,8 +1034,8 @@ pre.code .s { color: #9ee6b8; }
   .hv-row { font-size: 10px; }
   .hv-scan-head { font-size: 10px; }
   .marquee { padding: 15px 0; }
-  .marquee-item { font-size: 10px; padding: 0 18px; }
-  .marquee-item::after { margin-left: 18px; }
+  .marquee-item { font-size: 10px; padding: 0 14px; }
+  .marquee-item::after { margin-left: 14px; }
   .footer-top { grid-template-columns: minmax(0, 1fr); }
   .footer-word { font-size: 16.5vw; }
   .rules-toolbar { border-radius: 16px; padding: 8px; }

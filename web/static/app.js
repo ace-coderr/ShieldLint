@@ -127,17 +127,24 @@
     };
     if (reduced || !("IntersectionObserver" in window)) { showAll(); return; }
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    var io;
+    try {
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in");
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+      revealNodes.forEach(function (el) { io.observe(el); });
+    } catch (err) {
+      showAll();
+      return;
+    }
 
-    revealNodes.forEach(function (el) { io.observe(el); });
-    window.setTimeout(showAll, 2600);
+    /* Failsafe: never leave content invisible if the observer goes quiet. */
+    window.setTimeout(showAll, 6000);
   })();
 
   /* --------------------------------------------------------- counters */
