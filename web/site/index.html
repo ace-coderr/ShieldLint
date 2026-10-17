@@ -1,0 +1,272 @@
+<section class="hero hero-home">
+  <div class="wrap hero-in">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow"><span class="num">ZECATHON 2026</span> Core &amp; Tooling</p>
+        <h1 class="display">Privacy has<br>no compile<br><em>error.</em></h1>
+        <p class="lede">ShieldLint reads a Zcash codebase and finds where money-flow metadata
+          escapes — a transparent recipient in a payout path, a viewing key in a log line,
+          a payment request that will be rejected. Before it ships.</p>
+        <div class="hero-actions">
+          <a class="btn on-dark" href="/scan">Scan a file <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn on-dark ghost" href="/rules">Browse the 14 rules</a>
+        </div>
+        <div class="hero-meta">
+          <dl><dt>Rules</dt><dd>14</dd></dl>
+          <dl><dt>Tests</dt><dd>72</dd></dl>
+          <dl><dt>Runtime deps</dt><dd>0</dd></dl>
+          <dl><dt>Network at scan</dt><dd>None</dd></dl>
+          <dl><dt>Licence</dt><dd>MIT</dd></dl>
+        </div>
+      </div>
+
+      <div class="term" aria-label="Example CLI output">
+        <div class="term-bar">
+          <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+          <span class="term-title">shieldlint check examples/vulnerable-checkout</span>
+        </div>
+        <div class="term-body">
+<div><span class="cmd">shieldlint check examples/vulnerable-checkout</span></div>
+<div class="file">examples/vulnerable-checkout/checkout.py</div>
+<div><span class="loc">19:19</span><span class="sev-w">warning</span> <span class="rid">SL002</span> <span class="msg">transparent address literal</span></div>
+<div><span class="loc">24:6</span><span class="sev-w">warning</span> <span class="rid">SL003</span> <span class="msg">Unified Address includes a transparent receiver</span></div>
+<div><span class="loc">32:6</span><span class="sev-e">error&nbsp;&nbsp;</span> <span class="rid">SL006</span> <span class="msg">Unified viewing key literal in source</span></div>
+<div><span class="loc">41:19</span><span class="sev-e">error&nbsp;&nbsp;</span> <span class="rid">SL007</span> <span class="msg">spending key material committed to source</span></div>
+<div><span class="loc">45:6</span><span class="sev-e">error&nbsp;&nbsp;</span> <span class="rid">SL012</span> <span class="msg">memo literal is 678 bytes (limit 512)</span></div>
+<div><span class="loc">65:16</span><span class="sev-e">error&nbsp;&nbsp;</span> <span class="rid">SL011</span> <span class="msg">invalid ZIP 321 payment request</span></div>
+<div><span class="loc">80:19</span><span class="sev-e">error&nbsp;&nbsp;</span> <span class="rid">SL001</span> <span class="msg">payment to a transparent address via REFUND_ADDRESS</span></div>
+<div class="foot">8 errors, 9 warnings, 0 notes — exit 1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">01</span> The problem</p>
+        <h2 class="section">Zcash privacy is opt-in.<br>Code decides it.</h2>
+      </div>
+      <p class="lede">Shielded transactions are the default in the protocol but not in the
+        integrations. Three failures account for most real leaks, and none of them is a
+        compile error, a failing test, or something code review reliably catches.</p>
+    </div>
+
+    <div class="grid g3">
+      <article class="card hover">
+        <div class="icon-tile"><svg aria-hidden="true"><use href="#i-scan"/></svg></div>
+        <h3 class="mt14">Transparent recipients</h3>
+        <p>One <code>t1…</code> address in a payout path makes the amount, sender and
+          recipient public forever. It compiles, it tests green, it is invisible in review.</p>
+      </article>
+      <article class="card hover">
+        <div class="icon-tile"><svg aria-hidden="true"><use href="#i-key"/></svg></div>
+        <h3 class="mt14">Data in the wrong place</h3>
+        <p>Memos carry invoices and customer identity. Viewing keys decrypt an entire
+          account. Both end up in logs and error trackers because a string is just a string.</p>
+      </article>
+      <article class="card hover">
+        <div class="icon-tile"><svg aria-hidden="true"><use href="#i-link"/></svg></div>
+        <h3 class="mt14">Encoding mistakes</h3>
+        <p>A truncated address or an invalid ZIP 321 request is a checkout that fails — or
+          worse, funds sent somewhere unspendable. Neither surfaces until production.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">02</span> How it works</p>
+        <h2 class="section">Three passes.<br>No network, no guessing.</h2>
+      </div>
+      <p class="lede">ShieldLint is a static analyser, not a pattern matcher. It lexes the
+        file, decodes every candidate with the real specifications, and only then decides
+        whether a rule applies.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <p class="step-n">STEP 01</p>
+        <h3>Find the candidates</h3>
+        <p>A language-aware lexer skips comments, understands Python/C string concatenation,
+          JS regex literals, Rust raw strings and char literals, then pulls out every string.</p>
+      </div>
+      <div class="step">
+        <p class="step-n">STEP 02</p>
+        <h3>Decode with the specs</h3>
+        <p>Bech32m, F4Jumble, ZIP 316 receivers and typecodes, ZIP 321 parameters, Base58Check,
+          Sapling and Sprout. A malformed literal is provably malformed, not probably.</p>
+      </div>
+      <div class="step">
+        <p class="step-n">STEP 03</p>
+        <h3>Report with evidence</h3>
+        <p>Each finding carries the file, line, column, the decoded value, why it leaks and
+          how to fix it — as text, JSON, SARIF or GitHub annotations.</p>
+      </div>
+    </div>
+
+    <p class="small mt20">Languages the lexer understands today:
+      <span class="mono">Python · JavaScript · TypeScript · Rust · Go · Java · Kotlin · C# · C/C++ · Ruby · PHP · Swift · Shell · JSON · YAML · TOML</span></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">03</span> What it catches</p>
+        <h2 class="section">Six of the fourteen rules.</h2>
+      </div>
+      <div>
+        <p class="lede">Every rule is tied to a specification and ships with a rationale,
+          a bad example, a fixed example and references.</p>
+        <a class="link mt14" href="/rules" style="display:inline-flex;gap:6px;align-items:center;font-weight:600">
+          See the full rule index <svg width="15" height="15" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="grid g3">
+      <article class="card hover">
+        <div class="row between"><span class="mono tiny">SL001</span><span class="tag red">error</span></div>
+        <h3 class="mt8">Payment to a transparent address</h3>
+        <p>Amount, sender and recipient become public on-chain. The single most common way a
+          Zcash integration leaks, including through named constants.</p>
+      </article>
+      <article class="card hover">
+        <div class="row between"><span class="mono tiny">SL003</span><span class="tag amber">warning</span></div>
+        <h3 class="mt8">Unified Address with a transparent receiver</h3>
+        <p>A <code>u1…</code> address that also carries a <code>t1…</code> receiver lets a sender
+          downgrade the payment to public without telling anyone.</p>
+      </article>
+      <article class="card hover">
+        <div class="row between"><span class="mono tiny">SL006</span><span class="tag red">error</span></div>
+        <h3 class="mt8">Viewing key in source</h3>
+        <p>A Unified Full Viewing Key decrypts every incoming note it covers — including the
+          memos that carry invoices and identity.</p>
+      </article>
+      <article class="card hover">
+        <div class="row between"><span class="mono tiny">SL012</span><span class="tag red">error</span></div>
+        <h3 class="mt8">Memo over 512 bytes</h3>
+        <p>Memos are always 512 bytes, padded with zeros. An oversized literal silently
+          truncates or bricks the payment.</p>
+      </article>
+      <article class="card hover">
+        <div class="row between"><span class="mono tiny">SL011</span><span class="tag red">error</span></div>
+        <h3 class="mt8">Invalid payment request</h3>
+        <p>ZIP 321 is strict: a memo on a transparent recipient, a leading-zero parameter
+          index, a duplicate amount — all rejected by wallets.</p>
+      </article>
+      <article class="card hover">
+        <div class="row between"><span class="mono tiny">SL008</span><span class="tag amber">warning</span></div>
+        <h3 class="mt8">Transparent spend source</h3>
+        <p>Spending transparent UTXOs links inputs to outputs. Prefer a shielded pool unless
+          the user explicitly chose otherwise.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section ink">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">04</span> Evidence</p>
+        <h2 class="section">Verified against the<br>official test vectors.</h2>
+      </div>
+      <p class="lede">Parsers that guess are worse than no parser. Every decoder here is
+        checked against <span class="mono">zcash/zcash-test-vectors</span> in CI, on three
+        Python versions.</p>
+    </div>
+
+    <div class="grid g4">
+      <div class="card" style="background:#111722;border-color:#232a35">
+        <p class="stat ok"><b>120</b><span>Unified addresses</span></p>
+        <p class="small mt8">Decoded and re-encoded byte-for-byte, revisions 0 and 2.</p>
+      </div>
+      <div class="card" style="background:#111722;border-color:#232a35">
+        <p class="stat ok"><b>80</b><span>Viewing keys</span></p>
+        <p class="small mt8">Full and incoming, Sapling and Orchard, all key parts.</p>
+      </div>
+      <div class="card" style="background:#111722;border-color:#232a35">
+        <p class="stat ok"><b>10</b><span>F4Jumble vectors</span></p>
+        <p class="small mt8">Forwards and inverse, including the 4 MB hashed input.</p>
+      </div>
+      <div class="card" style="background:#111722;border-color:#232a35">
+        <p class="stat ok"><b>72</b><span>Tests in CI</span></p>
+        <p class="small mt8">Python 3.11, 3.12 and 3.13 on every push.</p>
+      </div>
+    </div>
+
+    <div class="grid g2 mt28">
+      <div>
+        <h3 class="sub">What the tests cover</h3>
+        <ul class="list-check mt14">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Round-trip fidelity.</strong> Decoding then re-encoding must produce the original string — this catches typos that a decoder would happily accept.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Rejection.</strong> Every invalid example in ZIP 321 must fail, and fail for the documented reason.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Self-lint.</strong> ShieldLint runs on its own source in CI and must report nothing.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Real trees.</strong> Run over librustzcash (382 files) without a crash; findings concentrate in vendored vectors.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="sub">Privacy posture</h3>
+        <ul class="list-check mt14">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>No network at scan time.</strong> Nothing is fetched, nothing is resolved, nothing is validated online.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>No telemetry.</strong> The web UI analyses in memory and discards; no accounts, no storage, no logs of pasted code.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Keys are never used.</strong> Viewing keys are parsed as data, never as credentials — an exposure is reported, never exercised.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <p class="eyebrow"><span class="num">05</span> Adopt it</p>
+        <h2 class="section">One line in CI.<br>No daemon, no keys.</h2>
+        <p class="lede mt14">Install from source, run against the tree, fail the build on
+          errors. SARIF output drops straight into GitHub code scanning.</p>
+        <div class="hero-actions">
+          <a class="btn blue" href="/install">Installation guide <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn ghost" href="/docs">Read the docs</a>
+        </div>
+      </div>
+      <div>
+        <pre class="code"><button class="copy" data-copy>Copy</button><span class="c"># install</span>
+<span class="k">git clone</span> https://github.com/ace-coderr/ShieldLint
+<span class="k">cd</span> ShieldLint &amp;&amp; pip install -e .
+
+<span class="c"># lint a tree, fail on errors</span>
+shieldlint check src/
+
+<span class="c"># machine-readable for code scanning</span>
+shieldlint check . --format sarif -o shieldlint.sarif
+
+<span class="c"># decode an address offline</span>
+shieldlint address zu1…</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight alt">
+  <div class="wrap">
+    <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:28px 32px">
+      <div>
+        <h3 class="sub">Try it on your own file.</h3>
+        <p class="small mt8">Paste code into the scanner, or decode an address you already have. Nothing leaves the session.</p>
+      </div>
+      <div class="row">
+        <a class="btn" href="/scan">Open the scanner</a>
+        <a class="btn ghost" href="/address">Decode an address</a>
+      </div>
+    </div>
+  </div>
+</section>

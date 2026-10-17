@@ -1,0 +1,143 @@
+<section class="hero hero-page">
+  <div class="wrap hero-in">
+    <p class="crumb"><a href="/">Home</a> / <span>Docs</span></p>
+    <h1>Documentation</h1>
+    <p class="lede">Everything needed to run ShieldLint in a repository, in CI, or on one
+      suspicious file. The CLI is the product; the web UI is a convenience layer over it.</p>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap docs">
+    <aside class="docs-nav">
+      <h4>On this page</h4>
+      <a href="#quickstart">Quickstart</a>
+      <a href="#cli">CLI reference</a>
+      <a href="#config">Configuration</a>
+      <a href="#suppress">Suppressing findings</a>
+      <a href="#ci">CI integration</a>
+      <a href="#how">How it decides</a>
+      <a href="#limits">Limitations</a>
+    </aside>
+
+    <div class="docs-body">
+
+      <section id="quickstart">
+        <h2>Quickstart</h2>
+        <p>ShieldLint needs Python 3.11 or newer and has no runtime dependencies. Install
+          from source until it is published to PyPI.</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button>git clone https://github.com/ace-coderr/ShieldLint
+cd ShieldLint
+python -m pip install -e .</pre>
+        <p>Then run it against a tree:</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button>shieldlint check src/
+shieldlint check src/ --quiet
+shieldlint check . --fail-on warning</pre>
+        <p>Exit codes are the CI contract: <code>0</code> clean, <code>1</code> findings at or
+          above the threshold, <code>2</code> usage error.</p>
+      </section>
+
+      <section id="cli">
+        <h2>CLI reference</h2>
+        <table class="t">
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>shieldlint check [paths…]</code></td><td>Scan files or directories. Defaults to the current directory.</td></tr>
+            <tr><td><code>shieldlint rules</code></td><td>Print the rule catalogue with severities.</td></tr>
+            <tr><td><code>shieldlint address &lt;value&gt;</code></td><td>Decode an address or viewing key offline.</td></tr>
+            <tr><td><code>shieldlint uri &lt;value&gt;</code></td><td>Parse and validate a ZIP 321 payment request.</td></tr>
+            <tr><td><code>shieldlint version</code></td><td>Print the version.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Flags for <code>check</code></h3>
+        <table class="t">
+          <thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>--fail-on error|warning|note|never</code></td><td><code>error</code></td><td>Threshold that turns findings into exit code 1.</td></tr>
+            <tr><td><code>--format text|json|sarif|github</code></td><td><code>text</code></td><td>Output format. <code>github</code> emits workflow annotations.</td></tr>
+            <tr><td><code>-o PATH</code></td><td>stdout</td><td>Write any format to a file.</td></tr>
+            <tr><td><code>--quiet</code></td><td>off</td><td>One summary line instead of the full report.</td></tr>
+            <tr><td><code>--no-color</code></td><td>auto</td><td>Disable ANSI colour.</td></tr>
+            <tr><td><code>--exclude GLOB</code></td><td>—</td><td>Skip paths. Repeatable.</td></tr>
+            <tr><td><code>--include-docs</code></td><td>off</td><td>Scan Markdown and documentation files too.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="config">
+        <h2>Configuration</h2>
+        <p>Drop a <code>shieldlint.toml</code> at the repository root. The CLI picks it up
+          automatically; <code>--config PATH</code> overrides the search.</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button><span class="c"># shieldlint.toml</span>
+fail_on = <span class="s">"error"</span>
+include_docs = <span class="k">false</span>
+exclude = [<span class="s">"tests/vectors/**"</span>, <span class="s">"examples/vulnerable-*"</span>]
+disable = [<span class="s">"SL009"</span>]
+
+[shieldlint.severity]
+SL002 = <span class="s">"note"</span>
+SL013 = <span class="s">"error"</span></pre>
+        <p><code>severity</code> overrides apply after the rule runs, so you can promote a
+          warning to an error on a stricter codebase without forking the tool.</p>
+      </section>
+
+      <section id="suppress">
+        <h2>Suppressing findings</h2>
+        <p>Two directives, both visible in review and both scoped:</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button><span class="c"># silence one rule on one line</span>
+TEST_ADDRESS = <span class="s">"t1cN2ZVWzWcVRrnfeQzmkpLhzQ4dYRv8yRY"</span>  <span class="c"># shieldlint: ignore[SL002]</span>
+
+<span class="c"># silence the whole file (vendored vectors, fixtures)</span>
+<span class="c"># shieldlint: disable-file</span></pre>
+        <p>An unknown rule id in a directive is itself a finding, so a typo cannot silently
+          disable a check you meant to keep.</p>
+      </section>
+
+      <section id="ci">
+        <h2>CI integration</h2>
+        <h3>GitHub Actions</h3>
+        <pre class="code"><button class="copy" data-copy>Copy</button>- uses: actions/checkout@v4
+- uses: actions/setup-python@v5
+  with: { python-version: <span class="s">"3.12"</span> }
+- run: pip install -e .
+- run: shieldlint check . --format sarif -o shieldlint.sarif
+- uses: github/codeql-action/upload-sarif@v3
+  with: { sarif_file: shieldlint.sarif }</pre>
+        <p>The repository also ships a composite action, so a one-line step works once the
+          repository is public:</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button>- uses: ace-coderr/ShieldLint@v0.1.0
+  with:
+    paths: src
+    fail-on: warning</pre>
+        <h3>GitLab, pre-commit, Docker</h3>
+        <p>Recipes for all three live in
+          <a class="link" href="https://github.com/ace-coderr/ShieldLint/blob/main/docs/ci.md" target="_blank" rel="noopener">docs/ci.md</a>.</p>
+      </section>
+
+      <section id="how">
+        <h2>How it decides</h2>
+        <p>The pipeline is deliberately boring: lex, decode, evidence, rules.</p>
+        <ol class="list-check">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Lex.</strong> A per-language scanner returns every string literal with its position, skipping comments and handling concatenation, raw strings, regex literals and interpolation.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Decode.</strong> Each literal is tested against Bech32m, Base58Check, F4Jumble and the ZIP 321 grammar. Success produces a typed value; failure produces a reason.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Evidence.</strong> A file-level model collects addresses, URIs, assigned names and payment call sites — this is what lets a rule follow a constant to the line where it is spent.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><strong>Rules.</strong> Each rule is a pure function over the evidence. No rule performs I/O, so results are deterministic across machines.</span></li>
+        </ol>
+      </section>
+
+      <section id="limits">
+        <h2>Limitations</h2>
+        <p>Knowing where a static analyser stops is part of trusting it.</p>
+        <ul>
+          <li><strong>No semantic analysis.</strong> ShieldLint follows constants inside a file, not across modules, and does not resolve values computed at runtime.</li>
+          <li><strong>No on-chain inspection.</strong> It cannot tell you whether an address has been used, or what a transaction revealed.</li>
+          <li><strong>Not a wallet.</strong> It never derives keys, signs, or talks to a node.</li>
+          <li><strong>Language coverage is broad, not exhaustive.</strong> Unlisted languages are scanned line-by-line with the default lexer.</li>
+          <li><strong>It cannot see configuration you do not commit.</strong> Values injected from the environment are out of reach by design.</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+</section>

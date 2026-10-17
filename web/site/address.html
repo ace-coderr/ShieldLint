@@ -1,0 +1,87 @@
+<section class="hero hero-page">
+  <div class="wrap hero-in">
+    <p class="crumb"><a href="/">Home</a> / <span>Address</span></p>
+    <h1>Decode a Zcash address</h1>
+    <p class="lede">Paste any address or viewing key. ShieldLint decodes it offline with the
+      ZIP 316 rules — every receiver, the revision, the network, and whether a sender can
+      downgrade the payment to transparent.</p>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="tool">
+
+      <div class="card">
+        <label class="field">
+          <span>Address or viewing key</span>
+          <textarea id="addr" rows="7" spellcheck="false" placeholder="u1…   zu1…   utest1…   zs1…   t1…   zc…   uview1…   uivk1…"></textarea>
+        </label>
+        <div class="row between">
+          <div class="row" style="gap:6px">
+            <button class="btn ghost sm" data-fill="ua">Shielded UA</button>
+            <button class="btn ghost sm" data-fill="mixed">UA with t-receiver</button>
+            <button class="btn ghost sm" data-fill="sapling">Sapling</button>
+            <button class="btn ghost sm" data-fill="taddr">Transparent</button>
+          </div>
+          <button class="btn blue" id="do-addr">Decode <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:14px">Result</h3>
+        <div id="addr-out">
+          <div class="empty">Paste an address and press <strong>Decode</strong>. Nothing is sent anywhere — decoding happens server-side in memory and is not logged.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">01</span> What you are looking at</p>
+        <h2 class="section">Anatomy of a Unified Address.</h2>
+      </div>
+      <p class="lede">A Unified Address is a container. It holds one or more receivers, each
+        with a typecode, so a wallet can pick the best one it supports — and a sender can
+        silently pick the weakest.</p>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>How the encoding works</h3>
+        <ol class="list-check mt14" style="counter-reset:none">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>Receivers are serialised as <code>typecode ‖ length ‖ address</code>, sorted by typecode.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>The human-readable prefix is padded to 16 zero bytes and appended.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>The whole payload is passed through <strong>F4Jumble</strong>, an unkeyed Feistel network.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>The result is encoded with <strong>Bech32m</strong> using the <code>u</code> or <code>zu</code> prefix.</span></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Why the receiver set matters</h3>
+        <table class="t mt14">
+          <thead><tr><th>Receiver</th><th>Typecode</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td>Orchard</td><td class="mono">0x03</td><td>Shielded, strongest</td></tr>
+            <tr><td>Sapling</td><td class="mono">0x02</td><td>Shielded</td></tr>
+            <tr><td>P2PKH</td><td class="mono">0x00</td><td><span class="sev error">Public</span> — downgrade risk</td></tr>
+            <tr><td>P2SH</td><td class="mono">0x01</td><td><span class="sev error">Public</span> — downgrade risk</td></tr>
+          </tbody>
+        </table>
+        <p class="small mt14">A <code>u1…</code> address carrying a transparent receiver is valid,
+          but a sender that cannot do shielded will quietly use it. That is rule SL003.</p>
+      </div>
+    </div>
+
+    <div class="banner mt20">
+      <svg aria-hidden="true"><use href="#i-info"/></svg>
+      <div><strong>Revision 2 (<code>zu…</code>)</strong> forbids transparent receivers outright.
+      <strong>Revision 0 (<code>u…</code>)</strong> allows them. <code>utest1…</code> is testnet —
+      shipping one to production is rule SL009.</div>
+    </div>
+  </div>
+</section>

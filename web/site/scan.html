@@ -1,0 +1,96 @@
+<section class="hero hero-page">
+  <div class="wrap hero-in">
+    <p class="crumb"><a href="/">Home</a> / <span>Scan</span></p>
+    <h1>Scan a file for privacy leaks</h1>
+    <p class="lede">Paste source, or load one of the bundled examples. ShieldLint lexes it,
+      decodes every address, viewing key and payment request with the Zcash specifications,
+      and tells you what would leak.</p>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="tool stacked">
+
+      <div class="card">
+        <div class="tool-head">
+          <div>
+            <h3 style="font-size:16px">Source</h3>
+            <p class="tiny mt8">Nothing is stored. The scan runs in memory and is discarded.</p>
+          </div>
+          <div class="row" style="gap:6px">
+            <button class="btn ghost sm" id="load-leaky">Leaky example</button>
+            <button class="btn ghost sm" id="load-fixed">Fixed example</button>
+          </div>
+        </div>
+
+        <label class="field">
+          <span>File name — drives the lexer</span>
+          <input type="text" id="fname" value="checkout.py" spellcheck="false" autocomplete="off">
+        </label>
+
+        <label class="field">
+          <span>Source code</span>
+          <textarea id="code" spellcheck="false" placeholder="Paste a file here, or load an example above."></textarea>
+        </label>
+
+        <div class="row between">
+          <p class="tiny">Python · JS/TS · Rust · Go · Java · C/C++ · Ruby · PHP · YAML · TOML</p>
+          <button class="btn blue" id="do-scan">Scan for leaks <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <div class="card" id="results-card">
+        <div class="row between" style="margin-bottom:14px">
+          <div>
+            <h3 style="font-size:16px">Findings</h3>
+            <p class="tiny mt8">Each finding names the rule, the location and the fix.</p>
+          </div>
+          <span class="tag" id="scan-time" hidden></span>
+        </div>
+        <div id="scan-out">
+          <div class="empty">Load an example or paste code, then press <strong>Scan for leaks</strong>.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">01</span> Reading a result</p>
+        <h2 class="section">What the output means.</h2>
+      </div>
+      <p class="lede">A finding is not a style opinion. It is a decoded value, a location and a
+        consequence you can verify against the specification.</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <span class="tag ink">Rule id</span>
+        <h3 class="mt14">SL006</h3>
+        <p>The rule that fired. Every id maps to a page in the <a class="link" href="/rules">rule index</a> with the rationale, a bad example and the fixed version.</p>
+      </div>
+      <div class="card">
+        <span class="tag ink">Severity</span>
+        <h3 class="mt14">error / warning</h3>
+        <p><strong>Error</strong> means privacy is lost or the payment will not work. <strong>Warning</strong> means a weaker configuration that a sender or an observer can exploit.</p>
+      </div>
+      <div class="card">
+        <span class="tag ink">Location</span>
+        <h3 class="mt14">file:line:column</h3>
+        <p>Points at the literal, not the statement — so an editor annotation or a SARIF viewer lands on the exact string.</p>
+      </div>
+    </div>
+
+    <div class="banner mt20">
+      <svg aria-hidden="true"><use href="#i-info"/></svg>
+      <div><strong>Findings respect suppression.</strong> Add <code># shieldlint: ignore[SL002]</code>
+      on the line, or <code># shieldlint: disable-file</code> at the top of a file, and the finding
+      disappears — useful for vendored test vectors.</div>
+    </div>
+  </div>
+</section>

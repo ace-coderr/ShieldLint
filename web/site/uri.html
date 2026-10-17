@@ -1,0 +1,91 @@
+<section class="hero hero-page">
+  <div class="wrap hero-in">
+    <p class="crumb"><a href="/">Home</a> / <span>Payment URI</span></p>
+    <h1>Validate a ZIP 321 payment request</h1>
+    <p class="lede">A <code>zcash:</code> URI is what a checkout hands to a wallet. ZIP 321 is
+      strict about it, and a request many wallets reject is a payment nobody can make.
+      Paste one to see every parameter and every violation.</p>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="tool">
+
+      <div class="card">
+        <label class="field">
+          <span>Payment request</span>
+          <textarea id="uri" rows="7" spellcheck="false" placeholder="zcash:zu1…?amount=0.5&memo=b3JkZXI6MQ&label=Order%201042"></textarea>
+        </label>
+        <div class="row between">
+          <div class="row" style="gap:6px">
+            <button class="btn ghost sm" data-fill="good">Valid request</button>
+            <button class="btn ghost sm" data-fill="memo">Memo on transparent</button>
+            <button class="btn ghost sm" data-fill="dupe">Duplicate amount</button>
+          </div>
+          <button class="btn blue" id="do-uri">Validate <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:14px">Result</h3>
+        <div id="uri-out">
+          <div class="empty">Paste a <code>zcash:</code> URI and press <strong>Validate</strong>.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">01</span> Reference</p>
+        <h2 class="section">The parameters that matter.</h2>
+      </div>
+      <p class="lede">Everything the validator checks, and the ones that change whether a
+        payment leaks. Full grammar is in
+        <a class="link" href="https://zips.z.cash/zip-0321" target="_blank" rel="noopener">ZIP 321</a>.</p>
+    </div>
+
+    <div class="card flush">
+      <table class="t">
+        <thead><tr><th>Parameter</th><th>Rule</th><th>What goes wrong</th></tr></thead>
+        <tbody>
+          <tr><td><code>address</code> / <code>address.N</code></td><td>Required</td><td>A request with no address, or an index starting at <code>address.0</code>, is invalid.</td></tr>
+          <tr><td><code>amount</code></td><td>Optional</td><td>Decimal ZEC, no exponent, no currency suffix, at most 8 decimals, exactly one per payment.</td></tr>
+          <tr><td><code>memo</code></td><td>Optional</td><td>Unpadded base64url, <strong>at most 512 bytes</strong>, and it requires a shielded recipient.</td></tr>
+          <tr><td><code>label</code></td><td>Optional</td><td>Free text shown to the user. Ignored by wallets that do not support it.</td></tr>
+          <tr><td><code>message</code></td><td>Optional</td><td>Free text. Do not put personal data here — nothing encrypts it.</td></tr>
+          <tr><td><code>req-*</code></td><td>Unknown = invalid</td><td>A required parameter a wallet does not understand must make the whole URI fail.</td></tr>
+          <tr><td>other <code>*</code></td><td>Ignorable</td><td>Unknown optional parameters are skipped, so tracking parameters survive.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2 mt20">
+      <div class="card">
+        <h3>Three invalid requests</h3>
+        <pre class="code mt14"><span class="c"># memo cannot ride a transparent address</span>
+zcash:t1…?amount=1&amp;memo=b3JkZXI6MQ
+
+<span class="c"># indexes start at 1, never 0</span>
+zcash:zu1…?address.0=u1…
+
+<span class="c"># one amount per payment</span>
+zcash:zu1…?amount=1&amp;amount=2</pre>
+      </div>
+      <div class="card">
+        <h3>Why it is a privacy rule</h3>
+        <p class="mt14">A memo is encrypted to the recipient, but only for shielded recipients.
+          On a transparent address there is no memo field at all, so wallets either drop it or
+          leak it into a public transaction. SL010 and SL011 both key off this.</p>
+        <p class="mt14">The validator also flags a request whose only recipient is a transparent
+          address, even when the syntax is perfect — because a correct URI can still be a
+          public payment.</p>
+      </div>
+    </div>
+  </div>
+</section>

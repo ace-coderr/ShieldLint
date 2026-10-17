@@ -1,0 +1,58 @@
+<section class="hero hero-page">
+  <div class="wrap hero-in">
+    <p class="crumb"><a href="/">Home</a> / <span>Rules</span></p>
+    <h1>The rule index</h1>
+    <p class="lede">Fourteen checks, each tied to a specification. Every rule states what it
+      detects, why the situation leaks, and what to write instead.</p>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="rules-toolbar">
+      <div class="search">
+        <input type="text" id="rule-search" placeholder="Search rules — try “memo”, “viewing key”, “SL006”" aria-label="Search rules">
+      </div>
+      <button class="chip" data-filter="all" aria-pressed="true">All <span class="n" id="n-all">14</span></button>
+      <button class="chip" data-filter="error" aria-pressed="false">Errors <span class="n" id="n-error">7</span></button>
+      <button class="chip" data-filter="warning" aria-pressed="false">Warnings <span class="n" id="n-warning">7</span></button>
+    </div>
+
+    <div id="rules-out">
+      <p class="small"><span class="spin"></span> Loading the rule set…</p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">01</span> Principles</p>
+        <h2 class="section">How a rule earns its place.</h2>
+      </div>
+      <p class="lede">A linter that cries wolf gets switched off. Three constraints keep the
+        signal high enough to run on every commit.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card">
+        <div class="icon-tile"><svg aria-hidden="true"><use href="#i-shield-check"/></svg></div>
+        <h3 class="mt14">Proof, not pattern</h3>
+        <p>A value is reported only after it decodes. A string that merely looks like an
+          address and fails its checksum is SL014, not SL001.</p>
+      </div>
+      <div class="card">
+        <div class="icon-tile"><svg aria-hidden="true"><use href="#i-info"/></svg></div>
+        <h3 class="mt14">Explainable</h3>
+        <p>Every finding names the consequence in plain language and links a page with the
+          specification reference. No opaque codes.</p>
+      </div>
+      <div class="card">
+        <div class="icon-tile"><svg aria-hidden="true"><use href="#i-terminal"/></svg></div>
+        <h3 class="mt14">Suppressible</h3>
+        <p>Vendored vectors and fixtures are a legitimate exception. One directive silences a
+          line or a file, and it is visible in review.</p>
+      </div>
+    </div>
+  </div>
+</section>

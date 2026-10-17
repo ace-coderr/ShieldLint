@@ -1,12 +1,19 @@
-"""Social preview image, PNG bytes as base64 (generated — do not edit)."""
-# shieldlint: disable-file -- generated: embeds demo data verbatim
+"""Generated assets (do not edit — run scripts/build_site.py)."""
+# shieldlint: disable-file -- generated: base64 asset bundles
 
 import base64
 
+FAVICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 38">\n  <rect width="34" height="38" rx="7" fill="#0a0c10"/>\n  <path d="M17 4.2 28.6 8v9.2c0 6.3-4.7 11-11.6 13.3C10.1 28.2 5.4 23.5 5.4 17.2V8L17 4.2Z"\n        fill="none" stroke="#2a5bff" stroke-width="2"/>\n  <path d="M12.2 14.1h9.6l-9.6 9.8h9.6" fill="none" stroke="#ffffff"\n        stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>\n</svg>\n'
+
 
 def og_png() -> bytes:
-    """Return the 1200x630 Open Graph image."""
+    """1200x630 social preview."""
     return base64.b64decode(_OG_B64)
+
+
+def favicon_png() -> bytes:
+    """32x32 PNG favicon for browsers that ignore SVG."""
+    return base64.b64decode(_FAVICON_B64)
 
 
 _OG_B64 = (
@@ -812,4 +819,34 @@ _OG_B64 = (
     "AACgIQQAAAAA0BACAAAAAGgIAQAAAAA0hAAAAAAAGkIAAAAAAA0hAAAAAICGEAAAAABAQwgAAAAAoCEEAAAAANAQAgAAAABoCAEA"
     "AAAANIQAAAAAABpCAAAAAAANIQAAAACAhhAAAAAAQEMIAAAAAKAhBAAAAAAaQgAAAAAADSEAAAAAgIYQAAAAANCB/T8kzY2Ed2mo"
     "eAAAAABJRU5ErkJggg=="
+)
+
+_FAVICON_B64 = (
+    "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"
 )

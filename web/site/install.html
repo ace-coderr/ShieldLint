@@ -1,0 +1,106 @@
+<section class="hero hero-page">
+  <div class="wrap hero-in">
+    <p class="crumb"><a href="/">Home</a> / <span>Install</span></p>
+    <h1>Install ShieldLint</h1>
+    <p class="lede">One Python package, no runtime dependencies, no network access at scan
+      time. Three ways in: from source, through a container, or straight into CI.</p>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="grid g2">
+
+      <div class="card">
+        <div class="row between"><span class="tag blue">Recommended</span><span class="mono tiny">Python 3.11+</span></div>
+        <h3 class="mt14">From source</h3>
+        <p>Until the package lands on PyPI, clone and install in editable mode.</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button>git clone https://github.com/ace-coderr/ShieldLint
+cd ShieldLint
+python -m pip install -e .
+shieldlint --version</pre>
+        <p class="tiny mt14">Editable install puts <code>shieldlint</code> on your PATH and lets you
+          edit the source without reinstalling. Use <code>pipx install --editable .</code> to keep
+          it out of your project environment.</p>
+      </div>
+
+      <div class="card">
+        <div class="row between"><span class="tag">Isolated</span><span class="mono tiny">Docker</span></div>
+        <h3 class="mt14">Container</h3>
+        <p>Mount the repository you want to scan and run the CLI against it.</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button>docker build -t shieldlint .
+docker run --rm -v <span class="s">"$PWD:/src"</span> shieldlint \
+  check /src --fail-on error</pre>
+        <p class="tiny mt14">Nothing is written outside the mounted volume, and the container
+          has no reason to reach the network.</p>
+      </div>
+
+      <div class="card">
+        <div class="row between"><span class="tag">Zero touch</span><span class="mono tiny">GitHub Actions</span></div>
+        <h3 class="mt14">CI step</h3>
+        <p>Fail the build on errors and upload findings to code scanning.</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button>- uses: actions/checkout@v4
+- uses: actions/setup-python@v5
+  with: { python-version: <span class="s">"3.12"</span> }
+- run: pip install -e .
+- run: shieldlint check . --format sarif -o s.sarif
+- uses: github/codeql-action/upload-sarif@v3
+  with: { sarif_file: s.sarif }</pre>
+      </div>
+
+      <div class="card">
+        <div class="row between"><span class="tag">Local</span><span class="mono tiny">git hooks</span></div>
+        <h3 class="mt14">Pre-commit</h3>
+        <p>Catch the leak before it reaches a branch.</p>
+        <pre class="code"><button class="copy" data-copy>Copy</button><span class="c"># .pre-commit-config.yaml</span>
+repos:
+  - repo: local
+    hooks:
+      - id: shieldlint
+        name: shieldlint
+        entry: shieldlint check --quiet
+        language: system
+        pass_filenames: <span class="k">false</span></pre>
+      </div>
+    </div>
+
+    <div class="banner mt20">
+      <svg aria-hidden="true"><use href="#i-info"/></svg>
+      <div><strong>Verify the install.</strong> <code>shieldlint rules</code> should print 14 rules,
+      and <code>shieldlint check examples/vulnerable-checkout</code> should exit with code 1 and
+      report 8 errors and 9 warnings. If both hold, the decoders and the lexer are working.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow"><span class="num">01</span> Before you ship</p>
+        <h2 class="section">Roll it out without<BR>drowning in findings.</h2>
+      </div>
+      <p class="lede">A new linter on an old codebase produces noise. Sequence it.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <p class="step-n">STEP 01</p>
+        <h3>Measure</h3>
+        <p>Run <code>shieldlint check . --quiet</code> and look at per-rule counts. High counts in
+          test fixtures are expected; high counts in payout code are the point.</p>
+      </div>
+      <div class="step">
+        <p class="step-n">STEP 02</p>
+        <h3>Exclude what is not yours</h3>
+        <p>Add vendored vectors and fixtures to <code>exclude</code>. Suppress deliberate
+          fixtures inline rather than globally.</p>
+      </div>
+      <div class="step">
+        <p class="step-n">STEP 03</p>
+        <h3>Ratchet</h3>
+        <p>Start with <code>--fail-on error</code>, then promote warnings to errors once the
+          baseline is clean. A ratchet that only ever tightens keeps the build honest.</p>
+      </div>
+    </div>
+  </div>
+</section>
