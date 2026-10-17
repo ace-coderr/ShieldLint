@@ -175,6 +175,68 @@
     nodes.forEach(function (el) { io.observe(el); });
   })();
 
+  /* --------------------------------------------------- hero parallax */
+  (function heroMotion() {
+    if (reduced) return;
+    var hero = $("hero");
+    var spot = $("hero-spot");
+    if (!hero) return;
+
+    var rect = null;
+    var frame = null;
+    var latest = { x: 0, y: 0 };
+
+    var measure = function () { rect = hero.getBoundingClientRect(); };
+    measure();
+
+    var apply = function () {
+      frame = null;
+      if (!rect) return;
+      var nx = Math.max(-1, Math.min(1, (latest.x / rect.width - 0.5) * 2));
+      var ny = Math.max(-1, Math.min(1, (latest.y / rect.height - 0.5) * 2));
+      hero.style.setProperty("--px", nx.toFixed(3));
+      hero.style.setProperty("--py", ny.toFixed(3));
+      hero.style.setProperty("--ex", (nx * 3.2).toFixed(2));
+      hero.style.setProperty("--ey", (ny * 2.4).toFixed(2));
+      if (spot) {
+        spot.style.setProperty("--spot-x", latest.x.toFixed(0) + "px");
+        spot.style.setProperty("--spot-y", latest.y.toFixed(0) + "px");
+      }
+    };
+
+    hero.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "touch") return;
+      if (!rect) measure();
+      latest.x = e.clientX - rect.left;
+      latest.y = e.clientY - rect.top;
+      if (frame) return;
+      frame = window.requestAnimationFrame(apply);
+    }, { passive: true });
+
+    hero.addEventListener("pointerleave", function () {
+      if (frame) { window.cancelAnimationFrame(frame); frame = null; }
+      hero.style.setProperty("--px", "0");
+      hero.style.setProperty("--py", "0");
+      hero.style.setProperty("--ex", "0");
+      hero.style.setProperty("--ey", "0");
+    });
+
+    window.addEventListener("resize", function () { rect = null; });
+    window.addEventListener("scroll", function () { rect = null; }, { passive: true });
+  })();
+
+  /* -------------------------------------------- looping scan preview */
+  (function scanLoop() {
+    var rows = document.querySelector(".hv-rows");
+    if (!rows || reduced) return;
+    window.setInterval(function () {
+      if (document.hidden) return;
+      rows.classList.remove("replay");
+      void rows.offsetWidth;
+      rows.classList.add("replay");
+    }, 9000);
+  })();
+
   /* --------------------------------------------------- card spotlight */
   Array.prototype.forEach.call(document.querySelectorAll(".card.hover"), function (card) {
     card.addEventListener("pointermove", function (e) {

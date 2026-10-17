@@ -76,27 +76,27 @@ repos:
 <section class="section alt">
   <div class="wrap">
     <div class="section-head">
+      <p class="eyebrow"><span class="num">01</span> Before you ship</p>
       <div>
-        <p class="eyebrow"><span class="num">01</span> Before you ship</p>
         <h2 class="section">Roll it out without<br>drowning in findings.</h2>
       </div>
       <p class="lede">A new linter on an old codebase produces noise. Sequence it.</p>
     </div>
     <div class="steps">
       <div class="step">
-        <p class="step-n">STEP 01</p>
+        <span class="step-n">01</span>
         <h3>Measure</h3>
         <p>Run <code>shieldlint check . --quiet</code> and look at per-rule counts. High counts in
           test fixtures are expected; high counts in payout code are the point.</p>
       </div>
       <div class="step">
-        <p class="step-n">STEP 02</p>
+        <span class="step-n">02</span>
         <h3>Exclude what is not yours</h3>
         <p>Add vendored vectors and fixtures to <code>exclude</code>. Suppress deliberate
           fixtures inline rather than globally.</p>
       </div>
       <div class="step">
-        <p class="step-n">STEP 03</p>
+        <span class="step-n">03</span>
         <h3>Ratchet</h3>
         <p>Start with <code>--fail-on error</code>, then promote warnings to errors once the
           baseline is clean. A ratchet that only ever tightens keeps the build honest.</p>

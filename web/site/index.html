@@ -1,4 +1,8 @@
-<section class="hero hero-home">
+<section class="hero hero-home" id="hero">
+  <div class="hero-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="hero-floor" aria-hidden="true"></div>
+  <div class="hero-spot" id="hero-spot" aria-hidden="true"></div>
+  <div class="hero-scanline" aria-hidden="true"></div>
   <div class="wrap hero-in">
     <div class="hero-grid">
       <div class="hero-copy">
@@ -23,8 +27,12 @@
         </div>
       </div>
 
-      <div class="hero-visual">
-        {{hero_art}}
+      <div class="hero-visual" id="hero-visual">
+        <div class="hv-stage">
+          {{hero_art}}
+          <span class="hv-chip hv-chip-a"><b>zu1…</b> shielded only</span>
+          <span class="hv-chip hv-chip-b"><b>t1…</b> flagged</span>
+        </div>
         <span class="hv-pill"><span class="live"></span> offline · 0 network calls</span>
         <div class="hv-scan" aria-hidden="true">
           <div class="hv-scan-head"><span class="dot"></span> checkout.py <span class="ms">38 ms</span></div>
@@ -64,8 +72,8 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
+      <p class="eyebrow"><span class="num">01</span> The problem</p>
       <div>
-        <p class="eyebrow"><span class="num">01</span> The problem</p>
         <h2 class="section">Zcash privacy is opt-in.<br>Code decides it.</h2>
       </div>
       <div class="head-side">
@@ -115,8 +123,8 @@
 <section class="section alt">
   <div class="wrap">
     <div class="section-head">
+      <p class="eyebrow"><span class="num">02</span> How it works</p>
       <div>
-        <p class="eyebrow"><span class="num">02</span> How it works</p>
         <h2 class="section">Three passes.<br>No network, no guessing.</h2>
       </div>
       <div class="head-side">
@@ -155,8 +163,8 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
+      <p class="eyebrow"><span class="num">03</span> One engine</p>
       <div>
-        <p class="eyebrow"><span class="num">03</span> One engine</p>
         <h2 class="section">Three surfaces.<br>Same verdict.</h2>
       </div>
       <div class="head-side">
@@ -204,8 +212,8 @@
 <section class="section alt">
   <div class="wrap">
     <div class="section-head">
+      <p class="eyebrow"><span class="num">04</span> What it catches</p>
       <div>
-        <p class="eyebrow"><span class="num">04</span> What it catches</p>
         <h2 class="section">Six of the fourteen rules.</h2>
       </div>
       <div class="head-side">
@@ -285,8 +293,8 @@
 <section class="section ink">
   <div class="wrap">
     <div class="section-head">
+      <p class="eyebrow"><span class="num">05</span> Evidence</p>
       <div>
-        <p class="eyebrow"><span class="num">05</span> Evidence</p>
         <h2 class="section">Verified against the<br>official test vectors.</h2>
       </div>
       <div class="head-side">

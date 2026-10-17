@@ -112,7 +112,7 @@
   <path d="M310 196v-38" stroke="#8fa8ff" stroke-opacity=".5" stroke-width="1.4"/>
   <circle class="hv-beacon-ring" cx="310" cy="154" r="12" stroke="#7f9dff" stroke-opacity=".45"/>
   <circle cx="310" cy="154" r="4.6" fill="#a8c3ff"/>
-  <circle cx="310" cy="154" r="11" fill="#7f9dff" opacity=".18" filter="url(#hvSoft2)"/>
+  <circle class="hv-beacon-core" cx="310" cy="154" r="11" fill="#7f9dff" opacity=".18" filter="url(#hvSoft2)"/>
 
   <!-- ears -->
   <rect x="186" y="286" width="18" height="46" rx="7" fill="#0b111b" stroke="#ffffff" stroke-opacity=".14"/>
@@ -139,8 +139,10 @@
     <g class="hv-eyes">
       <rect x="280" y="304" width="20" height="12" rx="6" fill="url(#hvEye)" filter="url(#hvSoft2)"/>
       <rect x="320" y="304" width="20" height="12" rx="6" fill="url(#hvEye)" filter="url(#hvSoft2)"/>
-      <rect x="285" y="307" width="10" height="6" rx="3" fill="#dce7ff"/>
-      <rect x="325" y="307" width="10" height="6" rx="3" fill="#dce7ff"/>
+      <g class="hv-pupils">
+        <rect x="285" y="307" width="10" height="6" rx="3" fill="#dce7ff"/>
+        <rect x="325" y="307" width="10" height="6" rx="3" fill="#dce7ff"/>
+      </g>
     </g>
 
     <!-- calm smile -->
