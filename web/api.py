@@ -26,7 +26,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from fastapi import FastAPI, HTTPException  # noqa: E402
-from fastapi.responses import HTMLResponse  # noqa: E402
+from fastapi.responses import HTMLResponse, Response  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
 from shieldlint import address as addr  # noqa: E402
@@ -34,6 +34,7 @@ from shieldlint.engine import Config, run  # noqa: E402
 from shieldlint.rules import RULES  # noqa: E402
 from shieldlint.uri import parse_payment_uri  # noqa: E402
 
+from web.assets import og_png  # noqa: E402
 from web.examples_data import EXAMPLES  # noqa: E402
 from web.ui import INDEX_HTML  # noqa: E402
 
@@ -88,6 +89,34 @@ def index() -> HTMLResponse:
     # The page is embedded in `web/ui.py` so a serverless bundle can serve it
     # without relying on runtime file access.
     return HTMLResponse(INDEX_HTML)
+
+
+@app.get("/api/og")
+def og_image() -> Response:
+    """1200x630 social preview (Open Graph / Twitter card)."""
+    return Response(
+        og_png(),
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=86400, immutable"},
+    )
+
+
+@app.get("/robots.txt", response_class=Response)
+def robots() -> Response:
+    return Response("User-agent: *\nAllow: /\n", media_type="text/plain")
+
+
+@app.get("/favicon.ico")
+def favicon() -> Response:
+    # a 1x1 transparent PNG as a last resort; the page embeds the real icon
+    return Response(
+        bytes.fromhex(
+            "89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c489"
+            "0000000d4944415478da63fcffff3f030005fe02fea7d48d4e0000000049454e44ae426082"
+        ),
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=604800"},
+    )
 
 
 @app.get("/health")

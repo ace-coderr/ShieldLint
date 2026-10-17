@@ -3,6 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAADUElEQVR42u2d0W0bMRBEzzQ/ggQxkFrSgGtyIakpDbgjSciPYQROJFN35M4O+fbbssh53CHvlqQevnz/th2IUh+3teNyOh/5eEX3g/EuxT4SFd21JCrSDyLRiKGg/uiEOAoA9YcyqEivtaOC+tpUKKivZVBQX8ugoIuYCsNfmwQF9bUMCuprGTAH5JgDGP6qJCADkq2CCAEA/EfoQmQAFrQ4APxH60JkABYEAAIAALCN59cX6/Y/fP3xNI3uv3/+AoB+yHthsAGww2osSGQH0MXiM5NICqBR93dl7/17AHSTvtdnVwfQVzsjEmIAo5XKT0IGoEWajroEf11eANohmTAhggBk63me9owFkN+C5S0cBcBrRShsbWcAvg9EqvbXyO7lfzlz76O1BwDHt8RhJCrSt3RhHAZKkuIAgDhqhkYI67pykyQDsCAAEABYcfpJNAkHzITXhJZPwnXZYZ7kIbEuKH2qR/SC+gBYV/1pLcho625l4GNB66o/FQBH9eexIN/zGpWBjwWtq743gAnUN7agaQ7pVQY+FrSu+mYA5lPfyYKmMf3QDOhS8Ht+fdGqP7RsWWNa3/2QV4z6ARXjzhlwTZd9Pcmpft9vH3JAo0vTc9pO9wYMPKK0W0H5aieS/cBJeN9h9qXUH74KupfBaupvMcdUG2VdxPQFAD7tXs6Bv01wTjh+Wb3DJLWZl/SqAjmVSV5FaPtm0cIyfQ+Tt60s0s+0rVJe2CRZe2QrKuivLItchCQsKpSciT9isZSzpJP90r4uAmWuZWapCfctJLiov6Uqyo9gkL+On/Hm3F5mbVHHz7gtpcu07LKLIum+oIMMjPawpL49fYeDc0RJOS07bp3z+AGHFksx3TrnsTf00ynBd+OizebcGwyst42a/YiP+8WwxhnQrqzXlmm/M2K39bXbsO76Q27/2hFHlJSpwBElJQPrczLGFjRHcG0lAABAKAFcTmdUUMXldCYDsCAA4EIq/yEDsCAA/J0ORLD/kAGZLIgkiB/+HzMABsHq/8eCYBCpPnNAymUoSRA2/K9mAAxi1L9lQTAIUH+7fWfc28uK+oiCI6RvnYRJhXHqt66CYDBI/a392krsqLv09wH48K8h0csn6sEvg8RBf/4DRNvH8TadKFIAAAAASUVORK5CYII=">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shieldlint.vercel.app/">
+<meta property="og:title" content="ShieldLint — the missing privacy diagnostic for Zcash">
+<meta property="og:description" content="Offline static analysis that finds transparent recipients, memo and viewing-key leaks, and broken ZIP 316 / ZIP 321 encodings before they ship.">
+<meta property="og:image" content="https://shieldlint.vercel.app/api/og">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ShieldLint — the missing privacy diagnostic for Zcash">
+<meta name="twitter:description" content="14 rules, 70 tests, official Zcash test vectors. Scan, decode addresses and validate payment requests in the browser.">
+<meta name="twitter:image" content="https://shieldlint.vercel.app/api/og">
 <title>ShieldLint — Zcash privacy linter</title>
 <meta name="description" content="Offline static analysis that finds where a Zcash integration leaks money-flow metadata.">
 <style>
@@ -115,7 +127,7 @@
 
 <div class="banner">
   <b>Nothing leaves your browser session.</b> The scanner is stateless: code is analysed in memory and discarded —
-  no accounts, no storage, no telemetry. Run the same engine locally with <code>pip install shieldlint</code>.
+  no accounts, no storage, no telemetry. Run the same engine locally with <code>git clone github.com/ace-coderr/ShieldLint &amp;&amp; pip install -e .</code>.
 </div>
 
 <div class="tabs" role="tablist">

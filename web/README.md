@@ -21,7 +21,8 @@ The UI lives in `web/static/index.html`; the demo sources come from
 imports, not what it reads at runtime. After editing either source, regenerate:
 
 ```bash
-python scripts/embed_web.py
+python scripts/make_og.py     # if you changed the social card
+python scripts/embed_web.py   # always, after editing html/examples/og
 ```
 
 ## Deploy to Vercel
@@ -51,6 +52,8 @@ and deploy. `vercel.json` does the rest; no environment variables are required.
 | `POST` | `/api/uri` | `{value}` → parsed payment request |
 | `GET`  | `/api/rules` | the rule catalogue |
 | `GET`  | `/api/examples/{leaky,fixed,rust}` | bundled demo sources |
+| `GET`  | `/api/og` | 1200x630 social preview |
+| `GET`  | `/robots.txt`, `/favicon.ico` | small niceties for crawlers |
 
 ## Limits
 
