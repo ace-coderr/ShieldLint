@@ -5,8 +5,8 @@
 integration leaks money-flow metadata — transparent recipients, memos and
 viewing keys in logs, and broken ZIP 316/321 encodings — before the code ships.
 
-Repository: this workspace (`shieldlint/`) · MIT · Python 3.11+ · no runtime
-dependencies.
+Repository: https://github.com/ace-coderr/ShieldLint · Live demo:
+https://shieldlint.vercel.app · MIT · Python 3.11+ · no runtime dependencies.
 
 ---
 

@@ -296,6 +296,7 @@ def _assigned_name(file: SourceFile, offset: int) -> str | None:
 _TRANSPARENT_SOURCE_RE = re.compile(
     r"\b(?:Source|Pool|SpendPool|InputPool|SpendSource)::Transparent\b"
     r"|\b(?:from|source|input|spend)[_-]?pool\s*[=:]\s*['\"]transparent['\"]"
+    r"|\bpool\s*[=:]\s*['\"]transparent['\"]"
     r"|\bpick_transparent\b",
     re.IGNORECASE,
 )
@@ -611,7 +612,12 @@ def rule_sl008(ev: FileEvidence) -> Iterator:
     file = ev.file
     for lineno in range(1, len(file.line_starts) + 1):
         masked = file.masked_line(lineno)
-        match = _TRANSPARENT_SOURCE_RE.search(masked)
+        if not masked.strip():
+            continue  # blank line or pure comment
+        # the pool name usually lives inside a string literal, which the lexer
+        # blanks in `masked`, so match against the original line instead.
+        line = file.line_text(lineno)
+        match = _TRANSPARENT_SOURCE_RE.search(line)
         if match:
             yield _finding(
                 rule,

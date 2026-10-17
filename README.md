@@ -12,6 +12,9 @@ ships.
 Built for **ZECATHON 2026 — Core & Tooling track**. MIT licensed, zero runtime
 dependencies, no network access, no keys touched.
 
+**[Try it in the browser →](https://shieldlint.vercel.app)** — scan a file, decode an
+address, validate a payment request. Same engine, no install.
+
 ```
 $ shieldlint check examples/vulnerable-checkout
 shieldlint 0.1.0  ·  2 files scanned  ·  8 errors, 9 warnings

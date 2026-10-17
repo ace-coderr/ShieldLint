@@ -11,3 +11,9 @@ dist/
 shieldlint.sarif
 shieldlint.json
 .DS_Store
+
+# web
+.vercel
+node_modules/
+__pycache__/
+.venv/

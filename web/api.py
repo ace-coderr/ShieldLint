@@ -1,0 +1,226 @@
+"""ShieldLint web API.
+
+A thin, stateless HTTP skin over the same engine the CLI uses.  Nothing is
+stored, nothing is logged: every request is scanned in memory and discarded.
+
+Deployed as a Vercel Python function; `vercel.json` at the repository root
+routes every path here so the UI and the API share an origin.
+
+Run locally from the repository root:
+
+    uvicorn web.api:app --reload --port 8000
+"""
+
+from __future__ import annotations
+
+import os
+import sys
+import tempfile
+from pathlib import Path
+from typing import Any
+
+# Make the repository root importable when this file is executed as a Vercel
+# function (the working directory is the project root, but be explicit).
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from fastapi import FastAPI, HTTPException  # noqa: E402
+from fastapi.responses import HTMLResponse  # noqa: E402
+from pydantic import BaseModel, Field  # noqa: E402
+
+from shieldlint import address as addr  # noqa: E402
+from shieldlint.engine import Config, run  # noqa: E402
+from shieldlint.rules import RULES  # noqa: E402
+from shieldlint.uri import parse_payment_uri  # noqa: E402
+
+MAX_SOURCE_BYTES = 200_000
+MAX_FILES = 20
+EXTENSIONS = {".py", ".js", ".ts", ".rs", ".go", ".java", ".kt", ".cs", ".c", ".cpp", ".rb", ".php", ".swift", ".yaml", ".yml", ".toml", ".json"}
+
+app = FastAPI(
+    title="ShieldLint",
+    version="0.1.0",
+    description="Offline Zcash privacy linting: transparent recipients, memo and "
+    "key exposure, ZIP 316 decoding and ZIP 321 validation.",
+)
+
+STATIC = Path(__file__).resolve().parent / "static"
+
+
+# ---------------------------------------------------------------------------
+# Models
+# ---------------------------------------------------------------------------
+
+
+class ScanFile(BaseModel):
+    name: str = Field(default="snippet.py")
+    content: str = ""
+
+
+class ScanRequest(BaseModel):
+    files: list[ScanFile] = Field(default_factory=list)
+    fail_on: str = "never"
+
+
+class AddressRequest(BaseModel):
+    value: str
+
+
+class UriRequest(BaseModel):
+    value: str
+
+
+# ---------------------------------------------------------------------------
+# UI
+# ---------------------------------------------------------------------------
+
+
+@app.get("/", response_class=HTMLResponse)
+@app.get("/scan", response_class=HTMLResponse)
+@app.get("/address", response_class=HTMLResponse)
+@app.get("/uri", response_class=HTMLResponse)
+@app.get("/rules", response_class=HTMLResponse)
+def index() -> HTMLResponse:
+    page = STATIC / "index.html"
+    if not page.is_file():  # pragma: no cover - deployment safety net
+        return HTMLResponse("<h1>ShieldLint</h1><p>UI asset missing.</p>", status_code=500)
+    return HTMLResponse(page.read_text(encoding="utf-8"))
+
+
+@app.get("/health")
+def health() -> dict[str, Any]:
+    return {"ok": True, "version": "0.1.0", "rules": len(RULES)}
+
+
+# ---------------------------------------------------------------------------
+# API
+# ---------------------------------------------------------------------------
+
+
+@app.post("/api/scan")
+def scan(request: ScanRequest) -> dict[str, Any]:
+    files = [f for f in request.files if f.content.strip()]
+    if not files:
+        raise HTTPException(400, "nothing to scan: provide at least one non-empty file")
+    if len(files) > MAX_FILES:
+        raise HTTPException(400, f"too many files (limit {MAX_FILES})")
+    total = sum(len(f.content.encode("utf-8")) for f in files)
+    if total > MAX_SOURCE_BYTES:
+        raise HTTPException(400, f"payload too large (limit {MAX_SOURCE_BYTES // 1000} KB)")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        for i, item in enumerate(files):
+            name = Path(item.name or f"snippet{i}.py").name
+            if Path(name).suffix.lower() not in EXTENSIONS:
+                name += ".py"
+            target = root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(item.content, encoding="utf-8")
+        config = Config(fail_on=request.fail_on)
+        report = run([root], config, root=root)
+
+    return {
+        "summary": {
+            "files_scanned": report.files_scanned,
+            "files_with_findings": report.files_with_findings,
+            "errors": report.errors,
+            "warnings": report.warnings,
+            "notes": report.notes,
+            "by_rule": report.counts_by_rule(),
+            "exceeds_threshold": report.exceeds_threshold(),
+        },
+        "findings": [f.to_dict() for f in report.findings],
+    }
+
+
+@app.post("/api/address")
+def decode_address(request: AddressRequest) -> dict[str, Any]:
+    value = request.value.strip()
+    if not value:
+        raise HTTPException(400, "empty address")
+    if len(value) > 2000:
+        raise HTTPException(400, "address too long")
+    info = addr.classify(value)
+    return {
+        "input": value,
+        "kind": info.kind,
+        "network": info.network,
+        "hrp": info.hrp,
+        "revision": info.revision,
+        "receivers": [
+            {"name": r.name, "typecode": f"0x{r.typecode:02x}", "bytes": len(r.data),
+             "transparent": r.transparent}
+            for r in info.receivers
+        ],
+        "metadata": [{"kind": m.kind, "value": m.value} for m in info.metadata],
+        "shielded": bool(info.shielded_receivers) or info.kind == "sapling",
+        "has_transparent_receiver": info.has_transparent_receiver,
+        "notes": info.notes,
+        "errors": info.errors,
+        "ok": info.ok and info.is_address,
+    }
+
+
+@app.post("/api/uri")
+def validate_uri(request: UriRequest) -> dict[str, Any]:
+    value = request.value.strip()
+    if not value:
+        raise HTTPException(400, "empty URI")
+    if len(value) > 4000:
+        raise HTTPException(400, "URI too long")
+    parsed = parse_payment_uri(value)
+    return {
+        "input": value,
+        "ok": parsed.ok,
+        "errors": parsed.errors,
+        "warnings": parsed.warnings,
+        "payments": [
+            {
+                "index": p.index,
+                "address": (p.address or "")[:48],
+                "kind": p.info.kind if p.info else None,
+                "network": p.info.network if p.info else None,
+                "amount": p.amount_text or None,
+                "memo_bytes": len(p.memo) if p.memo else 0,
+                "label": p.label,
+                "message": p.message,
+                "transparent": p.is_transparent,
+            }
+            for p in parsed.payments
+        ],
+    }
+
+
+@app.get("/api/rules")
+def list_rules() -> dict[str, Any]:
+    return {
+        "rules": [
+            {
+                "id": r.id,
+                "slug": r.slug,
+                "severity": r.severity,
+                "title": r.title,
+                "summary": r.summary,
+                "rationale": r.rationale,
+                "remediation": r.remediation,
+                "references": [{"label": l, "url": u} for l, u in r.refs],
+            }
+            for r in RULES
+        ]
+    }
+
+
+@app.get("/api/examples/{name}")
+def example(name: str) -> dict[str, str]:
+    """Serve the bundled demo files so the UI can preload them."""
+    mapping = {
+        "leaky": ROOT / "examples" / "vulnerable-checkout" / "checkout.py",
+        "fixed": ROOT / "examples" / "clean-checkout" / "checkout.py",
+        "rust": ROOT / "examples" / "rust-wallet" / "src" / "lib.rs",
+    }
+    path = mapping.get(name)
+    if path is None or not path.is_file():
+        raise HTTPException(404, "unknown example")
+    return {"name": path.name, "language": path.suffix.lstrip("."), "content": path.read_text(encoding="utf-8")}
