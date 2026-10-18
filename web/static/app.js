@@ -422,7 +422,7 @@
           '<span class="sev ' + esc(f.severity) + '">' + esc(f.severity) + "</span>" +
           '<span class="loc">' + esc(f.path) + ":" + f.line + ":" + f.column + "</span>" +
         "</div>" +
-        "<h4>" + esc(f.title) + "</h4>" +
+        "<h3>" + esc(f.title) + "</h3>" +
         "<p>" + esc(f.message) + "</p>" + detail + fix + ref +
       "</article>";
     }).join("");
