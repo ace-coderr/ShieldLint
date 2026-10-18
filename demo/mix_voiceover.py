@@ -25,9 +25,9 @@ import imageio_ffmpeg
 
 HERE = Path(__file__).resolve().parent
 VO = HERE / "vo"
-VIDEO = HERE.parent.parent / "ShieldLint-demo.mp4"
+VIDEO = HERE.parent.parent / "ShieldLint-demo-silent.mp4"
 TIMELINE = HERE / "video" / "timeline.json"
-OUT = HERE.parent.parent / "ShieldLint-demo-final.mp4"
+OUT = HERE.parent.parent / "ShieldLint-demo.mp4"
 SR = 48_000
 FF = imageio_ffmpeg.get_ffmpeg_exe()
 

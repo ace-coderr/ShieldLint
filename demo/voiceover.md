@@ -1,6 +1,6 @@
 # Demo voiceover — script and timing
 
-Target: `ShieldLint-demo-final.mp4`, **114.30 s**, 1600×900, 30 fps.
+Target: `ShieldLint-demo.mp4`, **114.30 s**, 1600×900, 30 fps.
 Beat boundaries: title 0.00 · home 5.53 · CLI 18.06 · scan 47.09 · address
 63.62 · URI 78.15 · rules 96.68 · end 108.71.
 
