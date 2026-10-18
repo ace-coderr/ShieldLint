@@ -192,8 +192,8 @@ public specifications: [ZIP 316](https://zips.z.cash/zip-0316),
 [ZIP 315](https://zips.z.cash/zip-0315),
 [ZIP 211](https://zips.z.cash/zip-0211), and the Zcash protocol specification.
 
-The GitHub URLs in `pyproject.toml`, `output.py` and the workflows are
-placeholders for the public repository; update them before publishing.
+All repository URLs in `pyproject.toml`, `output.py`, `action.yml` and the
+workflows point at https://github.com/ace-coderr/ShieldLint.
 
 ## Submission checklist
 
@@ -211,6 +211,6 @@ Remaining:
 - [x] 2-minute demo recorded (`demo/`, reproducible): real CLI run on the leaky
       checkout, the browser scanner, the address decoder, a ZIP 321 request
       accepted and then rejected, and the rule index.
-- [ ] Final read-through of this file for claims that drifted.
+- [x] Final read-through of this file for claims that drifted.
 - [ ] Submit on the ZECATHON portal before **Oct 28, 2026 23:59 UTC**
       (one submission, Core & Tooling).
