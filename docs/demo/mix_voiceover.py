@@ -27,7 +27,7 @@ HERE = Path(__file__).resolve().parent
 VO = HERE / "vo"
 VIDEO = HERE / "video" / "take.mp4"      # composed master (demo/compose_screen.py)
 TIMELINE = HERE / "video" / "timeline.json"
-OUT = HERE.parent.parent / "ShieldLint-demo.mp4"
+OUT = HERE.parent.parent / "ShieldLint-demo.mp4"   # repo root
 SR = 48_000
 FF = imageio_ffmpeg.get_ffmpeg_exe()
 

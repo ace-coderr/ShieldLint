@@ -17,7 +17,7 @@ from __future__ import annotations
 import math
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 INDEX = ROOT / "web" / "site" / "index.html"
 
 BLUE = "#2a5bff"

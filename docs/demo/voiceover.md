@@ -61,7 +61,7 @@ measured before it was fixed.
    **median frame had 4 pixels changing out of 230 000**, and half the runtime was
    a photograph of a page. Every static card, every idle tail, is a frozen image.
 
-`demo/motion.py` gives every beat a continuous sub-pixel push-in (1.0 → 1.055,
+`docs/demo/motion.py` gives every beat a continuous sub-pixel push-in (1.0 → 1.055,
 1.11 over the long terminal beat), alternating direction so the scale is
 continuous across each dissolve: the beat that ends pushed in meets a beat that
 starts pushed in. `zoompan` was tried first and rejected — it crops in whole
@@ -84,7 +84,7 @@ is one frame of complete stillness followed by a jump.
 
 ### Captions
 
-`demo/captions.py` writes both the burned-in track and `demo/captions.srt`.
+`docs/demo/captions.py` writes both the burned-in track and `docs/demo/captions.srt`.
 Cues are cut from the same script the voice reads and each one lives inside the
 speech window `mix_voiceover.py` actually used (`video/vo-timings.json`), so a
 caption cannot drift ahead of or behind the voice. 38 cues, ≤46 characters,
@@ -101,10 +101,10 @@ opaque plate so they read over the light sections too.
 ## Build
 
 ```
-demo/build_stages.py      title/terminal/end cards from real CLI output
-demo/record_screen.py     x11grab capture of the real site, one file per beat
-demo/compose_screen.py    holds + concat -> take.mp4 + timeline.json
-demo/mix_voiceover.py     voice onto the timeline, loudnorm, mux
+docs/demo/build_stages.py      title/terminal/end cards from real CLI output
+docs/demo/record_screen.py     x11grab capture of the real site, one file per beat
+docs/demo/compose_screen.py    holds + concat -> take.mp4 + timeline.json
+docs/demo/mix_voiceover.py     voice onto the timeline, loudnorm, mux
 ```
 
 The mixer keeps the picture as encoded by `compose_screen.py` (`-c:v copy`):

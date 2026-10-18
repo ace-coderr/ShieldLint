@@ -32,7 +32,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
   emits a timeline, and `mix_voiceover.py` places the narration on it.
 - **The demo is narrated.** Eight lines, one per beat, timed so a
   line never starts before its visual cut and no silence runs past ~1.2 s.
-  `demo/mix_voiceover.py` trims the TTS tail silence, fits each clip to its
+  `docs/demo/mix_voiceover.py` trims the TTS tail silence, fits each clip to its
   slot, and re-encodes the picture with a keyframe every 2 s — the recorded
   master had one every ~5.7 s, which made players hang and skip on seek.
 
@@ -114,7 +114,7 @@ engineered artefact rather than a character.
   angular cheek vents and a chest instrument, inside a rotating dial with tick
   marks. CSS animates a scan band inside the visor, a travelling sheen, a
   blinking crown light and a breathing chest lens; `prefers-reduced-motion`
-  leaves it still. Generated as vector geometry by `scripts/make_sentinel.py`
+  leaves it still. Generated as vector geometry by `scripts/art/make_sentinel.py`
   (15 KB inline, no raster asset).
 - **Interior pages get a spine.** Every sub-page hero is now ink, with a blue
   wash, a masked construction grid and a hairline underline. A `page-facts`
@@ -122,7 +122,7 @@ engineered artefact rather than a character.
 - **The nav island is readable everywhere.** It was 68 % ink, which turned
   mid-grey over the light interior pages; it is now 90 % ink and 96 % when
   scrolled.
-- **Social card follows the hero.** `scripts/render_sentinel.py` rasterises the
+- **Social card follows the hero.** `scripts/art/render_sentinel.py` rasterises the
   same SVG to a transparent PNG and `make_og.py` composites it, so the card can
   never drift from the homepage again.
 - Removed the dead editor-panel CSS and its generated hero bitmap path.
