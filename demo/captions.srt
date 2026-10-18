@@ -1,0 +1,152 @@
+1
+00:00:00,450 --> 00:00:02,079
+Privacy has no compile error.
+
+2
+00:00:02,079 --> 00:00:04,101
+ShieldLint finds the ones that leak.
+
+3
+00:00:05,430 --> 00:00:07,313
+Zcash is private per transaction,
+
+4
+00:00:07,313 --> 00:00:09,538
+not by default. One transparent payout,
+
+5
+00:00:09,538 --> 00:00:11,021
+or one memo in a log line,
+
+6
+00:00:11,021 --> 00:00:13,874
+codebase and shows you exactly where that happens.
+
+7
+00:00:13,874 --> 00:00:16,213
+codebase and shows you exactly where that
+
+8
+00:00:16,910 --> 00:00:19,816
+Here it is on a realistic merchant checkout,
+
+9
+00:00:19,816 --> 00:00:21,532
+run offline. Eight errors,
+
+10
+00:00:21,532 --> 00:00:23,580
+ten warnings, across two files,
+
+11
+00:00:23,580 --> 00:00:26,419
+exit code one. Each finding names the rule,
+
+12
+00:00:26,419 --> 00:00:28,796
+the line, the mechanism and the fix:
+
+13
+00:00:28,796 --> 00:00:31,306
+a transparent refund address held in a
+
+14
+00:00:31,306 --> 00:00:34,211
+constant, a viewing key committed to source,
+
+15
+00:00:34,211 --> 00:00:36,853
+a memo past the five hundred twelve byte
+
+16
+00:00:36,853 --> 00:00:39,692
+limit. The fixed checkout comes back clean.
+
+17
+00:00:40,490 --> 00:00:42,259
+Same engine, in the browser.
+
+18
+00:00:42,259 --> 00:00:44,091
+Load the leaky example, scan,
+
+19
+00:00:44,091 --> 00:00:46,618
+and each finding states the consequence,
+
+20
+00:00:46,618 --> 00:00:49,777
+or leaks off-chain. Nothing is stored server side.
+
+21
+00:00:49,777 --> 00:00:52,557
+or leaks off-chain. Nothing is stored server
+
+22
+00:00:53,970 --> 00:00:56,708
+The address decoder does the real ZIP 316
+
+23
+00:00:56,708 --> 00:00:59,379
+work, F4Jumble included: every receiver,
+
+24
+00:00:59,379 --> 00:01:02,450
+the revision, the expiry, and whether a sender
+
+25
+00:01:02,450 --> 00:01:05,255
+can downgrade it to a transparent payment.
+
+26
+00:01:05,700 --> 00:01:08,554
+Then a payment request. This one is valid:
+
+27
+00:01:08,554 --> 00:01:10,593
+shielded recipient, an amount,
+
+28
+00:01:10,593 --> 00:01:12,904
+a base64url memo. This one is not,
+
+29
+00:01:12,904 --> 00:01:15,214
+and it fails for the right reason.
+
+30
+00:01:15,214 --> 00:01:18,001
+A memo attached to a transparent address,
+
+31
+00:01:18,001 --> 00:01:21,127
+which ZIP 321 forbids. Every parameter checked
+
+32
+00:01:21,127 --> 00:01:22,486
+against the grammar.
+
+33
+00:01:22,930 --> 00:01:25,996
+Fourteen rules, each tied to a specification,
+
+34
+00:01:25,996 --> 00:01:29,130
+with the rationale and the remediation written
+
+35
+00:01:29,130 --> 00:01:31,242
+for whoever has to fix the bug.
+
+36
+00:01:31,242 --> 00:01:33,218
+Seven errors, seven warnings.
+
+37
+00:01:33,910 --> 00:01:36,772
+ShieldLint. Offline, MIT licensed,
+
+38
+00:01:36,772 --> 00:01:38,287
+zero dependencies.
+

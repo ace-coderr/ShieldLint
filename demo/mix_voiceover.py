@@ -112,6 +112,7 @@ def main() -> int:
     track = array.array("h", bytes(2 * n))          # silence, 16-bit mono
 
     prev_end = 0.0
+    placed: list[dict] = []
     for name, slot, stop in BEATS:
         src = VO / name
         tmp = VO / (name + ".wav")
@@ -142,6 +143,8 @@ def main() -> int:
             v = track[j] + s
             track[j] = 32767 if v > 32767 else (-32768 if v < -32768 else v)
         prev_end = start + dur
+        placed.append({"clip": name, "start": round(start, 3),
+                       "end": round(start + dur, 3)})
         print(f"  {name:14} {dur:5.2f}s  at {start:6.2f}s  ends {start + dur:6.2f}s "
               f"(cut {stop:6.2f})")
 
@@ -176,6 +179,9 @@ def main() -> int:
 
     out_len = subprocess.run([FF, "-hide_banner", "-i", str(OUT)],
                              capture_output=True, text=True).stderr
+    (HERE / "video" / "vo-timings.json").write_text(
+        json.dumps(placed, indent=2) + "\n")
+
     print("\n" + str(OUT))
     print([ln for ln in out_len.splitlines() if "Duration" in ln][0].strip())
     print([ln for ln in out_len.splitlines() if "Stream #0:1" in ln][0].strip())

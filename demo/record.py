@@ -46,6 +46,15 @@ OVERLAY = """
     transform: "translate(-50%,-50%) scale(1)",
     transition: "left .55s cubic-bezier(.22,.8,.24,1), top .55s cubic-bezier(.22,.8,.24,1), transform .12s ease",
   });
+  // A parked cursor freezes the picture. Keep a very slow idle drift on the
+  // dot so the frame is never byte-identical to the one before it: a static
+  // tail is what reads as "the video stalled" even at a perfect 30 fps.
+  const st = document.createElement("style");
+  st.textContent = "@keyframes demoIdle{" +
+    "0%{translate:0 0}25%{translate:5px -3px}50%{translate:1px -5px}" +
+    "75%{translate:-4px -2px}100%{translate:0 0}}" +
+    "#demo-cursor{animation:demoIdle 4.6s linear infinite}";
+  document.head.appendChild(st);
   document.body.appendChild(c);
 
   const cap = document.createElement("div");

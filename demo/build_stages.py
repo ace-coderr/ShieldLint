@@ -41,7 +41,10 @@ body{
 }
 .glow{position:fixed;inset:0;
   background:radial-gradient(60% 46% at 62% 26%,rgba(42,91,255,.22),transparent 72%),
-             radial-gradient(46% 36% at 18% 82%,rgba(42,91,255,.10),transparent 74%);}
+             radial-gradient(46% 36% at 18% 82%,rgba(42,91,255,.10),transparent 74%);
+  animation:glowDrift 5.2s ease-in-out infinite}
+@keyframes glowDrift{0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(30px,-20px,0) scale(1.06)}100%{transform:translate3d(0,0,0) scale(1)}}
 .mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace}
 .stage{position:relative;width:100%;height:100%;display:grid;place-items:center}
 .cap{
@@ -151,11 +154,18 @@ TERMINAL = """<!doctype html><meta charset="utf-8">
 const LINES = __LINES__;
 const b = document.getElementById("b");
 let i = 0;
+// The prompt sits at the bottom of the pane and blinks for the whole beat;
+// output is inserted above it, the way a real shell behaves.
+const idle = document.createElement("div");
+idle.className = "line on";
+idle.id = "idleline";
+idle.innerHTML = '<span class="prompt">$ </span><span class="cursor"></span>';
+b.appendChild(idle);
 function add(html, cls) {
   const d = document.createElement("div");
   d.className = "line " + (cls || "");
   d.innerHTML = html;
-  b.appendChild(d);
+  b.insertBefore(d, idle);
   requestAnimationFrame(() => d.classList.add("on"));
   return d;
 }
@@ -163,14 +173,13 @@ function step() {
   if (i >= LINES.length) return;
   const l = LINES[i++];
   if (l.type === "cmd") {
-    const d = add('<span class="prompt">$ </span><span class="cmd"></span><span class="cursor"></span>');
+    const d = add('<span class="prompt">$ </span><span class="cmd"></span>');
     const span = d.querySelector(".cmd");
     let k = 0;
     const t = setInterval(() => {
       span.textContent = l.text.slice(0, ++k);
       if (k >= l.text.length) {
         clearInterval(t);
-        d.querySelector(".cursor").remove();
         setTimeout(step, 420);
       }
     }, 34);

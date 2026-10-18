@@ -110,8 +110,15 @@ def main() -> int:
 
         browser.close()          # detaches; the kiosk window keeps running
 
+    # Merge, never overwrite: recording `01 03` to redo one beat must not drop
+    # the other six from the timeline.
     meta = HERE / "video" / "beats.json"
-    meta.write_text(json.dumps(marks, indent=2) + "\n")
+    merged = {}
+    if meta.exists():
+        merged = {m["name"]: m for m in json.loads(meta.read_text())}
+    merged.update({m["name"]: m for m in marks})
+    out = [merged[k] for k in sorted(merged)]
+    meta.write_text(json.dumps(out, indent=2) + "\n")
     print(f"\n{meta}  ({sum(m['seconds'] for m in marks):.2f}s total)")
     return 0
 

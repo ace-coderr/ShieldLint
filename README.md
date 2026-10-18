@@ -40,9 +40,10 @@ examples/vulnerable-checkout/checkout.py
 
 *(Full run in [docs/demo.txt](docs/demo.txt).)*
 
-**▶ [Watch the demo](ShieldLint-demo.mp4)** — 1:41, narrated: the CLI on a leaky
-checkout, the browser scanner, the address decoder, a ZIP 321 request accepted
-and then rejected, and the rule index.
+**▶ [Watch the demo](ShieldLint-demo.mp4)** — 1:39, narrated and captioned: the
+CLI on a leaky checkout, the browser scanner, the address decoder, a ZIP 321
+request accepted and then rejected, and the rule index. Subtitles are also
+available as [captions.srt](demo/captions.srt).
 
 ---
 
