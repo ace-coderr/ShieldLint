@@ -208,10 +208,13 @@ Done:
 
 Remaining:
 
-- [x] 2-minute demo recorded **with narration** (`demo/`, reproducible): real CLI run on the leaky
+- [x] 1:54 demo recorded **with narration** (`demo/`, reproducible): real CLI run on the leaky
       checkout, the browser scanner, the address decoder, a ZIP 321 request
-      accepted and then rejected, and the rule index. The voice track is mixed
-      by `demo/mix_voiceover.py` from `demo/voiceover.md`.
+      accepted and then rejected, and the rule index. Captured from a real X
+      display at a constant 30 fps (Playwright's own recorder only wrote ~6
+      unique frames per second), narrated, and reproducible:
+      `demo/record_screen.py` → `demo/compose_screen.py` →
+      `demo/mix_voiceover.py`.
 - [x] Final read-through of this file for claims that drifted.
 - [ ] Submit on the ZECATHON portal before **Oct 28, 2026 23:59 UTC**
       (one submission, Core & Tooling).

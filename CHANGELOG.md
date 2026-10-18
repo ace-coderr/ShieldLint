@@ -24,7 +24,13 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Demo
 
-- **The two-minute demo is narrated.** Eight lines, one per beat, timed so a
+- **The demo is re-captured from a real display.** Playwright's video recorder
+  emits a frame only when the page repaints, which left 745 unique frames in
+  120 s (~6 fps) and visible stepping on every scroll. `record_screen.py` now
+  captures a kiosk Chromium from Xvfb with `x11grab` at a constant 30 fps
+  (28–30 unique fps during motion), `compose_screen.py` assembles the beats and
+  emits a timeline, and `mix_voiceover.py` places the narration on it.
+- **The demo is narrated.** Eight lines, one per beat, timed so a
   line never starts before its visual cut and no silence runs past ~1.2 s.
   `demo/mix_voiceover.py` trims the TTS tail silence, fits each clip to its
   slot, and re-encodes the picture with a keyframe every 2 s — the recorded

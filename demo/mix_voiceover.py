@@ -13,7 +13,9 @@ Writes  ../ShieldLint-demo-voiced.mp4
 """
 from __future__ import annotations
 
+import argparse
 import array
+import json
 import subprocess
 import sys
 import wave
@@ -24,6 +26,7 @@ import imageio_ffmpeg
 HERE = Path(__file__).resolve().parent
 VO = HERE / "vo"
 VIDEO = HERE.parent.parent / "ShieldLint-demo.mp4"
+TIMELINE = HERE / "video" / "timeline.json"
 OUT = HERE.parent.parent / "ShieldLint-demo-final.mp4"
 SR = 48_000
 FF = imageio_ffmpeg.get_ffmpeg_exe()
@@ -77,7 +80,33 @@ def video_length() -> float:
     return int(h) * 3600 + int(m) * 60 + float(s)
 
 
+CLIP_ALIAS = {"03-terminal": "03-cli"}
+
+
+def beats_from_timeline(path: Path) -> list[tuple[str, float, float]]:
+    tl = json.loads(path.read_text())
+    b = tl["beats"]
+    out = []
+    for i, m in enumerate(b):
+        stop = b[i + 1]["start"] if i + 1 < len(b) else tl["total"]
+        clip = CLIP_ALIAS.get(m["name"], m["name"]) + ".mp3"
+        out.append((clip, m["start"] + 0.45, stop))
+    return out
+
+
 def main() -> int:
+    global VIDEO, OUT, BEATS
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--video", type=Path, default=VIDEO)
+    ap.add_argument("--timeline", type=Path, default=None)
+    ap.add_argument("--out", type=Path, default=OUT)
+    ap.add_argument("--copy-video", action="store_true",
+                    help="input is already CFR with dense keyframes")
+    a = ap.parse_args()
+    VIDEO, OUT = a.video, a.out
+    if a.timeline:
+        BEATS = beats_from_timeline(a.timeline)
+
     total = video_length()
     n = int(round(total * SR))
     track = array.array("h", bytes(2 * n))          # silence, 16-bit mono
@@ -125,17 +154,19 @@ def main() -> int:
         w.setframerate(SR)
         w.writeframes(track.tobytes())
 
-    # TTS lands around -20 dB mean; lift it to web level and catch the peaks.
-    loud = "volume=3dB,alimiter=limit=0.891:attack=5:release=80:level=disabled"
+    # Normalise to web speech loudness instead of guessing a gain: TTS takes
+    # vary by several dB between generations.
+    loud = "loudnorm=I=-16:TP=-1.5:LRA=11"
     # Re-encode rather than stream-copy: the recorded master carries only 21
     # keyframes across 120 s (one every ~5.7 s), so players hang and skip on
     # seek or on buffer resume. A keyframe every 2 s fixes that.
+    vcodec = (["-c:v", "copy"] if a.copy_video else
+              ["-c:v", "libx264", "-preset", "medium", "-crf", "19",
+               "-pix_fmt", "yuv420p", "-r", "30", "-fps_mode", "cfr",
+               "-g", "60", "-keyint_min", "60", "-sc_threshold", "0",
+               "-profile:v", "high", "-level", "4.1"])
     run([FF, "-y", "-i", str(VIDEO), "-i", str(mixed),
-         "-map", "0:v:0", "-map", "1:a:0",
-         "-c:v", "libx264", "-preset", "medium", "-crf", "19",
-         "-pix_fmt", "yuv420p", "-r", "30", "-fps_mode", "cfr",
-         "-g", "60", "-keyint_min", "60", "-sc_threshold", "0",
-         "-profile:v", "high", "-level", "4.1",
+         "-map", "0:v:0", "-map", "1:a:0", *vcodec,
          "-c:a", "aac", "-b:a", "192k", "-ac", "2", "-ar", "48000",
          "-af", loud, "-movflags", "+faststart", str(OUT)])
 
