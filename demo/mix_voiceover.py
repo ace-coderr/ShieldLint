@@ -118,14 +118,18 @@ def main() -> int:
         stop -= 0.25                                # never slam into the cut
         trim(src, tmp)
         dur = duration(tmp)
-        start = slot
-        if start + dur > stop:                      # nudge earlier, 0.25 s max
-            start = max(prev_end + BREATH, slot - 0.25, stop - dur)
-        if start + dur > stop:                      # still long: lift the tempo
-            tempo = min(MAX_TEMPO, dur / (stop - start))
+        earliest = max(prev_end + BREATH, slot - 0.25)
+        latest = stop - dur
+        if latest >= earliest:                      # fits: start at the slot
+            start = min(max(slot, earliest), latest)
+        else:                                       # too long for the beat
+            tempo = min(MAX_TEMPO, dur / max(stop - earliest, 0.1))
             trim(src, tmp, tempo)
             dur = duration(tmp)
-            start = max(prev_end + BREATH, stop - dur)
+            start = earliest
+            if start + dur > stop:
+                print(f"  !! {name} overruns its cut by "
+                      f"{start + dur - stop:.2f}s", file=sys.stderr)
         if start < prev_end + 0.05:                 # never overlap
             print(f"  !! {name} collides with the previous line", file=sys.stderr)
         off = int(round(start * SR))

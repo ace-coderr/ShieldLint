@@ -1,8 +1,8 @@
 # Demo voiceover — script and timing
 
-Target: `ShieldLint-demo.mp4`, **114.30 s**, 1600×900, 30 fps.
-Beat boundaries: title 0.00 · home 5.53 · CLI 18.06 · scan 47.09 · address
-63.62 · URI 78.15 · rules 96.68 · end 108.71.
+Target: `ShieldLint-demo.mp4`, **101.09 s**, 1600×900, 30 fps.
+Beat boundaries: title 0.00 · home 5.53 · CLI 17.06 · scan 40.94 · address
+54.97 · URI 67.00 · rules 84.53 · end 95.56.
 
 Two rules for the voice: **only describe what is on screen at that moment**, and
 only numbers the tool actually printed (8 errors / 10 warnings / 2 files /
@@ -11,15 +11,15 @@ exit 1; 14 rules; 7 error / 7 warning).
 | # | Speech window | Lines |
 |---|---------------|-------|
 | 1 | 0.45 – 4.10 | Privacy has no compile error. ShieldLint finds the ones that leak. |
-| 2 | 5.98 – 17.59 | Zcash is private per transaction, not by default. One transparent payout, or one memo in a log line, and the metadata is out. ShieldLint reads the codebase and shows you exactly where that happens. |
-| 3 | 18.51 – 46.70 | Here it is on a realistic merchant checkout, run offline. No keys, no network, nothing executed. Eight errors, ten warnings, across two files, exit code one. Each finding names the rule, the line, the mechanism and the fix: a refund constant holding a transparent address, a viewing key committed to source, a spending key beside it, a memo past the five hundred twelve byte limit. The fixed checkout comes back clean. |
-| 4 | 47.54 – 63.06 | Same engine, in the browser. Load the leaky example, scan, and each finding states the consequence, not just the pattern. This memo is dropped, or leaks off-chain. Every finding names the rule, the line and the fix. Nothing is stored server side. |
-| 5 | 64.07 – 77.84 | The address decoder does the real ZIP 316 work, F4Jumble included. Every receiver inside a Unified Address, the revision, the expiry, and whether a sender can downgrade it to a transparent payment. |
-| 6 | 78.60 – 95.85 | Then a payment request. This one is valid: shielded recipient, an amount, a base64url memo. This one is not, and it fails for the right reason. A memo attached to a transparent address, which ZIP 321 forbids. Every parameter checked against the grammar. |
-| 7 | 96.98 – 108.46 | Fourteen rules, each tied to a specification, with the rationale and the remediation written for whoever has to fix the bug. Seven errors, seven warnings. |
-| 8 | 109.16 – 113.54 | ShieldLint. Offline, MIT licensed, zero dependencies. |
+| 2 | 5.73 – 16.82 | Zcash is private per transaction, not by default. One transparent payout, or one memo in a log line, and the metadata is out. ShieldLint reads the codebase and shows you exactly where that happens. |
+| 3 | 17.51 – 40.29 | Here it is on a realistic merchant checkout, run offline. Eight errors, ten warnings, across two files, exit code one. Each finding names the rule, the line, the mechanism and the fix: a transparent refund address held in a constant, a viewing key committed to source, a memo past the five hundred twelve byte limit. The fixed checkout comes back clean. |
+| 4 | 41.39 – 53.46 | Same engine, in the browser. Load the leaky example, scan, and each finding states the consequence, not just the pattern. This memo is dropped, or leaks off-chain. Nothing is stored server side. |
+| 5 | 55.17 – 66.75 | The address decoder does the real ZIP 316 work, F4Jumble included: every receiver, the revision, the expiry, and whether a sender can downgrade it to a transparent payment. |
+| 6 | 67.20 – 84.28 | Then a payment request. This one is valid: shielded recipient, an amount, a base64url memo. This one is not, and it fails for the right reason. A memo attached to a transparent address, which ZIP 321 forbids. Every parameter checked against the grammar. |
+| 7 | 84.73 – 95.32 | Fourteen rules, each tied to a specification, with the rationale and the remediation written for whoever has to fix the bug. Seven errors, seven warnings. |
+| 8 | 96.01 – 100.39 | ShieldLint. Offline, MIT licensed, zero dependencies. |
 
-Audio: stereo 48 kHz AAC 192 kbps, **−16.3 LUFS integrated**, true peak ≤ −1.5 dB.
+Audio: stereo 48 kHz AAC 192 kbps, **−16.2 LUFS integrated**, true peak ≤ −1.5 dB.
 
 ## Why the picture was re-recorded
 
@@ -36,11 +36,25 @@ Chromium --kiosk --app=http://127.0.0.1:8010/ --remote-debugging-port=9222
 ffmpeg -f x11grab -framerate 30 -i :99.0
 ```
 
-`record_screen.py` drives that window over CDP, `compose_screen.py` holds the
-last frame of each beat to give the narration room and emits `timeline.json`,
-and `mix_voiceover.py` places the voice on that timeline. Measured result:
-**14–15 unique frames per 0.5 s during motion (28–30 fps)**, where the old
-recorder managed 5–7.
+`record_screen.py` drives that window over CDP and `compose_screen.py`
+concatenates the beats and emits `timeline.json`; `mix_voiceover.py` places the
+voice on that timeline. Measured result: **14–15 unique frames per 0.5 s during
+motion (28–30 fps)**, where the old recorder managed 5–7.
+
+### No holds, no dead heads
+
+The picture is no longer padded with `tpad` freeze-frames. A perfectly constant
+30 fps file still looked like it stuttered when the last frame of a beat was
+cloned for 1–4 s while the narration kept going: the cut was in the voice, not
+in the file. The mixer now fits each line into its beat instead — a line starts
+at most 0.25 s before its cue, and if it still does not fit it is time-compressed
+to at most 1.15×. Anything longer is a script bug, and the mixer fails loudly.
+
+The terminal beat also opened on an empty panel: the stage page starts its
+typewriter on `DOMContentLoaded`, so the first ~0.9 s of the capture is
+near-black. `TRIM_HEAD` in `compose_screen.py` cuts 1.15 s off that beat, and
+the beat now opens on the first command prompt. Beat boundaries are audited by
+pulling frames ±0.15 s around every cut and checking none of them is blank.
 
 ## Facts the script is allowed to state
 

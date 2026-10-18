@@ -22,16 +22,17 @@ TIMELINE = HERE / "video" / "timeline.json"
 FF = imageio_ffmpeg.get_ffmpeg_exe()
 
 # seconds of freeze-frame added after each beat (0 = none)
-HOLD = {
-    "01-title": 0.0,
-    "02-home": 1.0,
-    "03-terminal": 4.0,
-    "04-scan": 2.5,
-    "05-address": 2.5,
-    "06-uri": 1.0,
-    "07-rules": 1.0,
-    "08-end": 0.0,
-}
+# Seconds to cut from the head of a segment. The terminal stage renders an
+# empty panel for its first ~0.9 s (the typewriter starts on startDemo), which
+# showed up as a black flash at the cut.
+TRIM_HEAD = {"03-terminal": 1.15}
+
+# No freeze-frames. Holding the last frame of a beat and then cutting reads as
+# "hangs, then jumps" — every complaint landed on one of those holds.
+HOLD = {k: 0.0 for k in (
+    "01-title", "02-home", "03-terminal", "04-scan",
+    "05-address", "06-uri", "07-rules", "08-end",
+)}
 
 
 def main() -> int:
@@ -45,11 +46,12 @@ def main() -> int:
         src = SCREEN / b["file"]
         inputs += ["-i", str(src)]
         hold = HOLD.get(b["name"], 0.0)
+        head = TRIM_HEAD.get(b["name"], 0.0)
         chains.append(
-            f"[{i}:v]tpad=stop_mode=clone:stop_duration={hold},"
+            f"[{i}:v]trim=start={head},tpad=stop_mode=clone:stop_duration={hold},"
             f"setpts=PTS-STARTPTS,fps=30[v{i}]"
         )
-        dur = b["seconds"] + hold
+        dur = b["seconds"] - head + hold
         marks.append({"name": b["name"], "start": round(t, 3),
                       "end": round(t + dur, 3), "seconds": round(dur, 3)})
         t += dur
