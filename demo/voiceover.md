@@ -40,7 +40,13 @@ demo/vo/nn-*.mp3         per-beat TTS clips (the only hand-made input)
 demo/mix_voiceover.py    trim tail silence → place in slot → mix → mux
 ```
 
-The mixer keeps `-c:v copy`, so the picture is bit-identical to the silent
-master (verified by comparing the video-stream MD5). Lines are placed after
-their cut, pulled at most 0.25 s earlier, and only sped up (≤1.15×) if a line
-still overruns its slot.
+The mixer **re-encodes** the picture instead of stream-copying it. The recorded
+master carries only **21 keyframes across 120 s** (one every ~5.7 s), which makes
+players hang and skip whenever they seek or resume a buffer. The final encode is
+h264 High, CRF 19, constant 30 fps, **keyframe every 2 s** (`-g 60
+-keyint_min 60 -sc_threshold 0`), stereo 48 kHz AAC 192 kbps, `+faststart`.
+SSIM against the master is 0.9993 — visually identical, but seekable: a seek
+anywhere in the file resolves in ~55 ms.
+
+Lines are placed after their cut, pulled at most 0.25 s earlier, and only sped
+up (≤1.15×) if a line still overruns its slot.

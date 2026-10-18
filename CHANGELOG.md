@@ -27,8 +27,8 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 - **The two-minute demo is narrated.** Eight lines, one per beat, timed so a
   line never starts before its visual cut and no silence runs past ~1.2 s.
   `demo/mix_voiceover.py` trims the TTS tail silence, fits each clip to its
-  slot, and muxes with `-c:v copy`, so the picture stays bit-identical to the
-  silent master.
+  slot, and re-encodes the picture with a keyframe every 2 s — the recorded
+  master had one every ~5.7 s, which made players hang and skip on seek.
 
 ## [0.1.0] — 2026-10-17
 

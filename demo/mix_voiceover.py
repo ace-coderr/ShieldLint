@@ -24,7 +24,7 @@ import imageio_ffmpeg
 HERE = Path(__file__).resolve().parent
 VO = HERE / "vo"
 VIDEO = HERE.parent.parent / "ShieldLint-demo.mp4"
-OUT = HERE.parent.parent / "ShieldLint-demo-voiced.mp4"
+OUT = HERE.parent.parent / "ShieldLint-demo-final.mp4"
 SR = 48_000
 FF = imageio_ffmpeg.get_ffmpeg_exe()
 
@@ -127,10 +127,17 @@ def main() -> int:
 
     # TTS lands around -20 dB mean; lift it to web level and catch the peaks.
     loud = "volume=3dB,alimiter=limit=0.891:attack=5:release=80:level=disabled"
+    # Re-encode rather than stream-copy: the recorded master carries only 21
+    # keyframes across 120 s (one every ~5.7 s), so players hang and skip on
+    # seek or on buffer resume. A keyframe every 2 s fixes that.
     run([FF, "-y", "-i", str(VIDEO), "-i", str(mixed),
          "-map", "0:v:0", "-map", "1:a:0",
-         "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
-         "-af", loud, "-movflags", "+faststart", "-shortest", str(OUT)])
+         "-c:v", "libx264", "-preset", "medium", "-crf", "19",
+         "-pix_fmt", "yuv420p", "-r", "30", "-fps_mode", "cfr",
+         "-g", "60", "-keyint_min", "60", "-sc_threshold", "0",
+         "-profile:v", "high", "-level", "4.1",
+         "-c:a", "aac", "-b:a", "192k", "-ac", "2", "-ar", "48000",
+         "-af", loud, "-movflags", "+faststart", str(OUT)])
 
     out_len = subprocess.run([FF, "-hide_banner", "-i", str(OUT)],
                              capture_output=True, text=True).stderr
