@@ -4,6 +4,24 @@ All notable changes to ShieldLint are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Accessibility
+
+- **WCAG 2.1 AA contrast on every page.** The mono micro-labels (breadcrumbs,
+  scan-panel timings, footer status, footer meta) and the `--muted-2` token were
+  raised until an automated pass reported **0 low-contrast samples** on all
+  seven routes, at both 1440 px and 390 px.
+- **Gap-free heading outline.** Footer column titles and docs-sidebar group
+  labels are no longer `<h5>`/`<h4>`; card titles that directly followed the page
+  `<h1>` were promoted to `<h2>`. Every page now runs `h1 → h2 → h3` with no
+  skipped levels and exactly one `<h1>`.
+- Verified keyboard-only: 18-stop tab order, visible focus ring on every stop,
+  skip link first, mobile drawer toggles `aria-expanded` and closes on Escape,
+  the rules filter reports `aria-pressed`.
+- Cross-engine: Chromium, Firefox and WebKit render with **0 console errors and
+  0 horizontal overflow**.
+
 ## [0.1.0] — 2026-10-17
 
 First public release, built for ZECATHON 2026 (Core & Tooling).

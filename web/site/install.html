@@ -18,7 +18,7 @@
 
       <div class="card">
         <div class="row between"><span class="tag blue">Recommended</span><span class="mono tiny">Python 3.11+</span></div>
-        <h3 class="mt14">From source</h3>
+        <h2 class="mt14 card-h">From source</h2>
         <p>Until the package lands on PyPI, clone and install in editable mode.</p>
         <pre class="code"><button class="copy" data-copy>Copy</button>git clone https://github.com/ace-coderr/ShieldLint
 cd ShieldLint
@@ -31,7 +31,7 @@ shieldlint --version</pre>
 
       <div class="card">
         <div class="row between"><span class="tag">Isolated</span><span class="mono tiny">Docker</span></div>
-        <h3 class="mt14">Container</h3>
+        <h2 class="mt14 card-h">Container</h2>
         <p>Mount the repository you want to scan and run the CLI against it.</p>
         <pre class="code"><button class="copy" data-copy>Copy</button>docker build -t shieldlint .
 docker run --rm -v <span class="s">"$PWD:/src"</span> shieldlint \
@@ -42,7 +42,7 @@ docker run --rm -v <span class="s">"$PWD:/src"</span> shieldlint \
 
       <div class="card">
         <div class="row between"><span class="tag">Zero touch</span><span class="mono tiny">GitHub Actions</span></div>
-        <h3 class="mt14">CI step</h3>
+        <h2 class="mt14 card-h">CI step</h2>
         <p>Fail the build on errors and upload findings to code scanning.</p>
         <pre class="code"><button class="copy" data-copy>Copy</button>- uses: actions/checkout@v4
 - uses: actions/setup-python@v5
@@ -55,7 +55,7 @@ docker run --rm -v <span class="s">"$PWD:/src"</span> shieldlint \
 
       <div class="card">
         <div class="row between"><span class="tag">Local</span><span class="mono tiny">git hooks</span></div>
-        <h3 class="mt14">Pre-commit</h3>
+        <h2 class="mt14 card-h">Pre-commit</h2>
         <p>Catch the leak before it reaches a branch.</p>
         <pre class="code"><button class="copy" data-copy>Copy</button><span class="c"># .pre-commit-config.yaml</span>
 repos:
