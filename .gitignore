@@ -21,4 +21,5 @@ __pycache__/
 # demo recording artefacts (regenerate with demo/build_stages.py + demo/record.py)
 demo/out/
 demo/video/
+demo/vo/
 *.webm

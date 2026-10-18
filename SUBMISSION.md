@@ -208,9 +208,10 @@ Done:
 
 Remaining:
 
-- [x] 2-minute demo recorded (`demo/`, reproducible): real CLI run on the leaky
+- [x] 2-minute demo recorded **with narration** (`demo/`, reproducible): real CLI run on the leaky
       checkout, the browser scanner, the address decoder, a ZIP 321 request
-      accepted and then rejected, and the rule index.
+      accepted and then rejected, and the rule index. The voice track is mixed
+      by `demo/mix_voiceover.py` from `demo/voiceover.md`.
 - [x] Final read-through of this file for claims that drifted.
 - [ ] Submit on the ZECATHON portal before **Oct 28, 2026 23:59 UTC**
       (one submission, Core & Tooling).

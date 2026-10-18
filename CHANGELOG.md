@@ -22,6 +22,14 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 - Cross-engine: Chromium, Firefox and WebKit render with **0 console errors and
   0 horizontal overflow**.
 
+### Demo
+
+- **The two-minute demo is narrated.** Eight lines, one per beat, timed so a
+  line never starts before its visual cut and no silence runs past ~1.2 s.
+  `demo/mix_voiceover.py` trims the TTS tail silence, fits each clip to its
+  slot, and muxes with `-c:v copy`, so the picture stays bit-identical to the
+  silent master.
+
 ## [0.1.0] — 2026-10-17
 
 First public release, built for ZECATHON 2026 (Core & Tooling).
