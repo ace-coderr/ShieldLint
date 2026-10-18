@@ -7,6 +7,5 @@
 | [design.md](design.md) | How the analyser is built: source model, detectors, the ZIP 316 / ZIP 321 decoders |
 | [demo.txt](demo.txt) | A full, unedited CLI run on the bundled examples |
 | [submission.md](submission.md) | The ZECATHON 2026 write-up — problem, approach, evidence |
-| [demo/](demo/) | How the demonstration video was produced, and why every frame is real output |
 
 Start with the [README](../README.md) for install and usage.

@@ -2,7 +2,7 @@
 
 help:
 	@echo "make install   install ShieldLint (editable)"
-	@echo "make test      run the full test-suite (70 tests)"
+	@echo "make test      run the full test-suite (72 tests)"
 	@echo "make lint      lint ShieldLint's own source"
 	@echo "make demo      lint the deliberately leaky example"
 

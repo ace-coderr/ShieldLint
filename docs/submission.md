@@ -213,8 +213,8 @@ Remaining:
       accepted and then rejected, and the rule index. Captured from a real X
       display at a constant 30 fps (Playwright's own recorder only wrote ~6
       unique frames per second), narrated, and reproducible:
-      `docs/demo/record_screen.py` → `docs/demo/compose_screen.py` →
-      `docs/demo/mix_voiceover.py`.
+captured from a real display at 30 fps, with every finding taken from actual
+      CLI and web output.
 - [x] Final read-through of this file for claims that drifted.
 - [ ] Submit on the ZECATHON portal before **Oct 28, 2026 23:59 UTC**
       (one submission, Core & Tooling).

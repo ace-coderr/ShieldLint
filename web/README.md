@@ -41,7 +41,7 @@ CDN, no extra request, and nothing for a serverless bundle to fetch at runtime.
 
 ```bash
 python scripts/build_site.py     # web/site/* → web/pages.py, web/assets.py
-python scripts/make_og.py        # web/og.png (social card), then rebuild
+                                 # web/og.png is the committed social card
 ```
 
 Edit `web/site/*.html` or `web/static/app.css`, run `build_site.py`, commit both

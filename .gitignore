@@ -18,8 +18,3 @@ node_modules/
 __pycache__/
 .venv/
 
-# demo recording artefacts (regenerate with docs/demo/build_stages.py + record.py)
-docs/demo/out/
-docs/demo/video/
-docs/demo/vo/
-*.webm
